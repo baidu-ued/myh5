@@ -9,24 +9,15 @@ body {
 </style>
 
 <template>
-
-<List>
-
-</List>
-
-
-
+	<div>
+Edit页面
+</div>
 </template>
 
 <script>
 
-import List from './components/list/List.vue'
-
 export default {
-    name: 'app',
-    components: {
-        List
-    }
+    name: 'Edit'
 }
 
 </script>

@@ -1,15 +1,13 @@
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App2'
-import store from './store/index.js'
+import App from './App'
 
-
-// import JqueryQrcode from './plugins/jquery.qrcode.min.js'	// 二维码插件
+/* eslint-disable no-new */
+// import mongoose from 'mongoose'
 
 new Vue({
-	el: '#app',
-	store,
-	template: '<App/>',
-	components: {
-		App
-	}
+  el: '#app',
+  template: '<App/>',
+  components: { App }
 })
