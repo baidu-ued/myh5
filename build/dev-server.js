@@ -24,7 +24,7 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 // 路由
-app.get('/:viewname?', function(req, res, next) {
+app.get('/:viewname?/:act', function(req, res, next) {
 	var viewname = req.params.viewname ? req.params.viewname + '.html' : 'index.html';
 	var filepath = path.join(compiler.outputPath, viewname);
 	// 使用webpack提供的outputFileSystem
@@ -38,6 +38,7 @@ app.get('/:viewname?', function(req, res, next) {
 		res.end();
 	});
 });
+
 app.use(staticPath, express.static('./static'))
 
 module.exports = app;

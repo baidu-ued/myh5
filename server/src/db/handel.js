@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 let models = require("./model.js");
-let app = require("../../app.js");
+let app = require("../app.js");
 let Schemas= {};
 for (let key in models) {
     Schemas[key] = new mongoose.Schema(models[key]);

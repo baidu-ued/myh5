@@ -1,10 +1,11 @@
 let dbHandel = require('../db/handel.js')
-let xxx = require('../../const/api.js')
-console.log(xxx)
-let list = function(req, res) {
+let xxx = require('../const/api.js')
+let get = function(req, res) {
 	let obj = req.query;
 	let myh5 = dbHandel.getModel('myh5');
-    myh5.find({}, function(err, docs) {
+
+
+    myh5.find({work_id : obj.work_id}, function(err, docs) {
 		res.send({
 			status: xxx.SUC_STATUS,
 			msg: '获取成功',
@@ -16,8 +17,8 @@ let list = function(req, res) {
 	});
 };
 module.exports = function(Router) {
-	Router.get('/list/:act', function(req, res, next) {
-		if (req.params.act == 'list') {
+	Router.get('/edit/:act', function(req, res, next) {
+		if (req.params.act == 'get') {
 			list(req, res);
 			return;
 		}

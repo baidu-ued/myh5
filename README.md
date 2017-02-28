@@ -1,3 +1,37 @@
+
+# 欢迎使用fashion_h5
+
+
+**fashion_h5**-免费H5页面制作工具-微信H5页面,微信朋友圈会议邀请函,电子贺卡,动态音乐相册,电子微杂志,节日贺卡等,易企秀提供海量H5微场景模板,轻松制作一键生成H5页面。
+
+
+-------------------
+当前版本 v0.0.1
+####启动本地MongoDB服务
+> **提示：**本项目数据库用的是MongoDB，所以需要先在本地启动MongoDB服务，并且新建一个名为 fashion_h5 的数据库。
+``` javascript
+// 本机
+$ mongod --dbpath ~/data/db
+```
+####开启服务
+``` javascript
+node app.js
+```
+####开发者模式
+``` javascript
+// 进入backstage目录下
+webpack --watch
+```
+####打开浏览器
+浏览器打开 localhost:8080 就可以看到效果啦
+
+
+----------
+
+
+## 反馈与建议
+- 微博：[@BraisedCakes](http://weibo.com/braisedcakes)
+- 邮箱：<braisedcakes@gmail.com>
 # myh5
 
 > myh5
