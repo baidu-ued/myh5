@@ -42,10 +42,33 @@ $bottomBar: 30px;
             position: relative;
             margin-left: 25px;
             margin-top: 20px;
-            // padding: 12px 15px 18px 25px;
+        }
+        .obj {
+            background: #333;
+            width: 0px;
+            line-height: 23px;
+            left: -18px;
+            top: -3px;
+            position: absolute;
+            border-bottom: 15px solid #494950;
+            border-right: 15px solid transparent;
+            color: #fff;
+            font-size: 14px;
         }
         .item.active {
             border-color: #ff5e5e;
+            .obj {
+                background: #ff5e5e;
+            }
+        }
+        .close {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
         }
     }
     .add-page-button {
@@ -71,8 +94,8 @@ $bottomBar: 30px;
 <div id="page">
     <ul class="list">
         <li :class="['item', { active : index == 0 }]" v-for="(item, index) in list">
-            <p>{{index}}</p>
-            <div style="position:absolute;right:0;top:0;width:30px;height:30px;line-height:30px;text-align:center;">x</div>
+            <p class="obj">{{index}}</p>
+            <div class="close">x</div>
         </li>
     </ul>
     <div class="add-page-button">+</div>
@@ -83,6 +106,7 @@ $bottomBar: 30px;
 <script>
 
 import $ from 'jQuery'
+import Drag from '../../plugins/drag.js'
 export default {
     computed: {},
     data() {
@@ -90,7 +114,16 @@ export default {
             list: [1, 2, 3, 1, 1, 1, 1, 1]
         }
     },
-    mounted() {}
+    mounted() {
+
+
+        var obj = new Drag($('#page .list'), {
+            itemsClass: '.item',
+            onMouseUp: function(Drag) {
+                // _this.selectPage(Drag.activeItem.index)
+            }
+        });
+    }
 }
 
 </script>
