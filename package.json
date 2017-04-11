@@ -5,7 +5,7 @@
   "author": "Braised-Cakes <braisedcakes@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "node server/src/app.js",
+    "dev": "node server/app.js",
     "build": "node build/build.js"
   },
   "dependencies": {

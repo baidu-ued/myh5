@@ -1,4 +1,4 @@
-var app = require('../../build/dev-server.js');
+var app = require('../build/dev-server.js');
 var opn = require('opn')
 var mongoose = require('mongoose');
 var db = mongoose.createConnection('mongodb://localhost/test');
@@ -7,7 +7,6 @@ db.once('open', function() {
 	console.log('连接数据库成功');
 	var routers = require('./api/index.js');
 	routers.forEach(function(Router) {
-
         app.use('/api', Router);
 
     })
@@ -16,7 +15,7 @@ db.once('open', function() {
 			console.log(err)
 			return
 		}
-		// opn('http://localhost:8080')
+		opn('http://localhost:8080')
 		// opn('http://localhost:8080/edit/3')
 	})
 });

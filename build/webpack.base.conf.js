@@ -8,8 +8,8 @@ function resolve(dir) {
 }
 module.exports = {
 	entry: {
-		list: './web/src/entry/list.js',
-		edit: './web/src/entry/edit.js'
+		list: './web/entry/list.js',
+		edit: './web/entry/edit.js'
 	},
 	output: {
 		path: config.build.assetsRoot,
