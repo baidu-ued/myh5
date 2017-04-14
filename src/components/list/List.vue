@@ -1,7 +1,8 @@
+
 <template>
 <ul class="list">
 	<li class="item"
-					v-for="i in list"> {{i.work_id}}
+					v-for="i in list"> {{i.work_id}}{{i.type}}
 		<a :href="'edit/' + i.work_id"></a>
 		</li>
 </ul>
@@ -9,41 +10,36 @@
 
 <script>
 import $ from 'jQuery'
+import {
+	mapGetters,
+	mapActions
+}
+from 'vuex'
 export default {
 	name: 'List',
 	data() {
 		return {
-			list: []
+
+			// list: []
 		}
 	},
-	mounted: function() {
-		$.ajax({
-			url: '/api/list/get',
-			type: 'get',
-			data: {
-				page: 1,
-				length: 10
-			},
-			success: (rs) => {
-				console.log(rs);
-				this.list = rs.data.data;
-			}
-		});
+	computed: { ...mapGetters(['list'])
 	},
 	methods: {
-		get: function() {
-			alert(2)
+		...mapActions(['changeType']),
+		change: function() {
+
 		}
-	},
-	components: {}
+	}
 }
 </script>
-
-<style scoped lang="scss">
+<style scoped lang="scss">;
+@import '../../css/global.scss';
 .list {
     display: flex;
     flex-wrap: wrap;
     width: 800px;
+	// height:2000px;
     .item {
         width: 120px;
         height: 160px;
@@ -54,7 +50,7 @@ export default {
         width: 50px;
         height: 50px;
         display: block;
-        background: red;
+        // background: red;
     }
 }
 

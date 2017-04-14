@@ -10,7 +10,6 @@ db.once('open', function() {
 	routers.forEach(function(Router, index) {
         app.use('/api', Router);
     })
-	console.log(routers)
 	app.listen(8080, function(err) {
 		if (err) {
 			console.log(err)
