@@ -1,31 +1,6 @@
-<template>
-<section class="box-wrap">
-	<div class="box">
-		<ul>
-			<li @click="changeType('sports')">选项1</li>
-			<li @click="changeType('news')">选项2</li>
-		</ul>
-	</div>
+<style scoped lang="scss">
 
-</section>
-</template>
-
-<script>
-import {
-	mapGetters,
-	mapActions
-}
-from 'vuex'
-export default {
-	data() {
-		return {}
-	},
-	methods: { ...mapActions(['changeType'])
-	}
-}
-</script>
-
-<style scoped lang="scss">;
+;
 @import '../../css/global.scss';
 .box-wrap {
     width: $panel_width;
@@ -38,6 +13,54 @@ export default {
     bottom: 0;
     .box {
         height: 2000px;
+		li{
+
+		}
+		li.active{
+			color: red;
+		}
     }
 }
+
 </style>
+
+<template>
+
+<section class="box-wrap">
+    <div class="box">
+        <ul>
+            <li :class="{ 'active' : type == i.ename}" @click="changeType(i.ename)" v-for="i in list">{{i.text}}</li>
+        </ul>
+    </div>
+
+</section>
+
+</template>
+
+<script>
+
+import {
+    mapGetters,
+    mapActions
+}
+from 'vuex'
+export default {
+    data() {
+            return {
+                list: [{
+                    text: '体育',
+                    ename: 'sports'
+                }, {
+                    text: '新闻',
+                    ename: 'news'
+                }]
+            }
+        },
+        computed: {
+            ...mapGetters(['type'])
+        },
+        methods: {...mapActions(['changeType'])
+        }
+}
+
+</script>

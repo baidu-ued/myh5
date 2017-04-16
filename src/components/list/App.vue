@@ -1,3 +1,24 @@
+<style>
+html {
+	background: #57585d;
+}
+</style> <style scoped lang="scss">;
+@import '../../css/global.scss';
+.main {
+    display: flex;
+    .content {
+        position: absolute;
+        left: $panel_width;
+        top: $header_height;
+        right: 0;
+        bottom: 0;
+        overflow: scroll;
+        display: flex;
+        flex-direction: column;
+    }
+}
+</style>
+
 <template>
 <div>
 	<PublicHeader/>
@@ -29,8 +50,11 @@ export default {
 	data() {
 		return {}
 	},
+	computed : {
+		...mapGetters(['type'])
+	},
 	created: function() {
-		this.changeType('news')
+		this.changeType(this.type)
 	},
 	methods: {
 		...mapActions(['changeType']),
@@ -43,26 +67,3 @@ export default {
 	}
 }
 </script>
-
-<style>
-html{
-	/*background: #57585d;*/
-
-}
-</style>
-<style scoped lang="scss">;
-@import '../../css/global.scss';
-.main {
-    display: flex;
-    .content {
-		position: absolute;
-		left: $panel_width;
-		top:$header_height;
-		right:0;
-		bottom:0;
-		overflow: scroll;
-		display: flex;
-		flex-direction: column;
-	}
-}
-</style>

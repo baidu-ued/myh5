@@ -6,12 +6,15 @@ import * as api from '../api/list.js'
 Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
-		type: 'my',
+		type: 'sports',
 		list: [],
 		activePage : 1,
 		pageNum : 1
 	},
 	getters: {
+		type : function(state){
+			return state.type
+		},
 		list: function(state) {
 			return state.list
 		},

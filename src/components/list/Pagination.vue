@@ -1,7 +1,7 @@
 <template>
 <Pagination :page-num="pageNum"
-			wrapperClass="page-wrap"
-			pageItemClass="page-item"
+				wrapperClass="page-wrap"
+				pageItemClass="page-item"
 				:active-page="activePage"
 				v-on:change="change">
 	</Pagination>
@@ -37,20 +37,19 @@ export default {
 </script>
 <style lang="scss">;
 @import '../../css/global.scss';
-.page-wrap{
-	display: flex;
-	.page-item{
-		border: 1px solid #000;
-		padding:5px;
-		min-width: 30px;
-		line-height: 30px;
-		text-align: center;
-		cursor: pointer;
-		margin: 10px;
-	}
-	.page-item.active{
-		background: red
-	}
+.page-wrap {
+    display: flex;
+    .page-item {
+        border: 1px solid #000;
+        padding: 5px;
+        min-width: 30px;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+        margin: 10px;
+    }
+    .page-item.active {
+        background: red;
+    }
 }
-
 </style>

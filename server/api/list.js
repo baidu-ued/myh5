@@ -6,7 +6,6 @@ let get = function(req, res) {
 	let length = Number(obj.length) || 10
 	let page = Number((obj.page - 1) * length)
 
-
 	var readFile1 = function() {
 		return new Promise(function(resolve, reject) {
 			myh5.count({
