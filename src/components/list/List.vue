@@ -4,37 +4,38 @@
 .list {
     display: flex;
     flex-wrap: wrap;
-	// justify-content: center;
-	width: 1000px;
+    width: 1000px;
     .item {
-		width: 166px;
+        transition: 0.5s;
+        width: 166px;
         height: 266px;
-        // border: 1px solid #000;
         position: relative;
         background: url(http://z.sina.com.cn/styles/images/bg.png);
-		margin:10px;
-		.item2{
-			width: 160px;
-			height: 260px;
-			position: relative;
-		}
-
-        .marker {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            display: none;
-            .qr-code {}
+        margin: 10px;
+        .item2 {
+            width: 160px;
+            height: 260px;
+            position: relative;
+            .marker {
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                display: none;
+                .qr-code {}
+            }
+            .bg {
+                width: 100%;
+                height: 100%;
+            }
         }
-        .bg {
-            width: 100%;
-            height: 100%;
-        }
+    }
+    .item:hover {
+        transform: translate(-2px, -2px);
     }
 }
 
