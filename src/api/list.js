@@ -5,6 +5,7 @@ export const get = function(data, cb) {
 		type: 'get',
 		data: data,
 		success: (rs) => {
+			console.log(rs);
 			cb && cb(rs);
 		}
 	});

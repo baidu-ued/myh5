@@ -3,6 +3,7 @@
 @import '../../css/global.scss';
 .page-wrap {
     display: flex;
+	justify-content: center;
     .page-item {
         border: 1px solid #D8D8D8;
         background: #fff;
@@ -13,6 +14,7 @@
         cursor: pointer;
         margin: 0 5px;
         border-radius: 2px;
+		-webkit-user-select:none
     }
     .page-item.active {
         background: #E1B355;

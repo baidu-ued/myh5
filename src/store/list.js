@@ -32,7 +32,7 @@ export default new Vuex.Store({
 			});
 			api.get({
 				page : page,
-				length : 10,
+				length : 12,
 				type : state.type
 			}, function(rs){
 				commit(types.CHANGE_LIST, {
@@ -43,7 +43,7 @@ export default new Vuex.Store({
 		changeType: function({ commit }, type) {
 			api.get({
 				page : 1,
-				length : 10,
+				length : 12,
 				type : type
 			}, function(rs){
 				commit(types.CHANGE_LIST, {

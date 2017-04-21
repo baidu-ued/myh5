@@ -3,7 +3,7 @@ let get = function(req, res) {
 	let obj = req.query
 	let myh5 = dbHandel.getModel('myh5')
 	let type = String(obj.type) || 'news'
-	let length = Number(obj.length) || 10
+	let length = Number(obj.length) || 12
 	let page = Number((obj.page - 1) * length)
 
 	var readFile1 = function() {
@@ -32,7 +32,7 @@ let get = function(req, res) {
 			msg: '获取成功',
 			data: {
 				data: data,
-				pageNum : Math.ceil(count / 10)
+				pageNum : Math.ceil(count / length)
 			}
 		})
 	};
