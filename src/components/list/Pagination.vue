@@ -5,21 +5,27 @@
     display: flex;
 	justify-content: center;
     .page-item {
-        border: 1px solid #D8D8D8;
+        // border: 1px solid #D8D8D8;
         background: #fff;
-        min-width: 12px;
-        padding: 0 9px;
+        min-width: 14px;
+        padding: 0 10px;
         line-height: 28px;
         text-align: center;
         cursor: pointer;
-        margin: 0 5px;
-        border-radius: 2px;
-		-webkit-user-select:none
+        margin: 0 6px;
+        border-radius: 3px;
+		-webkit-user-select:none;
     }
+	.page-item:active{
+		// color: red;
+	}
     .page-item.active {
         background: #E1B355;
         border-color: #E1B355;
         color: #fff;
+    }
+	.page-item.disabled {
+        cursor: not-allowed;
     }
 }
 

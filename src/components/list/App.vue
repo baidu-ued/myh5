@@ -1,8 +1,15 @@
 <style>
 html {
 	background: #57585d;
+	/*height: 100%;*/
+	overflow: hidden;
+
 }
-</style> <style scoped lang="scss">;
+body{
+	font-size: 12px;
+}
+</style>
+<style scoped lang="scss">
 @import '../../css/global.scss';
 .main {
     display: flex;
@@ -40,6 +47,7 @@ import PublicHeader from '../public/Header.vue'
 import Panel from './Panel.vue'
 import List from './List.vue'
 import Pagination from './Pagination.vue'
+// import pullload from 'pullload'
 import {
 	mapGetters,
 	mapActions
@@ -50,14 +58,14 @@ export default {
 	data() {
 		return {}
 	},
-	computed : {
-		...mapGetters(['type'])
+	computed: {
+		...mapGetters(['type', 'page'])
 	},
 	created: function() {
 		this.changeType(this.type)
 	},
 	methods: {
-		...mapActions(['changeType']),
+		...mapActions(['changeType', 'changePage']),
 	},
 	components: {
 		PublicHeader,

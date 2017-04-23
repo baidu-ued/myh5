@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import $ from 'jQuery'
 import * as types from './mutation-types.js'
 import * as api from '../api/list.js'
+
+
 Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
@@ -25,6 +27,7 @@ export default new Vuex.Store({
 			return state.pageNum
 		}
 	},
+
 	actions: {
 		changePage : function({commit, state}, page){
 			commit(types.CHANGE_PAGE, {
