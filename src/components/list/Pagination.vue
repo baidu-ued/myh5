@@ -15,6 +15,8 @@
         margin: 0 6px;
         border-radius: 3px;
 		-webkit-user-select:none;
+
+		// color: #999;
     }
 	.page-item:active{
 		// color: red;
@@ -25,8 +27,12 @@
         color: #fff;
     }
 	.page-item.disabled {
-        cursor: not-allowed;
+        cursor: default;
+		// opacity: 0.5;
     }
+	.page-item:hover{
+		color : #E1B355;
+	}
 }
 
 </style>

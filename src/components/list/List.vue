@@ -15,7 +15,7 @@
             height: 266px;
             position: relative;
             background: url("http://z.sina.com.cn/styles/images/bg.png");
-            margin: 15px 10px;
+            margin: 10px;
 
             .item2 {
                 width: 160px;
@@ -117,7 +117,7 @@
                     </div>
                 </div>
             </div>
-			<div class="sitetitle">毕业季·我们不说再见</div>
+			<!-- <div class="sitetitle">毕业季·我们不说再见</div> -->
         </li>
     </ul>
 </section>
