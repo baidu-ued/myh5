@@ -3,6 +3,7 @@
 @import '../../css/global.scss';
 .page-wrap {
     display: flex;
+	margin-top: 30px;
 	justify-content: center;
     .page-item {
         // border: 1px solid #D8D8D8;
@@ -28,10 +29,10 @@
     }
 	.page-item.disabled {
         cursor: default;
-		// opacity: 0.5;
+		opacity: 0.5;
     }
 	.page-item:hover{
-		color : #E1B355;
+		// color : #E1B355;
 	}
 }
 
