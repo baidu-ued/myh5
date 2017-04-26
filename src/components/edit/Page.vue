@@ -24,11 +24,16 @@
     ul {
         height: 1000px;
         padding: 0 10px;
-		li{
-			height: 200px;
-			border: 1px solid #000;
-			margin: 10px;
-		}
+
+        li {
+            height: 200px;
+            border: 1px solid #000;
+            margin: 10px;
+			// width:175px;
+        }
+        li.active {
+            border-color: #cccccc;
+        }
     }
     .add-page-button {
         background: #48484f;
@@ -51,8 +56,8 @@
 <template>
 
 <section class="box-wrap">
-    <ul>
-        <li v-for="i in list">{{i}}</li>
+    <ul class="drag-wrapper">
+        <li @click="changePage(index)" v-for="(i, index) in phoneLength" class="v-sort-item" v-bind:class="{active : index == activePage}">{{i}}</li>
     </ul>
     <div class="add-page-button" id="addpage">+</div>
 </section>
@@ -61,7 +66,27 @@
 
 <script>
 
+import {
+    mapGetters,
+    mapActions
+}
+from 'vuex'
+import VueSort from 'vue-sort'
+console.log(VueSort)
 export default {
+    computed: {
+        ...mapGetters(['phoneLength', 'activePage'])
+    },
+    methods: {
+        ...mapActions(['changePage'])
+    },
+	mounted : function(){
+		new VueSort('.drag-wrapper', {
+            onMouseUp: function(s) {
+                // _this.list = s.sort(_this.list);
+            }
+        })
+	},
     data: function() {
         return {
             list: [1, 2, 3, 4, 5, 6, 7, 8]

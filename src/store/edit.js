@@ -2,77 +2,60 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import $ from 'jQuery'
 import * as types from './mutation-types.js'
-import * as api from '../api/list.js'
-
+// import * as api from '../api/edit.js'
 
 Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
-		type: 'sports',
-		list: [],
 		activePage : 1,
-		pageNum : 1
+		phone : {
+			main : {
+
+			},
+			data : [{
+				main : {
+					background : '#cccccc'
+				},
+				data : [{
+
+				}]
+			},{
+				main : {
+					background : '#e6e6e6'
+				},
+				data : [{
+
+				}]
+			}]
+		}
 	},
 	getters: {
-		type : function(state){
-			return state.type
+		data : function(state){
+			return state.data;
 		},
-		list: function(state) {
-			return state.list
+		phoneLength : function(state){
+			return state.phone.data.length;
 		},
 		activePage : function(state){
 			return state.activePage
 		},
-		pageNum : function(state){
-			return state.pageNum
+		activePhone : function(state){
+			return state.phone.data[state.activePage]
 		}
 	},
-
 	actions: {
 		changePage : function({commit, state}, page){
-			commit(types.CHANGE_PAGE, {
-				activePage: page
-			});
-			api.get({
-				page : page,
-				length : 12,
-				type : state.type
-			}, function(rs){
-				commit(types.CHANGE_LIST, {
-					list: rs.data.data
-				});
+			commit('CHANGE_PAGE', {
+				page : page
 			})
 		},
-		changeType: function({ commit }, type) {
-			api.get({
-				page : 1,
-				length : 12,
-				type : type
-			}, function(rs){
-				commit(types.CHANGE_LIST, {
-					list: rs.data.data
-				});
-				commit(types.CHANGE_PAGE, {
-					activePage: 1,
-					pageNum : rs.data.pageNum
-				});
-			})
-			commit(types.CHANGE_TYPE, {
-				type: type
-			});
-
+		swapPage : function({commit, state}, page){
+			//交换页
 		}
 	},
 	mutations: {
-		[types.CHANGE_TYPE](state, payload) {
-			state.type = payload.type;
+		[types.CHANGE_PAGE](state, payload) {
+			state.activePage = payload.page;
 		},
-		[types.CHANGE_LIST](state, payload) {
-			state.list = payload.list;
-		},
-		[types.CHANGE_PAGE](state, payload){
-			state.activePage = payload.activePage || 1;
-			state.pageNum = payload.pageNum || state.pageNum;
-		}
 	}
 })

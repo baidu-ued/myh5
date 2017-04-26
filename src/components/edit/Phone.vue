@@ -37,7 +37,7 @@
 <section class="box-wrap">
     <div class="phone-wrap">
         <div class="phone-top"></div>
-        <div class="phone" id="phone"></div>
+        <div class="phone" id="phone" :style="{background:activePhone.main.background}"></div>
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
     </div>
@@ -47,7 +47,16 @@
 
 <script>
 
+// import $ from 'jQuery'
+import {
+    mapGetters,
+    mapActions
+}
+from 'vuex'
 export default {
+    computed: {
+        ...mapGetters(['data', 'activePhone'])
+    },
     data: function() {
         return {
             list: [1, 2, 3, 4, 5, 6, 7, 8]

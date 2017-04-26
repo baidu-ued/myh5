@@ -3,6 +3,11 @@
 	<div class="logo-wrap">
 		<img src="http://z.sina.com.cn/styles/images/logo.png" />
 	</div>
+	<div class="panel">
+		<ul>
+			<li>文本</li>
+		</ul>
+	</div>
 </header>
 </template>
 
@@ -19,6 +24,8 @@ export default {
 header {
     height: $header_height;
     background: #333;
+	color:red;
+	display: flex;
     .logo-wrap {
         display: flex;
         justify-content: center;
