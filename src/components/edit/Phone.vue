@@ -36,8 +36,8 @@
 
 <section class="box-wrap">
     <div class="phone-wrap">
-        <div class="phone-top"></div>
-        <div class="phone" id="phone" :style="{background:activePhone.main.background}"></div>
+        <div @click="swapPage" class="phone-top"></div>
+        <div class="phone" id="phone" :style="{background:currentPhone.main.background}"></div>
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
     </div>
@@ -54,8 +54,11 @@ import {
 }
 from 'vuex'
 export default {
+	methods : {
+		...mapActions(['swapPage'])
+	},
     computed: {
-        ...mapGetters(['data', 'activePhone'])
+        ...mapGetters(['currentPhone'])
     },
     data: function() {
         return {

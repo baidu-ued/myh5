@@ -14,3 +14,17 @@ mongod --dbpath ~/data/db
 //      console.log(docs);
 //      console.log('remove success');
 // });
+
+
+
+api接口
+
+
+目录接口
+
+src
+	js
+	css
+	components
+	store
+	entry

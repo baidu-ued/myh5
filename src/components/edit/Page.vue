@@ -57,9 +57,9 @@
 
 <section class="box-wrap">
     <ul class="drag-wrapper">
-        <li @click="changePage(index)" v-for="(i, index) in phoneLength" class="v-sort-item" v-bind:class="{active : index == activePage}">{{i}}</li>
+        <li @click="changePage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">{{i}}</li>
     </ul>
-    <div class="add-page-button" id="addpage">+</div>
+    <div @click="addPage" class="add-page-button" id="addpage">+</div>
 </section>
 
 </template>
@@ -71,21 +71,20 @@ import {
     mapActions
 }
 from 'vuex'
-import VueSort from 'vue-sort'
-console.log(VueSort)
+// import VueSort from 'vue-sort'
 export default {
     computed: {
-        ...mapGetters(['phoneLength', 'activePage'])
+        ...mapGetters(['pageLength', 'currentPage'])
     },
     methods: {
-        ...mapActions(['changePage'])
+        ...mapActions(['changePage', 'addPage'])
     },
 	mounted : function(){
-		new VueSort('.drag-wrapper', {
-            onMouseUp: function(s) {
-                // _this.list = s.sort(_this.list);
-            }
-        })
+		// new VueSort('.drag-wrapper', {
+        //     onMouseUp: function(s) {
+        //         // _this.list = s.sort(_this.list);
+        //     }
+        // })
 	},
     data: function() {
         return {
