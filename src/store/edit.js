@@ -33,26 +33,16 @@ export default new Vuex.Store({
 		addPage: function({ commit, state }) {
 			commit(types.ADD_PAGE)
 		},
-		swapPage: function({ commit, state }, page) {
-			//交换页
-			commit('aaa')
-		},
 		changeMain: function({ commit, state }, payload) {
-			for (var attr in payload) {
-				commit('aaab', {
-					[attr]: payload[attr]
-				});
-			}
+			commit(types.CHANGE_CURRENT_MAIN, payload);
 		}
 	},
 	mutations: {
-		aaa(state, payload) {
-			state.phone.data[state.currentPage].main.background = 'red';
-		},
-		aaab(state, payload) {
-			for(var attr in payload){
-				state.phone.data[state.currentPage].main[attr] = payload[attr];
-			}
+
+		[types.CHANGE_CURRENT_MAIN](state, payload) {
+			
+			state.phone.data[state.currentPage].main[payload[0]] = payload[1];
+
 		},
 		[types.CHANGE_PAGE](state, payload) {
 			state.currentPage = payload.page;

@@ -6,7 +6,6 @@
         width: 320px;
         // height: 520px;
         position: relative;
-        // border: 1px solid #000;
         .phone-top {
             height: 43px;
             background: url("http://z.sina.com.cn/styles/images/phone_top1.png");
@@ -36,7 +35,7 @@
 
 <section class="box-wrap">
     <div class="phone-wrap">
-        <div @click="swapPage" class="phone-top"></div>
+        <div class="phone-top"></div>
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}"></div>
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
@@ -46,23 +45,21 @@
 </template>
 
 <script>
-
-// import $ from 'jQuery'
 import {
     mapGetters,
     mapActions
 }
 from 'vuex'
 export default {
-	methods : {
-		...mapActions(['swapPage'])
-	},
+    methods: {
+        ...mapActions(['swapPage'])
+    },
     computed: {
         ...mapGetters(['currentPhone'])
     },
     data: function() {
         return {
-            list: [1, 2, 3, 4, 5, 6, 7, 8]
+
         }
     }
 }
