@@ -1,31 +1,10 @@
-<template>
-<header>
-	<div class="logo-wrap">
-		<img src="http://z.sina.com.cn/styles/images/logo.png" />
-	</div>
-	<div class="panel">
-		<ul>
-			<li>文本</li>
-		</ul>
-	</div>
-</header>
-</template>
-
-<script>
-export default {
-	data() {
-		return {}
-	},
-}
-</script>
-
 <style scoped lang="scss">;
 @import '../../css/global.scss';
 header {
     height: $header_height;
     background: #333;
-	color:red;
-	display: flex;
+    color: #d5d5d5;
+    display: flex;
     .logo-wrap {
         display: flex;
         justify-content: center;
@@ -35,3 +14,37 @@ header {
     }
 }
 </style>
+
+<template>
+<header>
+	<div class="logo-wrap">
+		<img src="http://z.sina.com.cn/styles/images/logo.png" />
+	</div>
+	<div class="panel">
+		<ul>
+			<li @click="addItem({type : 'txt'})">
+				<svg class="icon"
+								aria-hidden="true">
+					<use xlink:href="#icon-tupian"></use>
+					</svg>
+			</li>
+		</ul>
+	</div>
+</header>
+</template>
+<script>
+import {
+	mapGetters,
+	mapActions
+}
+from 'vuex'
+import '../../iconfont/iconfont.js'
+export default {
+	methods: {
+		...mapActions(['addItem'])
+	},
+	data() {
+		return {}
+	},
+}
+</script>

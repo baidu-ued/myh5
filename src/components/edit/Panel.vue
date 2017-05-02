@@ -53,6 +53,7 @@ import {
     mapActions
 }
 from 'vuex'
+
 export default {
     computed: {
         ...mapGetters(['currentPhone'])

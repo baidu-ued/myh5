@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import $ from 'jQuery'
 import * as types from './mutation-types.js'
-// import * as api from '../api/edit.js'
 import * as CONST from '../const/edit.js'
+import tpl from '../tpl/tpl.js'
 Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
@@ -11,7 +11,8 @@ export default new Vuex.Store({
 		phone: {
 			main: {},
 			data: [$.extend(true, {}, CONST.BASE_BLANK)]
-		}
+		},
+		currentItem : 0
 	},
 	getters: {
 		pageLength: function(state) {
@@ -35,14 +36,20 @@ export default new Vuex.Store({
 		},
 		changeMain: function({ commit, state }, payload) {
 			commit(types.CHANGE_CURRENT_MAIN, payload);
+		},
+		addItem: function({ commit, state }, payload) {
+			commit(types.ADD_ITEM, tpl[payload.type]());
+		},
+		changeStyle: function({commit, state}, payload){
+			//哪个参数？
+			//style
+			commit(types.CHANGE_ITEM_STYLE, payload)
+
 		}
 	},
 	mutations: {
-
 		[types.CHANGE_CURRENT_MAIN](state, payload) {
-			
 			state.phone.data[state.currentPage].main[payload[0]] = payload[1];
-
 		},
 		[types.CHANGE_PAGE](state, payload) {
 			state.currentPage = payload.page;
@@ -50,5 +57,13 @@ export default new Vuex.Store({
 		[types.ADD_PAGE](state) {
 			state.phone.data.push($.extend(true, {}, CONST.BASE_BLANK))
 		},
+		[types.ADD_ITEM](state, payload) {
+			state.phone.data[state.currentPage].data.push(payload);
+		},
+		[types.CHANGE_ITEM_STYLE](state, payload){
+			for(var attr in payload){
+				// state.phone.
+			}
+		}
 	}
 })

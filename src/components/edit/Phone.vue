@@ -17,6 +17,12 @@
         .phone {
             height: 520px;
             background: #fff;
+			position: relative;
+			.phone-item{
+				position: absolute;
+				left:0;
+				top:0;
+			}
         }
         .phone-left {
             position: absolute;
@@ -36,7 +42,9 @@
 <section class="box-wrap">
     <div class="phone-wrap">
         <div class="phone-top"></div>
-        <div class="phone" id="phone" :style="{background:currentPhone.main.background}"></div>
+        <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
+            <div class="phone-item" :style="i.style" v-for="i in currentPhone.data">{{i.style}}</div>
+        </div>
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
     </div>
@@ -45,23 +53,26 @@
 </template>
 
 <script>
+
 import {
     mapGetters,
     mapActions
 }
 from 'vuex'
+import '../../js/drag.js'
 export default {
     methods: {
-        ...mapActions(['swapPage'])
+        // ...mapActions([])
     },
-    computed: {
-        ...mapGetters(['currentPhone'])
-    },
+
     data: function() {
         return {
 
         }
-    }
+    },
+    computed: {
+        ...mapGetters(['currentPhone'])
+    },
 }
 
 </script>
