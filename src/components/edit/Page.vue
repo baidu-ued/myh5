@@ -56,7 +56,7 @@
 <template>
 
 <section class="box-wrap">
-    <ul class="drag-wrapper">
+    <ul class="drag-wrapper" id="aaa">
         <li @click="changePage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">{{i}}</li>
     </ul>
     <div @click="addPage" class="add-page-button" id="addpage">+</div>
@@ -71,7 +71,6 @@ import {
     mapActions
 }
 from 'vuex'
-// import VueSort from 'vue-sort'
 export default {
     computed: {
         ...mapGetters(['pageLength', 'currentPage'])
@@ -80,11 +79,7 @@ export default {
         ...mapActions(['changePage', 'addPage'])
     },
 	mounted : function(){
-		// new VueSort('.drag-wrapper', {
-        //     onMouseUp: function(s) {
-        //         // _this.list = s.sort(_this.list);
-        //     }
-        // })
+
 	},
     data: function() {
         return {

@@ -25,7 +25,7 @@ body{
 <div class="main">
     <Public-Header>
     </Public-Header>
-    <div class="content">
+    <div class="content" @mousedown="selectItem(-1)">
         <Page></Page>
         <Phone></Phone>
 		<Panel></Panel>
@@ -41,7 +41,15 @@ import PublicHeader from '../public/Header.vue'
 import Page from './Page.vue'
 import Phone from './Phone.vue'
 import Panel from './Panel.vue'
+import {
+    mapGetters,
+    mapActions
+}
+from 'vuex'
 export default {
+	methods : {
+		...mapActions(['selectItem'])
+	},
     components: {
         PublicHeader,
         Page,

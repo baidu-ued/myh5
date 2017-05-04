@@ -12,39 +12,63 @@ export default new Vuex.Store({
 			main: {},
 			data: [$.extend(true, {}, CONST.BASE_BLANK)]
 		},
-		currentItem : 0
+		currentItemId : -1
 	},
 	getters: {
+		/* 总页码:Number */
 		pageLength: function(state) {
 			return state.phone.data.length;
 		},
+		/* 当前页码:Number */
 		currentPage: function(state) {
 			return state.currentPage
 		},
+		/* 当前页:Object */
 		currentPhone: function(state) {
 			return state.phone.data[state.currentPage]
+		},
+		/* 当前元素:Object */
+		currentItem:function(state, getters){
+			// console.log(getters.currentPhone.data[state.currentItem])
+			return getters.currentPhone.data[state.currentItemId]
+		},
+		/* 当前元素id:Number */
+		currentItemId : function(state){
+			return state.currentItemId;
 		}
 	},
 	actions: {
+		/* 改变页码 */
 		changePage: function({ commit, state }, page) {
 			commit(types.CHANGE_PAGE, {
 				page: page
 			})
 		},
+		/* 增加一页 */
 		addPage: function({ commit, state }) {
 			commit(types.ADD_PAGE)
 		},
+		/* 增加一页 */
 		changeMain: function({ commit, state }, payload) {
 			commit(types.CHANGE_CURRENT_MAIN, payload);
 		},
+		/* 增加元素 */
 		addItem: function({ commit, state }, payload) {
 			commit(types.ADD_ITEM, tpl[payload.type]());
 		},
+
 		changeStyle: function({commit, state}, payload){
 			//哪个参数？
 			//style
 			commit(types.CHANGE_ITEM_STYLE, payload)
+		},
 
+		/* 根据id选择元素 */
+		selectItem : function({commit, state}, index){
+			console.log(index)
+			commit(types.SELECT_ITEM, {
+				index : index
+			})
 		}
 	},
 	mutations: {
@@ -62,8 +86,11 @@ export default new Vuex.Store({
 		},
 		[types.CHANGE_ITEM_STYLE](state, payload){
 			for(var attr in payload){
-				// state.phone.
+				state.phone.data[state.currentPage].data[state.currentItemId].style[attr] = payload[attr];
 			}
+		},
+		[types.SELECT_ITEM](state, payload){
+			state.currentItemId = payload.index;
 		}
 	}
 })

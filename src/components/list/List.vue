@@ -103,7 +103,7 @@
 <template>
 
 <section class="box-wrap">
-    <ul class="list">
+    <ul class="list" id="aaa">
         <li class="item" v-for="i in list">
             <div class="item-main">
                 <a href="#"><img class="bg" :src="i.bg" /></a>
@@ -138,6 +138,14 @@ export default {
     },
     computed: {...mapGetters(['list'])
     },
+	mounted : function(){
+		// new VueSort('.drag-wrapper', {
+        //     onMouseUp: function(s) {
+        //         // _this.list = s.sort(_this.list);
+        //     }
+        // })
+
+	},
     methods: {
         ...mapActions(['changeType']),
             change: function() {

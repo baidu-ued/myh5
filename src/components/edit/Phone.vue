@@ -17,12 +17,50 @@
         .phone {
             height: 520px;
             background: #fff;
-			position: relative;
-			.phone-item{
-				position: absolute;
-				left:0;
-				top:0;
+            position: relative;
+			.control-mask-show{
+				outline: #007afc solid 1px;
 			}
+            .phone-item {
+                position: absolute;
+                left: 0;
+                top: 0;
+				-webkit-user-select:none;
+                .border {}
+                .ui-resizable-handle {
+                    border: 1px solid #fff;
+                    background-color: #0f6cd5;
+                    border-radius: 50%;
+                    box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+                    width: 10px;
+                    height: 10px;
+                    position: absolute;
+                    font-size: 0.1px;
+                    display: block;
+                    -ms-touch-action: none;
+                    touch-action: none;
+                }
+                .ui-resizable-nw {
+                    cursor: nw-resize;
+                    left: -5px;
+                    top: -5px;
+                }
+                .ui-resizable-ne {
+                    cursor: ne-resize;
+                    right: -5px;
+                    top: -5px;
+                }
+                .ui-resizable-sw {
+                    cursor: sw-resize;
+                    left: -5px;
+                    bottom: -5px;
+                }
+                .ui-resizable-se {
+                    cursor: se-resize;
+                    right: -5px;
+                    bottom: -5px;
+                }
+            }
         }
         .phone-left {
             position: absolute;
@@ -43,7 +81,15 @@
     <div class="phone-wrap">
         <div class="phone-top"></div>
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
-            <div class="phone-item" :style="i.style" v-for="i in currentPhone.data">{{i.style}}</div>
+            <div @mousedown.stop="selectItem(index)" v-my-directive="{index : index}" class="phone-item" :class="{ 'control-mask-show' : currentItemId == index }" :style="i.style" v-for="(i, index) in currentPhone.data">
+				<div v-show="currentItemId == index">
+					<div class="ui-resizable-handle ui-resizable-nw"></div>
+	                <div class="ui-resizable-handle ui-resizable-ne"></div>
+	                <div class="ui-resizable-handle ui-resizable-sw"></div>
+	                <div class="ui-resizable-handle ui-resizable-se"></div>
+				</div>
+				<div>{{i.content}}</div>
+            </div>
         </div>
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
@@ -59,19 +105,19 @@ import {
     mapActions
 }
 from 'vuex'
-import '../../js/drag.js'
+import '../../directive/drag.js'
+
 export default {
     methods: {
-        // ...mapActions([])
+        ...mapActions(['selectItem'])
     },
-
     data: function() {
         return {
 
         }
     },
     computed: {
-        ...mapGetters(['currentPhone'])
+        ...mapGetters(['currentPhone', 'currentItemId'])
     },
 }
 

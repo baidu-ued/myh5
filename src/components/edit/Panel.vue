@@ -36,11 +36,16 @@
 <section class="box-wrap">
     <div class="box">
         <p>背景颜色</p>
+		{{currentItem}}
         <ul class="color-wrap">
             <li @click="changeMain(['background', item])" class="color-item" v-for="item in color" :style="{background: item}"></li>
         </ul>
         <input type="color" v-model="currentPhone.main.background" />
         <input type="text" v-model="currentPhone.main.background" />
+		<div v-if="currentItemId != -1">
+			<input type="text" v-model="currentItem.content" >
+		</div>
+
     </div>
 </section>
 
@@ -56,7 +61,7 @@ from 'vuex'
 
 export default {
     computed: {
-        ...mapGetters(['currentPhone'])
+        ...mapGetters(['currentPhone', 'currentItem', 'currentItemId'])
     },
     methods: {
         ...mapActions(['changeMain'])
