@@ -25,7 +25,7 @@ body{
 <div class="main">
     <Public-Header>
     </Public-Header>
-    <div class="content" @mousedown="selectItem(-1)">
+    <div class="content">
         <Page></Page>
         <Phone></Phone>
 		<Panel></Panel>
@@ -46,9 +46,17 @@ import {
     mapActions
 }
 from 'vuex'
+import * as api from '../../api/edit.js'
 export default {
 	methods : {
-		...mapActions(['selectItem'])
+		...mapActions(['selectItem', 'changePhone'])
+	},
+	mounted : function(){
+		var me = this;
+		api.get('aaa', function(rs){
+			console.log(rs);
+			me.changePhone(rs.data.data);
+		})
 	},
     components: {
         PublicHeader,

@@ -55,7 +55,7 @@
 
 <template>
 
-<section class="box-wrap">
+<section class="box-wrap" @mousedown="selectItem(-1)">
     <ul class="drag-wrapper" id="aaa">
         <li @click="changePage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">{{i}}</li>
     </ul>
@@ -76,7 +76,7 @@ export default {
         ...mapGetters(['pageLength', 'currentPage'])
     },
     methods: {
-        ...mapActions(['changePage', 'addPage'])
+        ...mapActions(['changePage', 'addPage', 'selectItem'])
     },
 	mounted : function(){
 
