@@ -77,11 +77,11 @@
 
 <template>
 
-<section class="box-wrap">
+<section class="box-wrap" @mousedown="selectItem(-1)">
     <div class="phone-wrap">
         <div class="phone-top"></div>
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
-            <div @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index }" :style="i.style" v-for="(i, index) in currentPhone.data">
+            <div @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index }" :style="i.style" v-for="(i, index) in currentPhone.data">
                 <div v-show="currentItemId == index">
                     <div v-my-changesize="{type : 'nw'}" class="ui-resizable-handle ui-resizable-nw"></div>
                     <div v-my-changesize="{type : 'ne'}" class="ui-resizable-handle ui-resizable-ne"></div>
@@ -107,16 +107,23 @@ import {
 from 'vuex'
 import '../../directive/drag.js'
 import '../../directive/changesize.js'
+import $ from 'jQuery'
 
 export default {
     methods: {
-        ...mapActions(['selectItem'])
+        ...mapActions(['selectItem', 'delItem']),
+
     },
     data: function() {
         return {
 
         }
     },
+	mounted : function(){
+		// $(window).on('keydown', function(ev){
+		// 	console.log(ev.keyCode);
+		// })
+	},
     computed: {
         ...mapGetters(['currentPhone', 'currentItemId'])
     },

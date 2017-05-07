@@ -16,3 +16,4 @@ export const CHANGE_PHONE = 'CHANGE_PHONE';		//添加一页
 export const CHANGE_ITEM_STYLE = 'CHANGE_ITEM_STYLE';
 
 export const SELECT_ITEM = 'SELECT_ITEM'	//选择元素
+export const DEL_ITEM = 'DEL_ITEM'	//选择元素

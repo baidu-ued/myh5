@@ -6,7 +6,17 @@ export default {
 			style : {
 				left : '50px',
 				top : '50px',
-				color : '#000000'
+				color : '#666666'
+			}
+		}
+	},
+	qrcode : function(){
+		return {
+			type : 'aaa',
+			content : '刘少鹏',
+			style : {
+				left : '50px',
+				top : '50px'
 			}
 		}
 	}

@@ -17,7 +17,7 @@ export default new Vuex.Store({
 	},
 	getters: {
 		/* 总页码:Number */
-		phoneData : function(state){
+		phoneData: function(state) {
 			return state.phone;
 		},
 		/* 总页码:Number */
@@ -35,7 +35,7 @@ export default new Vuex.Store({
 		/* 当前元素:Object */
 		currentItem: function(state, getters) {
 			// console.log(getters.currentPhone.data[state.currentItem])
-			return getters.currentPhone.data[state.currentItemId]
+			return getters.currentPhone.data[state.currentItemId] || {};
 		},
 		/* 当前元素id:Number */
 		currentItemId: function(state) {
@@ -43,9 +43,9 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		changePhone : function({commit, state}, data){
+		changePhone: function({ commit, state }, data) {
 			commit(types.CHANGE_PHONE, {
-				data : data
+				data: data
 			})
 		},
 		/* 改变页码 */
@@ -68,14 +68,17 @@ export default new Vuex.Store({
 		},
 		/* 改变元素的style */
 		changeStyle: function({ commit, state }, payload) {
-			// console.log(payload)
-			console.log(payload)
 			commit(types.CHANGE_ITEM_STYLE, payload)
 		},
 		/* 根据id选择元素 */
 		selectItem: function({ commit, state }, index) {
 			commit(types.SELECT_ITEM, {
 				index: typeof index == 'undefined' || typeof index == 'object' ? -1 : index
+			})
+		},
+		delItem: function({ commit, state }, index) {
+			commit(types.DEL_ITEM, {
+				index: index
 			})
 		}
 	},
@@ -91,9 +94,9 @@ export default new Vuex.Store({
 		},
 		[types.ADD_ITEM](state, payload) {
 			state.phone.data[state.currentPage].data.push(payload);
+			state.currentItemId = state.phone.data[state.currentPage].data.length - 1;
 		},
 		[types.CHANGE_ITEM_STYLE](state, payload) {
-
 			for (var attr in payload) {
 				Vue.set(state.phone.data[state.currentPage].data[state.currentItemId].style, attr, payload[attr])
 			}
@@ -101,8 +104,12 @@ export default new Vuex.Store({
 		[types.SELECT_ITEM](state, payload) {
 			state.currentItemId = payload.index;
 		},
-		[types.CHANGE_PHONE](state, payload){
+		[types.CHANGE_PHONE](state, payload) {
 			state.phone = payload.data;
+		},
+		[types.DEL_ITEM](state, payload) {
+			state.currentItemId = -1;
+			state.phone.data[state.currentPage].data.splice(payload.index, 1);
 		}
 	}
 })

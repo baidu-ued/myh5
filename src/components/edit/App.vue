@@ -49,11 +49,11 @@ from 'vuex'
 import * as api from '../../api/edit.js'
 export default {
 	methods : {
-		...mapActions(['selectItem', 'changePhone'])
+		...mapActions(['selectItem', 'changePhone']),
 	},
 	mounted : function(){
 		var me = this;
-		api.get('aaa', function(rs){
+		api.get('', function(rs){
 			console.log(rs);
 			me.changePhone(rs.data.data);
 		})
