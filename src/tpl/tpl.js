@@ -1,3 +1,6 @@
+import jQuery from 'jQuery'
+import aa from '../library/jquery.qrcode.min.js'
+console.log(aa);
 export default {
 	txt : function(){
 		return {

@@ -62,7 +62,7 @@ header {
             </svg>
             <span>二维码</span>
         </li>
-		<li>
+		<li @click="aaa">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-tupian"></use>
             </svg>
@@ -87,6 +87,7 @@ header {
             <span>表单</span>
         </li>
     </ul>
+	<canvas id="aaa"></canvas>
     <ul class="opt-panel">
         <li @click="save">
             <svg class="icon" aria-hidden="true">
@@ -113,6 +114,7 @@ header {
             <span>设置</span>
         </li>
     </ul>
+
 </header>
 
 </template>
@@ -126,6 +128,11 @@ import {
 from 'vuex'
 import * as api from '../../api/edit.js'
 import '../../iconfont/iconfont.js'
+
+import QRCode from 'qrcode'
+
+
+
 export default {
     computed: {
         ...mapGetters(['phoneData'])
@@ -134,8 +141,18 @@ export default {
         ...mapActions(['addItem']),
             save: function() {
                 api.save(this.phoneData);
-            }
+            },
+			aaa : function(){
+				$('.phone-item')
+			}
     },
+	mounted : function(){
+		var canvas = document.getElementById('aaa');
+		QRCode.toCanvas(canvas, 'https://www.baidu.com/', function (error) {
+		  if (error) console.error(error)
+		  console.log('success!');
+		})
+	},
     data() {
         return {
 
