@@ -26,6 +26,12 @@
                 left: 0;
                 top: 0;
                 -webkit-user-select: none;
+                .phone-item-container {
+                    overflow: hidden;
+                    width: 100%;
+                    position: relative;
+                    height: 100%;
+                }
                 .border {}
                 .ui-resizable-handle {
                     border: 1px solid #fff;
@@ -77,18 +83,18 @@
 
 <template>
 
-<section class="box-wrap" @mousedown="selectItem(-1)">
+<section class="box-wrap" v-my-select @mousedown="selectItem(-1)">
     <div class="phone-wrap">
         <div class="phone-top"></div>
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
             <div @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index }" :style="i.style" v-for="(i, index) in currentPhone.data">
+				<div class="phone-item-container" v-html="i.content"></div>
                 <div v-show="currentItemId == index">
                     <div v-my-changesize="{type : 'nw'}" class="ui-resizable-handle ui-resizable-nw"></div>
                     <div v-my-changesize="{type : 'ne'}" class="ui-resizable-handle ui-resizable-ne"></div>
                     <div v-my-changesize="{type : 'sw'}" class="ui-resizable-handle ui-resizable-sw"></div>
                     <div v-my-changesize="{type : 'se'}" class="ui-resizable-handle ui-resizable-se"></div>
                 </div>
-                <div>{{i.content}}</div>
             </div>
         </div>
         <div class="phone-left"></div>
@@ -107,6 +113,7 @@ import {
 from 'vuex'
 import '../../directive/drag.js'
 import '../../directive/changesize.js'
+import '../../directive/select.js'
 import $ from 'jQuery'
 
 export default {
@@ -119,11 +126,11 @@ export default {
 
         }
     },
-	mounted : function(){
-		// $(window).on('keydown', function(ev){
-		// 	console.log(ev.keyCode);
-		// })
-	},
+    mounted: function() {
+        // $(window).on('keydown', function(ev){
+        // 	console.log(ev.keyCode);
+        // })
+    },
     computed: {
         ...mapGetters(['currentPhone', 'currentItemId'])
     },

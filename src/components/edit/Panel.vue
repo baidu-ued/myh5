@@ -138,7 +138,6 @@ from 'vuex'
 import Vue from 'vue'
 
 
-
 export default {
     computed: {
         ...mapGetters(['currentPhone', 'currentItem', 'currentItemId']),

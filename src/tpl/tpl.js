@@ -1,6 +1,14 @@
 import jQuery from 'jQuery'
-import aa from '../library/jquery.qrcode.min.js'
-console.log(aa);
+
+/*
+	j_mydata_1
+	最后一个元素的id + 1;
+*/
+
+function getId(){
+
+}
+
 export default {
 	txt : function(){
 		return {
@@ -15,8 +23,8 @@ export default {
 	},
 	qrcode : function(){
 		return {
-			type : 'aaa',
-			content : '刘少鹏',
+			type : 'qrcode',
+			content : '<canvas></canvas>',
 			style : {
 				left : '50px',
 				top : '50px'

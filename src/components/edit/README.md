@@ -1,22 +1,25 @@
-			header头（面板区域）
-
-页码区域			phone区域				面板区域2
 
 
+功能
+	拖拽
+	拉伸
+	选中
 
 
-store
-	需要内容
+对于元素的操作
+	添加，删除，修改
 
-	总数据
+	单选，多选
 
-	当前页数据
-
-	当前页码
+isMultiply	当前是否选中了多个
 
 
-选中功能
+默认false
 
-选中1个		选中多个
+selectItem({
+	isMultiply : true,
+	data : [0,1,2]
+})
 
-某一个
+selectItem(-1)
+selectItem(3)
