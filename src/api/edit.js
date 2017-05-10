@@ -11,12 +11,14 @@ export const get = function(data, cb) {
 }
 
 export const save = function(data, cb) {
+
 	$.ajax({
 		url: '/api/edit/save',
 		type: 'get',
 		data: data,
 		success: (rs) => {
-			console.log(rs);
+
+
 			cb && cb(rs);
 		}
 	});

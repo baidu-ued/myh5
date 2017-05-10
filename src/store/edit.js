@@ -10,10 +10,12 @@ export default new Vuex.Store({
 	state: {
 		currentPage: 0,
 		phone: {
-			main: {},
+			main: {
+				itemNumId : 0
+			},
 			data: [$.extend(true, {}, CONST.BASE_BLANK)]
 		},
-		currentItemId: -1
+		currentItemId: -1,
 	},
 	getters: {
 		/* 总页码:Number */
@@ -64,7 +66,14 @@ export default new Vuex.Store({
 		},
 		/* 增加元素 */
 		addItem: function({ commit, state }, payload) {
-			commit(types.ADD_ITEM, tpl[payload.type]());
+			var item = tpl[payload.type]();
+			commit(types.ADD_ITEM, item);
+			//如果是二维码， 生成item后， 执行下一步操作?
+			console.log(item.attr.id)
+			// console.log($('#' + item.attr.id));
+			setTimeout(function(){
+				console.log($('#' + item.attr.id));
+			}, 0)
 		},
 		/* 改变元素的style */
 		changeStyle: function({ commit, state }, payload) {
