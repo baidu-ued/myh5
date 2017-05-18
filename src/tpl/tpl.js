@@ -27,6 +27,9 @@ export default {
 	qrcode : function(){
 		return {
 			type : 'qrcode',
+			attr : {
+				id : getNewId()
+			},
 			content : '<canvas></canvas>',
 			style : {
 				left : '50px',
