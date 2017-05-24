@@ -66,14 +66,10 @@ export default new Vuex.Store({
 		},
 		/* 增加元素 */
 		addItem: function({ commit, state }, payload) {
-			var item = tpl[payload.type]();
+			let item = tpl[payload.type]();
+			let id = 'myh5_item_' + state.phone.main.itemNumId++;
+			item.attr ? item.attr.id = id : item.attr = { id : id };
 			commit(types.ADD_ITEM, item);
-			//如果是二维码， 生成item后， 执行下一步操作?
-			console.log(item.attr.id)
-			// console.log($('#' + item.attr.id));
-			setTimeout(function(){
-				console.log($('#' + item.attr.id));
-			}, 0)
 		},
 		/* 改变元素的style */
 		changeStyle: function({ commit, state }, payload) {
@@ -106,7 +102,7 @@ export default new Vuex.Store({
 			state.currentItemId = state.phone.data[state.currentPage].data.length - 1;
 		},
 		[types.CHANGE_ITEM_STYLE](state, payload) {
-			for (var attr in payload) {
+			for (let attr in payload) {
 				Vue.set(state.phone.data[state.currentPage].data[state.currentItemId].style, attr, payload[attr])
 			}
 		},

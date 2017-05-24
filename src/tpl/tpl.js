@@ -1,5 +1,5 @@
 import jQuery from 'jQuery'
-
+import * as types from '../const/item-types.js'
 /*
 	j_mydata_1
 	最后一个元素的id + 1;
@@ -10,30 +10,14 @@ function getNewId(){
 	return 'myh5_item_' + store.getters.phoneData.main.itemNumId++;
 }
 export default {
-	txt : function(){
+	[types.TXT] : function(){
 		return {
-			type : 'txt',
+			type : types.TXT,
 			content : '空白文本',
-			attr : {
-				id : getNewId()
-			},
 			style : {
 				left : '50px',
 				top : '50px',
 				color : '#666666'
-			}
-		}
-	},
-	qrcode : function(){
-		return {
-			type : 'qrcode',
-			attr : {
-				id : getNewId()
-			},
-			content : '<canvas></canvas>',
-			style : {
-				left : '50px',
-				top : '50px'
 			}
 		}
 	}

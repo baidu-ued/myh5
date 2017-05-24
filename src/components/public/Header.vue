@@ -50,18 +50,13 @@ header {
     </div>
 
     <ul class="ctrl-panel">
-        <li @click="addItem({type : 'txt'})">
+        <li @click="addItem({type : types.TXT})">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-wenben"></use>
             </svg>
             <span>文本</span>
         </li>
-		<li @click="addItem({type : 'qrcode'})">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-erweima"></use>
-            </svg>
-            <span>二维码</span>
-        </li>
+
 		<li @click="aaa">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-tupian"></use>
@@ -128,11 +123,7 @@ import {
 from 'vuex'
 import * as api from '../../api/edit.js'
 import '../../iconfont/iconfont.js'
-
-import QRCode from 'qrcode'
-
-
-
+import * as types from '../../const/item-types.js'
 export default {
     computed: {
         ...mapGetters(['phoneData'])
@@ -148,14 +139,10 @@ export default {
     },
 	mounted : function(){
 		var canvas = document.getElementById('aaa');
-		QRCode.toCanvas(canvas, 'https://www.baidu.com/', function (error) {
-		  if (error) console.error(error)
-		  console.log('success!');
-		})
 	},
     data() {
         return {
-
+			types : types
         }
     },
 }
