@@ -1,7 +1,7 @@
 <style scoped lang="scss">
 
 .box-wrap {
-    width: 320px;
+    width: 260px;
     border: 1px solid #000;
     height: 100%;
     position: absolute;
@@ -80,9 +80,49 @@
         background: #f6f6f6;
         font-size: 13px;
         border: 1px solid #9a9ca1;
-        outline: none;
         text-align: center;
         border-left: none;
+    }
+    .ooooo {
+        padding: 0 20px;
+    }
+    .item-box {
+        display: flex;
+        border-bottom: 1px solid #ccd5db;
+        align-items: center;
+        font-size: 12px;
+        width: 100%;
+        padding: 7px 0;
+        label {
+            width: 65px;
+        }
+        .item-box-control {
+            // width: 100%;
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            .control-range {
+                width: 100px;
+                background: #ccd5db;
+                height: 20px;
+                .control-range-child {
+                    height: 100%;
+                    background: #08a1ef;
+                }
+            }
+            .control-number {
+                text-indent: 10px;
+                width: 46px;
+                height: 18px;
+                padding: 0;
+                border: 1px solid #ccd5db;
+                font-size: 12px;
+            }
+            .control-select {
+                width: 153px;
+                height: 18px;
+            }
+        }
     }
 }
 
@@ -93,7 +133,7 @@
 <section class="box-wrap">
     <ul class="panel-tabs">
         <li v-if="currentItemId == -1" class="tab-item active" data-i="0">页面设置</li>
-        <li v-if="currentItemId != -1 && !i.except.includes(currentItem.type)" v-for="(i, index) in list" class="tab-item" :class="{ active : index == listIndex}" data-i="0">{{i.title}}</li>
+        <li @click="selectPanel(index)" v-if="currentItemId != -1 && !i.except.includes(currentItem.type)" v-for="(i, index) in list" class="tab-item" :class="{ active : index == listIndex}" data-i="0">{{i.title}}</li>
     </ul>
     <div class="panel-list" v-if="currentItemId == -1">
         <div class="panel-item">
@@ -108,12 +148,58 @@
         </div>
     </div>
 
-    <div v-if="currentItemId != -1">
-        <div class="public-color-wrap">
+    <div class="ooooo" v-if="currentItemId != -1">
+        <!-- <div class="public-color-wrap">
             <p>文本</p>
             <textarea type="text" v-model="currentItem.content"></textarea>
+        </div> -->
+
+        <div class="item-box">
+            <label>透明度</label>
+            <div class="item-box-control">
+                <div class="control-range" @click="changeStyle({ 'opacity' : $event.offsetX / 100 })">
+                    <div class="control-range-child" :style="{width: (currentItem.style.opacity || 1) * 100 + '%'}"></div>
+                </div>
+                <input class="control-number" type="number" @input="changeStyle({ 'opacity' : $event.target.value / 100 })" :value="Math.round((currentItem.style.opacity || 1) * 100)" step="1" max="100" min="0">
+            </div>
         </div>
-        <div class="public-color-wrap">
+        <div class="item-box">
+            <label>行高</label>
+            <div class="item-box-control">
+                <div class="control-range" @click="changeStyle({ 'lineHeight' : ($event.offsetX / 100 * 3).toFixed(1) })">
+                    <div class="control-range-child" :style="{width: (currentItem.style.lineHeight || parseInt(items.css('lineHeight'))/parseInt(items.css('fontSize'))) * 100 / 3 + '%'}"></div>
+                </div>
+                <input class="control-number" type="number" @input="changeStyle({ 'lineHeight' : $event.target.value })" :value="currentItem.style.lineHeight || parseInt(items.css('lineHeight'))/parseInt(items.css('fontSize'))" step="0.1" max="3" min="0">
+            </div>
+        </div>
+        <p>边框样式</p>
+        <div class="item-box">
+            <label>尺寸</label>
+            <div class="item-box-control">
+                <div class="control-range" @click="changeStyle({ 'borderWidth' : ($event.offsetX / 100 * 20).toFixed(0) + 'px' ,'borderStyle' : currentItem.style.borderStyle || 'solid'} )">
+                    <div class="control-range-child" :style="{width: (parseInt(currentItem.style.borderWidth) || parseInt(items.css('borderWidth'))) * 100 / 20 + '%'}"></div>
+                </div>
+                <input class="control-number" type="number" @input="changeStyle({ 'borderWidth' : $event.target.value + 'px' })" :value="parseInt(currentItem.style.borderWidth) || parseInt(items.css('borderWidth'))" step="1" max="20" min="0">
+            </div>
+        </div>
+        <div class="item-box">
+            <label>样式</label>
+            <div class="item-box-control">
+                <select class="control-select" @input="changeStyle({ 'borderStyle' : $event.currentTarget.value })" :value="currentItem.style.borderStyle || 'solid'">
+                    <option value="none">----无-----</option>
+                    <option value="solid">直线</option>
+                    <option value="dashed">破折线</option>
+                    <option value="dotted">点状线</option>
+                    <option value="double">双划线</option>
+                    <option value="groove">3D凹槽</option>
+                    <option value="ridge">3D垄状</option>
+                    <option value="inset">3D内嵌</option>
+                    <option value="outset">3D外嵌</option>
+                </select>
+            </div>
+        </div>
+		
+        <!-- <div class="public-color-wrap">
             <p>文字颜色</p>
             <input class="public-color-input" type="color" :value="currentItem.style.color || '#666666'" @change="changeStyle({ 'color' : $event.target.value })">
             <input class="public-text-input" type="text" :value="currentItem.style.color || '#ffffff'" @input="changeStyle({ 'color' : $event.target.value })">
@@ -123,6 +209,7 @@
             <input class="public-color-input" type="color" :value="currentItem.style.background || '#ffffff'" @change="changeStyle({ 'background' : $event.target.value })">
             <input class="public-text-input" type="text" :value="currentItem.style.background || '#ffffff'" @input="changeStyle({ 'background' : $event.target.value })">
         </div>
+
 		<div class="public-color-wrap">
             <p>文字大小</p>
             <input class="public-text-input" type="number" :value="parseInt(currentItem.style.fontSize) || parseInt(items.css('fontSize'))" @input="changeStyle({ 'fontSize' : $event.target.value + 'px'})">px
@@ -142,10 +229,7 @@
             <p>高度</p>
             <input class="public-text-input" type="number" :value="parseInt(currentItem.style.height) || parseInt(items.css('height'))" @input="changeStyle({ 'height' : $event.target.value + 'px'})">px
         </div>
-		<div class="public-color-wrap">
-            <p>行高</p>
-            <input class="public-text-input" type="number" :value="parseInt(currentItem.style.lineHeight) || parseInt(items.css('lineHeight'))" @input="changeStyle({ 'lineHeight' : $event.target.value + 'px'})">px
-        </div>
+		-->
     </div>
 </section>
 
@@ -164,27 +248,34 @@ import * as types from '../../const/item-types.js'
 export default {
     computed: {
         ...mapGetters(['currentPhone', 'currentItem', 'currentItemId']),
-		items : function(){
-			return $('#' + this.currentItem.attr.id)
-		}
+            items: function() {
+                return $('#' + this.currentItem.attr.id)
+            }
     },
     methods: {
         ...mapActions(['changeMain', 'changeStyle']),
+            selectPanel: function(index) {
+                this.listIndex = index;
+            },
+            aaa: function(a) {
+                console.log(a)
+                    // console.log(a.currentTarget)
+            }
     },
     data: function() {
         return {
             list: [{
                 title: '常规',
-				except : []
+                except: []
             }, {
                 title: '动画',
-				except : [types.TXT]
+                except: [types.TXT]
             }, {
                 title: '事件',
-				except : []
+                except: []
             }],
             listIndex: 0,
-
+            bbb: '',
 
 
 
