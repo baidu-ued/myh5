@@ -108,7 +108,6 @@ export default new Vuex.Store({
 		},
 		[types.SELECT_ITEM](state, payload) {
 			state.currentItemId = payload.index;
-			// state.phone.data[state.currentPage].data[state.currentItemId].style.borderStyle = 'solid';
 		},
 		[types.CHANGE_PHONE](state, payload) {
 			state.phone = payload.data;

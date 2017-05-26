@@ -146,6 +146,7 @@
                 <input class="public-text-input" type="text" v-model="currentPhone.main.background" />
             </div>
         </div>
+        <input type="file" multiple="multiple" @change="aaa">
     </div>
 
     <div class="ooooo" v-if="currentItemId != -1">
@@ -177,9 +178,9 @@
             <label>尺寸</label>
             <div class="item-box-control">
                 <div class="control-range" @click="changeStyle({ 'borderWidth' : ($event.offsetX / 100 * 20).toFixed(0) + 'px' ,'borderStyle' : currentItem.style.borderStyle || 'solid'} )">
-                    <div class="control-range-child" :style="{width: (parseInt(currentItem.style.borderWidth) || parseInt(items.css('borderWidth'))) * 100 / 20 + '%'}"></div>
+                    <div class="control-range-child" :style="{width: (parseInt(currentItem.style.borderWidth) || 0) * 100 / 20 + '%'}"></div>
                 </div>
-                <input class="control-number" type="number" @input="changeStyle({ 'borderWidth' : $event.target.value + 'px' })" :value="parseInt(currentItem.style.borderWidth) || parseInt(items.css('borderWidth'))" step="1" max="20" min="0">
+                <input class="control-number" type="number" @input="changeStyle({ 'borderWidth' : $event.target.value + 'px' })" :value="parseInt(currentItem.style.borderWidth) || 0" step="1" max="20" min="0">
             </div>
         </div>
         <div class="item-box">
@@ -198,7 +199,15 @@
                 </select>
             </div>
         </div>
-		
+        <div class="item-box">
+            <label>旋转</label>
+            <div class="item-box-control">
+                <div class="control-range" @click="changeStyle({ 'transform' : 'rotate(' + Math.round($event.offsetX / 100 * 365) +'deg)'} )">
+                    <div class="control-range-child" :style="{width: transformRotate * 100 / 365 + '%'}"></div>
+                </div>
+                <input class="control-number" type="number" @input="changeStyle({ 'transform' : 'rotate(' + $event.currentTarget.value +'deg)' })" :value="transformRotate" step="1" max="359" min="0">
+            </div>
+        </div>
         <!-- <div class="public-color-wrap">
             <p>文字颜色</p>
             <input class="public-color-input" type="color" :value="currentItem.style.color || '#666666'" @change="changeStyle({ 'color' : $event.target.value })">
@@ -209,7 +218,6 @@
             <input class="public-color-input" type="color" :value="currentItem.style.background || '#ffffff'" @change="changeStyle({ 'background' : $event.target.value })">
             <input class="public-text-input" type="text" :value="currentItem.style.background || '#ffffff'" @input="changeStyle({ 'background' : $event.target.value })">
         </div>
-
 		<div class="public-color-wrap">
             <p>文字大小</p>
             <input class="public-text-input" type="number" :value="parseInt(currentItem.style.fontSize) || parseInt(items.css('fontSize'))" @input="changeStyle({ 'fontSize' : $event.target.value + 'px'})">px
@@ -250,6 +258,15 @@ export default {
         ...mapGetters(['currentPhone', 'currentItem', 'currentItemId']),
             items: function() {
                 return $('#' + this.currentItem.attr.id)
+            },
+            transformRotate: function() {
+                if (!this.currentItem.style.transform) {
+                    return 0
+                } else if (!this.currentItem.style.transform.match(/rotate\((\d+)deg\)/)) {
+                    return 0;
+                } else {
+                    return this.currentItem.style.transform.match(/rotate\((\d+)deg\)/)[1];
+                }
             }
     },
     methods: {
@@ -257,10 +274,28 @@ export default {
             selectPanel: function(index) {
                 this.listIndex = index;
             },
-            aaa: function(a) {
-                console.log(a)
-                    // console.log(a.currentTarget)
+            aaa: function(ev) {
+                var formData = new FormData();
+                Array.from(ev.target.files).forEach(function(item) {
+                    formData.append('sina_img', item);
+                })
+
+                $.ajax({
+                    url: '/api/edit/pic',
+                    type: 'post',
+                    contentType: false,
+                    //必须false才会自动加上正确的Content-Type
+                    processData: false,
+                    //必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
+                    data: formData,
+                    success: (rs) => {
+                        // cb && cb(rs);
+                        console.log(rs);
+                    }
+                });
+                // console.log(ev.target.files[0])
             }
+
     },
     data: function() {
         return {

@@ -10,25 +10,29 @@ Vue.directive('my-drag', {
 			if($(ev.target).hasClass('ui-resizable-handle')){
                 return;
             }
-			var oldLeft = x = $(this).position().left;
-			var oldTop = y = $(this).position().top;
+			let isMove = false;
+			var oldLeft = x = parseInt($(this).css('left'));
+			var oldTop = y = parseInt($(this).css('top'));
 			var downLeft = ev.clientX;
 			var downTop = ev.clientY;
 			$(document).on('mousemove', function(ev) {
+				isMove = true;
 				x = ev.clientX - downLeft + oldLeft;
 				y = ev.clientY - downTop + oldTop;
 				$(el).css({
 					'left': x + 'px',
 					'top': y + 'px'
 				})
-			})
+			});
 			$(document).on('mouseup', function() {
 				$(document).off('mousemove');
 				$(document).off('mouseup');
-				store.dispatch('changeStyle', {
-					left: x + 'px',
-					top: y + 'px'
-				})
+				if(isMove){
+					store.dispatch('changeStyle', {
+						left: x + 'px',
+						top: y + 'px'
+					})
+				}
 			})
 		})
 	}
