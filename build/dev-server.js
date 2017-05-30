@@ -25,6 +25,7 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 
 app.use(express.static('src'));
+app.use('/dbimg', express.static('server/dbimg'));
 // 路由
 app.get('/:viewname?/:act', function(req, res, next) {
 

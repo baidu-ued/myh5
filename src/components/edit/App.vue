@@ -29,14 +29,14 @@ body{
         <Page></Page>
         <Phone></Phone>
 		<Panel></Panel>
-		<LayerPic></LayerPic>
+		<PanelPic></PanelPic>
     </div>
 </div>
 
 </template>
 
 <script>
-import LayerPic from '../layer/piclayer.vue'
+import PanelPic from '../panel/pic.vue'
 import '../../css/reset.css'
 import PublicHeader from '../public/Header.vue'
 import Page from './Page.vue'
@@ -64,7 +64,7 @@ export default {
         Page,
 		Phone,
 		Panel,
-		LayerPic
+		PanelPic
     }
 }
 

@@ -146,7 +146,6 @@
                 <input class="public-text-input" type="text" v-model="currentPhone.main.background" />
             </div>
         </div>
-        <input type="file" multiple="multiple" @change="aaa">
     </div>
 
     <div class="ooooo" v-if="currentItemId != -1">
@@ -273,29 +272,7 @@ export default {
         ...mapActions(['changeMain', 'changeStyle']),
             selectPanel: function(index) {
                 this.listIndex = index;
-            },
-            aaa: function(ev) {
-                var formData = new FormData();
-                Array.from(ev.target.files).forEach(function(item) {
-                    formData.append('sina_img', item);
-                })
-
-                $.ajax({
-                    url: '/api/edit/pic',
-                    type: 'post',
-                    contentType: false,
-                    //必须false才会自动加上正确的Content-Type
-                    processData: false,
-                    //必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
-                    data: formData,
-                    success: (rs) => {
-                        // cb && cb(rs);
-                        console.log(rs);
-                    }
-                });
-                // console.log(ev.target.files[0])
             }
-
     },
     data: function() {
         return {
