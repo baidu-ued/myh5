@@ -55,7 +55,7 @@ export default {
 	mounted : function(){
 		var me = this;
 		api.get('', function(rs){
-			console.log(rs);
+			// console.log(rs);
 			me.changePhone(rs.data.data);
 		})
 	},

@@ -41,15 +41,14 @@
                     text-indent: 20px;
                     line-height: 50px;
                     font-weight: bold;
-
                     // background: #fff;
                     a {
                         color: #76838f;
                     }
                 }
-				.item.active{
-					background: #fff;
-				}
+                .item.active {
+                    background: #fff;
+                }
             }
             .shangchuan {
                 // display: flex;
@@ -78,14 +77,15 @@
         }
         .pic-list {
             background: #fff;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             .pic-lists {
                 display: flex;
                 flex-wrap: wrap;
                 padding: 20px;
-				height: 380px;
+                height: 380px;
+				align-content : flex-start;
                 li {
                     width: 115px;
                     height: 115px;
@@ -97,55 +97,57 @@
                     background-color: #E6EBED;
                 }
                 li:nth-child(6n) {
-                    margin: 0 0 15px 0;
+                    margin: 0 0 15px;
                 }
                 img {
                     width: 100%;
                     height: 100%;
                 }
             }
-			.page{
-				height: 50px;
-				// background: red;
-			}
+            .page {
+                height: 50px;
+                // background: red;
+            }
         }
     }
 }
-</style>
-<style lang="scss">
-.vue-pagination-container{
-	display: flex;
-	align-items: center;
-	ul{
-		display: flex;
-	}
-	.aabbb{
-		width: 22px;
-		line-height: 22px;
-		padding: 6px;
-		text-align: center;
 
-	}
+</style> <style lang="scss"> .vue-pagination-container {
+    display: flex;
+    align-items: center;
+    ul {
+        display: flex;
+    }
+    .aabbb {
+        width: 22px;
+        line-height: 22px;
+        padding: 6px;
+        text-align: center;
+    }
 }
-.vue-pagination-item{
-	min-width: 35px;
-	line-height: 36px;
-	background: #fff;
-	text-align: center;
-	font-size: 12px;
-	color:#76838f;
-	border: 1px solid #ccd5db;
-	margin:2px;
-	a{
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
+
+.vue-pagination-item {
+    min-width: 35px;
+    line-height: 36px;
+    background: #fff;
+    text-align: center;
+    font-size: 12px;
+    color: #76838f;
+    border: 1px solid #ccd5db;
+    margin: 2px;
+    a {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 }
-.vue-pagination-item.active{
-	background: red;
+
+.vue-pagination-item.active {
+    background: red;
 }
+
 </style>
+
 <template>
 
 <section class="layer-box">
@@ -156,20 +158,22 @@
     <div class="container">
         <div class="left">
             <ul class="list">
-                <li class="item"><a href="javascript:void(0);">我的上传</a></li>
-                <li class="item active"><a href="javascript:void(0);">最近使用</a></li>
+                <li class="item active"><a href="javascript:void(0);">我的上传</a></li>
             </ul>
             <div class="shangchuan">
                 <label>上传</label>
-                <input type="file" multiple="multiple" @change="aaa">
+                <input type="file" multiple="multiple" @change="uploadImg">
             </div>
         </div>
         <div class="pic-list">
             <ul class="pic-lists">
-                <li v-for="i in piclist" :style="{'background-image' : 'url(http://localhost:8080/dbimg/aAFRPcg7GyNYIzcmu91bjmDU.jpg)'}"><img :src="i.src" /></li>
+                <li v-for="i in piclist" :style="{'background-image' : 'url(' + i.src +')'}">
+                    <p @click="del(i.pic_id)">删除</p>
+                </li>
             </ul>
-			<div class="page">
-			<Pagination :page-num="10" :active-page="activePage" :page-size="7" v-on:change="bbb"></Pagination></div>
+            <div class="page">
+                <Pagination :page-num="pageNum" :active-page="activePage" :page-size="7" v-on:change="changePage"></Pagination>
+            </div>
         </div>
     </div>
 </section>
@@ -184,38 +188,52 @@ import {
 }
 from 'vuex'
 import Pagination from 'vuejs-pagination'
+import * as api from '../../api/edit.js'
 export default {
-	components : {
-		Pagination
-	},
+    components: {
+        Pagination
+    },
     data: function() {
         return {
-			activePage : 1,
-            piclist: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+            activePage: 1,
+            piclist: [],
+            pageNum: 1
         }
     },
+    mounted: function() {
+        this.getpic();
+    },
     methods: {
-		bbb:function(value){
-			console.log('刘少鹏')
-			console.log(value)
-			this.activePage = value;    //必须改变activePage
-		},
-        aaa: function(ev) {
+        del: function(id) {
+            api.delPic({
+                pic_id: id
+            }, (rs) => {
+                this.getpic();
+            });
+        },
+        getpic: function() {
+            api.getPic({
+                limit: 18,
+                page: this.activePage,
+            }, (rs) => {
+				console.log(rs)
+                this.pageNum = rs.data.pageNum;
+                this.piclist = rs.data.data;
+            })
+        },
+        changePage: function(value) {
+            this.activePage = value;
+            this.getpic();
+        },
+        uploadImg: function(ev) {
             var formData = new FormData();
             Array.from(ev.target.files).forEach(function(item) {
                 formData.append('sina_img', item);
             });
-            $.ajax({
-                url: '/api/edit/pic',
-                type: 'post',
-                contentType: false,
-                //必须false才会自动加上正确的Content-Type
-                processData: false,
-                //必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
-                data: formData,
-                success: (rs) => {
-                    this.piclist.push(...rs.data)
-                }
+            api.savePic(formData, (rs) => {
+                this.piclist.push(...rs.data);
+                this.activePage = 1;
+                this.getpic();
             });
         }
     }

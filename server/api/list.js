@@ -1,30 +1,31 @@
 let dbHandel = require('../db/handel.js')
-let get = function(req, res) {
+let app = require('../../build/dev-server.js')
+let get = (req, res)=> {
 	let obj = req.query
 	let myh5 = dbHandel.getModel('myh5')
 	let type = String(obj.type) || 'news'
 	let length = Number(obj.length) || 12
 	let page = Number((obj.page - 1) * length)
 
-	var readFile1 = function() {
-		return new Promise(function(resolve, reject) {
+	var readFile1 = ()=> {
+		return new Promise((resolve, reject) =>{
 			myh5.count({
 				type : type
-			}, function(err, docs){
+			}, (err, docs)=>{
 				resolve(docs)
 			})
 		});
 	};
-	var readFile2 = function() {
-		return new Promise(function(resolve, reject) {
+	var readFile2 = () =>{
+		return new Promise((resolve, reject)=> {
 			myh5.where({
 				type: type
-			}).skip(page).limit(length).exec(function(err, docs) {
+			}).skip(page).limit(length).exec((err, docs)=>  {
 				resolve(docs)
 			})
 		});
 	};
-	var asyncReadFile = async function() {
+	var asyncReadFile = async ()=>  {
 		var count = await readFile1();
 		var data = await readFile2();
 		res.send({
@@ -38,12 +39,5 @@ let get = function(req, res) {
 	};
 	asyncReadFile()
 }
-module.exports = function(Router) {
-	Router.get('/list/:act', function(req, res, next) {
-		if (req.params.act == 'get') {
-			get(req, res)
-			return;
-		}
-	})
-	return Router
-}
+
+app.get('/api/list/get', get); //获取页面数据
