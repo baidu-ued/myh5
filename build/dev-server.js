@@ -19,6 +19,8 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 var hotMiddleware = require('webpack-hot-middleware')(compiler, {
 	log: () => {}
 })
+
+let dbHandel = require('../server/db/handel.js')
 app.use(cookieParser());
 app.use(session({
     secret: 'who am i ?',
@@ -45,6 +47,26 @@ function judegLogin(req, res, next){
 	}
 	next();
 }
+app.engine('.html', require('ejs').__express);
+app.set('view engine', 'html');
+// 前台页面
+app.get('/show', function(req, res, next) {
+	let myh5 = dbHandel.getModel('myh5');
+	myh5.find({ work_id: 1 }, (err, docs) => {
+		console.log(docs);
+		res.render('/Users/BraisedCakes/Desktop/myh5/src/entry/show/index.html', {
+            workData: docs[0],
+			fn : function(json){
+				var str = '';
+				for(var attr in json){
+					str += attr + ':' + json[attr] + ';'
+				}
+				return str;
+			}
+        });
+		res.end();
+	});
+})
 app.get('/:viewname?/:act', judegLogin, function(req, res, next) {
 	res.set('Content-Type', 'text/html');
 	if(!req.cookies.username && req.params.act != 'login'){

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>myh5</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+</head>
+<style>
+html, body{width: 100%;height: 100%;position: relative;}
+.swiper-container{width: 100%;height: 100%;}
+.swiper-container .swiper-wrapper{width: 100%;height: 100%;position: relative;}
+.swiper-slide{
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+</style>
+
+<body>
+
+	<div class="swiper-container" id="wrapAll">
+        <div class="swiper-wrapper">
+            <% workData.data.data.forEach(function(page){ %>
+            <div class="swiper-slide" style="position:position;width:100%;height:100%;background:<%= page.main.background %>">
+				<% page.data && page.data.forEach(function(item){ %>
+					<div style="position:absolute;<%- fn(item.style) %>">
+						<%- item.content %>
+					</div>
+				<% }) %>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+	<!-- built files will be auto injected -->
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../library/swiper.min.js"></script>
+	<script src="http://localhost:8080/show.js"></script>
+
+</body>
+<script>
+new Swiper('#wrapAll',{
+	direction : 'vertical',
+	// loop : true
+})
+</script>
+
+</html>

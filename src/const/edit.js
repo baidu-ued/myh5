@@ -5,3 +5,6 @@ export const BASE_BLANK = {
 	},
 	data : []
 }
+
+export const PHONE_WIDTH = 320;
+export const PHONE_HEIGHT = 520;

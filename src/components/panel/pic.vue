@@ -150,10 +150,10 @@
 
 <template>
 
-<section class="layer-box">
+<section id="pic-layer-box" class="layer-box">
     <div class="header">
         <h4>素材库</h4>
-        <div>x</div>
+        <div @click="panelHide('PIC')">x</div>
     </div>
     <div class="container">
         <div class="left">
@@ -167,7 +167,7 @@
         </div>
         <div class="pic-list">
             <ul class="pic-lists">
-                <li v-for="i in piclist" :style="{'background-image' : 'url(' + i.src +')'}">
+                <li @click="addItem({type : types.PIC, width : i.width, height : i.height, src : i.src})" v-for="i in piclist" :data-width="i.width" :data-height="i.height" :style="{'background-image' : 'url(' + i.src +')'}">
                     <p @click="del(i.pic_id)">删除</p>
                 </li>
             </ul>
@@ -189,12 +189,14 @@ import {
 from 'vuex'
 import Pagination from 'vuejs-pagination'
 import * as api from '../../api/edit.js'
+import * as types from '../../const/item-types.js'
 export default {
     components: {
         Pagination
     },
     data: function() {
         return {
+			types : types,
             activePage: 1,
             piclist: [],
             pageNum: 1
@@ -204,6 +206,7 @@ export default {
         this.getpic();
     },
     methods: {
+		...mapActions(['addItem', 'panelHide']),
         del: function(id) {
             api.delPic({
                 pic_id: id
@@ -216,7 +219,6 @@ export default {
                 limit: 18,
                 page: this.activePage,
             }, (rs) => {
-				console.log(rs)
                 this.pageNum = rs.data.pageNum;
                 this.piclist = rs.data.data;
             })

@@ -2,6 +2,7 @@ let multiparty = require('multiparty');
 let exec = require('child_process').exec;
 let cwd = process.cwd();
 let path = require('path');
+let sizeOf = require('image-size');
 let dbHandel = require('../../db/handel.js')
 let util = require('../../util/index.js')
 let app = require('../../../build/dev-server.js')
@@ -38,10 +39,13 @@ let save = (req, res) => {
 			data.push({
 				src: 'http://localhost:8080/dbimg/' + path.basename(item.path)
 			});
+			let dimensions = sizeOf(item.path);
 			new pics({
 				username: req.cookies.username,
 				pic_id: util.md5('pic'),
-				src: 'http://localhost:8080/dbimg/' + path.basename(item.path)
+				src: 'http://localhost:8080/dbimg/' + path.basename(item.path),
+				width : dimensions.width,
+				height : dimensions.height
 			}).save();
 		})
 		res.send({

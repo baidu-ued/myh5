@@ -57,7 +57,7 @@ header {
             <span>文本</span>
         </li>
 
-		<li @click="aaa">
+		<li @click="panelShow(types.PIC)">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-tupian"></use>
             </svg>
@@ -82,9 +82,8 @@ header {
             <span>表单</span>
         </li>
     </ul>
-	<canvas id="aaa"></canvas>
     <ul class="opt-panel">
-        <li @click="save">
+        <li @click="savePhoneData(phoneData)">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-baocun"></use>
             </svg>
@@ -129,17 +128,8 @@ export default {
         ...mapGetters(['phoneData'])
     },
     methods: {
-        ...mapActions(['addItem']),
-            save: function() {
-                api.save(this.phoneData);
-            },
-			aaa : function(){
-				$('.phone-item')
-			}
+        ...mapActions(['addItem', 'panelShow', 'savePhoneData'])
     },
-	mounted : function(){
-		var canvas = document.getElementById('aaa');
-	},
     data() {
         return {
 			types : types

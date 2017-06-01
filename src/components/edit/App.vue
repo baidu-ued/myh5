@@ -29,10 +29,9 @@ body{
         <Page></Page>
         <Phone></Phone>
 		<Panel></Panel>
-		<PanelPic></PanelPic>
+		<PanelPic v-if="panelStatus[types.PIC]"></PanelPic>
     </div>
 </div>
-
 </template>
 
 <script>
@@ -47,17 +46,22 @@ import {
     mapActions
 }
 from 'vuex'
+import * as types from '../../const/item-types.js'
 import * as api from '../../api/edit.js'
 export default {
 	methods : {
-		...mapActions(['selectItem', 'changePhone']),
+		...mapActions(['selectItem', 'loadData']),
+	},
+	computed : {
+		...mapGetters(['panelStatus'])
 	},
 	mounted : function(){
-		var me = this;
-		api.get('', function(rs){
-			// console.log(rs);
-			me.changePhone(rs.data.data);
-		})
+		this.loadData();
+	},
+	data : function(){
+		return {
+			types : types
+		}
 	},
     components: {
         PublicHeader,

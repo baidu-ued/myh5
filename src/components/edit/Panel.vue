@@ -153,7 +153,10 @@
             <p>文本</p>
             <textarea type="text" v-model="currentItem.content"></textarea>
         </div> -->
+		<div class="item-box">
+            <label @click="changeClass('flash')">flash</label>
 
+        </div>
         <div class="item-box">
             <label>透明度</label>
             <div class="item-box-control">
@@ -166,26 +169,26 @@
         <div class="item-box">
             <label>行高</label>
             <div class="item-box-control">
-                <div class="control-range" @click="changeStyle({ 'lineHeight' : ($event.offsetX / 100 * 3).toFixed(1) })">
-                    <div class="control-range-child" :style="{width: (currentItem.style.lineHeight || parseInt(items.css('lineHeight'))/parseInt(items.css('fontSize'))) * 100 / 3 + '%'}"></div>
+                <div class="control-range" @click="changeStyle({ 'line-height' : ($event.offsetX / 100 * 3).toFixed(1) })">
+                    <div class="control-range-child" :style="{width: (currentItem.style['line-height'] || parseInt(items.css('line-height'))/parseInt(items.css('font-size'))) * 100 / 3 + '%'}"></div>
                 </div>
-                <input class="control-number" type="number" @input="changeStyle({ 'lineHeight' : $event.target.value })" :value="currentItem.style.lineHeight || parseInt(items.css('lineHeight'))/parseInt(items.css('fontSize'))" step="0.1" max="3" min="0">
+                <input class="control-number" type="number" @input="changeStyle({ 'line-height' : $event.target.value })" :value="currentItem.style['line-height'] || parseInt(items.css('line-height'))/parseInt(items.css('font-size'))" step="0.1" max="3" min="0">
             </div>
         </div>
         <p>边框样式</p>
         <div class="item-box">
             <label>尺寸</label>
             <div class="item-box-control">
-                <div class="control-range" @click="changeStyle({ 'borderWidth' : ($event.offsetX / 100 * 20).toFixed(0) + 'px' ,'borderStyle' : currentItem.style.borderStyle || 'solid'} )">
-                    <div class="control-range-child" :style="{width: (parseInt(currentItem.style.borderWidth) || 0) * 100 / 20 + '%'}"></div>
+                <div class="control-range" @click="changeStyle({ 'border-width' : ($event.offsetX / 100 * 20).toFixed(0) + 'px' ,'border-style' : currentItem.style['border-style'] || 'solid'} )">
+                    <div class="control-range-child" :style="{width: (parseInt(currentItem.style['border-width']) || 0) * 100 / 20 + '%'}"></div>
                 </div>
-                <input class="control-number" type="number" @input="changeStyle({ 'borderWidth' : $event.target.value + 'px' })" :value="parseInt(currentItem.style.borderWidth) || 0" step="1" max="20" min="0">
+                <input class="control-number" type="number" @input="changeStyle({ 'border-width' : $event.target.value + 'px' })" :value="parseInt(currentItem.style['border-width']) || 0" step="1" max="20" min="0">
             </div>
         </div>
         <div class="item-box">
             <label>样式</label>
             <div class="item-box-control">
-                <select class="control-select" @input="changeStyle({ 'borderStyle' : $event.currentTarget.value })" :value="currentItem.style.borderStyle || 'solid'">
+                <select class="control-select" @input="changeStyle({ 'border-style' : $event.currentTarget.value })" :value="currentItem.style['border-style'] || 'solid'">
                     <option value="none">----无-----</option>
                     <option value="solid">直线</option>
                     <option value="dashed">破折线</option>
@@ -269,7 +272,7 @@ export default {
             }
     },
     methods: {
-        ...mapActions(['changeMain', 'changeStyle']),
+        ...mapActions(['changeMain', 'changeStyle','changeClass']),
             selectPanel: function(index) {
                 this.listIndex = index;
             }

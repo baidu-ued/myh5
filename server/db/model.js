@@ -13,5 +13,7 @@ module.exports = {
 		'username' : { type: String, required: true },
 		'src' : { type: String, required: true },
 		'pic_id' : { type: String, required: true },
+		'width' : { type: Number, required: false },
+		'height' : { type: Number, required: false },
 	}
 }

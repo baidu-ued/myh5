@@ -11,83 +11,148 @@ export default new Vuex.Store({
 		currentPage: 0,
 		phone: {
 			main: {
-				itemNumId : 0
+				itemNumId: 0
 			},
 			data: [$.extend(true, {}, CONST.BASE_BLANK)]
 		},
 		currentItemId: -1,
+		panelStatus: {}
 	},
 	getters: {
+		panelStatus(state) {
+			return state.panelStatus
+		},
 		/* 总页码:Number */
-		phoneData: function(state) {
+		phoneData(state) {
 			return state.phone;
 		},
 		/* 总页码:Number */
-		pageLength: function(state) {
+		pageLength(state) {
 			return state.phone.data.length;
 		},
 		/* 当前页码:Number */
-		currentPage: function(state) {
+		currentPage(state) {
 			return state.currentPage
 		},
 		/* 当前页:Object */
-		currentPhone: function(state) {
-			return state.phone.data[state.currentPage]
+		currentPhone(state) {
+			return state.phone.data[state.currentPage];
 		},
 		/* 当前元素:Object */
-		currentItem: function(state, getters) {
+		currentItem(state, getters) {
 			// console.log(getters.currentPhone.data[state.currentItem])
 			return getters.currentPhone.data[state.currentItemId] || {};
 		},
 		/* 当前元素id:Number */
-		currentItemId: function(state) {
+		currentItemId(state) {
 			return state.currentItemId;
 		}
 	},
 	actions: {
-		changePhone: function({ commit, state }, data) {
-			commit(types.CHANGE_PHONE, {
+		changeClass({ commit, state }, data) {
+			commit('changeClass', {
 				data: data
 			})
 		},
+		loadData({ commit, state }, data) {
+			$.ajax({
+				url: '/api/edit/get',
+				type: 'get',
+				data: data,
+				success: (rs) => {
+					commit(types.LOAD_DATA, {
+						data: rs.data.data
+					})
+				}
+			});
+		},
+		savePhoneData: function({ commit, state }, data) {
+			$.ajax({
+				url: '/api/edit/save',
+				type: 'get',
+				data: data,
+				success: (rs) => {
+					console.log(rs);
+				}
+			});
+		},
 		/* 改变页码 */
-		changePage: function({ commit, state }, page) {
+		changePage({ commit, state }, page) {
 			commit(types.CHANGE_PAGE, {
 				page: page
 			})
 		},
 		/* 增加一页 */
-		addPage: function({ commit, state }) {
+		addPage({ commit, state }) {
 			commit(types.ADD_PAGE)
 		},
+		/*	删除一页 */
+		delPage({ commit, state, dispatch, getters }, page) {
+			if (getters.pageLength > 1) {
+				commit(types.DEL_PAGE, {
+					page: page
+				});
+				dispatch('changePage', 0);
+			} else {
+				console.log('最少1页， 是否清空该页内容')
+			}
+		},
+		/*	清空一页	*/
+		emptyPage({ commit, state }, page) {
+			commit(types.EMPTY_PAGE, {
+				page: page
+			})
+		},
 		/* 增加一页 */
-		changeMain: function({ commit, state }, payload) {
+		changeMain({ commit, state }, payload) {
 			commit(types.CHANGE_CURRENT_MAIN, payload);
 		},
 		/* 增加元素 */
-		addItem: function({ commit, state }, payload) {
-			let item = tpl[payload.type]();
+		addItem({ commit, state }, payload) {
+			let item = tpl[payload.type](payload);
 			let id = 'myh5_item_' + state.phone.main.itemNumId++;
-			item.attr ? item.attr.id = id : item.attr = { id : id };
+			item.attr ? item.attr.id = id : item.attr = { id: id };
 			commit(types.ADD_ITEM, item);
+			commit(types.PANEL_HIDE, {
+				type: payload.type
+			});
 		},
 		/* 改变元素的style */
-		changeStyle: function({ commit, state }, payload) {
+		changeStyle({ commit, state }, payload) {
 			commit(types.CHANGE_ITEM_STYLE, payload)
 		},
 		/* 根据id选择元素 */
-		selectItem: function({ commit, state }, index) {
+		selectItem({ commit, state }, index) {
 			commit(types.SELECT_ITEM, {
 				index: typeof index == 'undefined' || typeof index == 'object' ? -1 : index
 			})
 		},
-		delItem: function({ commit, state }, index) {
+		delItem({ commit, state }, index) {
 			commit(types.DEL_ITEM, {
 				index: index
+			})
+		},
+		panelShow({ commit, state }, type) {
+			commit(types.PANEL_SHOW, {
+				type: type
+			})
+		},
+		panelHide({ commit, state }, type) {
+			commit(types.PANEL_HIDE, {
+				type: type
 			})
 		}
 	},
 	mutations: {
+		changeClass(state, payload) {
+			state.phone.data[state.currentPage].data[state.currentItemId].class.push('flash')
+		},
+		[types.PANEL_SHOW](state, payload) {
+			Vue.set(state.panelStatus, payload.type, 1);
+		},
+		[types.PANEL_HIDE](state, payload) {
+			Vue.set(state.panelStatus, payload.type, 0);
+		},
 		[types.CHANGE_CURRENT_MAIN](state, payload) {
 			state.phone.data[state.currentPage].main[payload[0]] = payload[1];
 		},
@@ -97,9 +162,18 @@ export default new Vuex.Store({
 		[types.ADD_PAGE](state) {
 			state.phone.data.push($.extend(true, {}, CONST.BASE_BLANK))
 		},
+		[types.DEL_PAGE](state, payload) {
+			state.phone.data.splice(payload.page, 1);
+		},
+		[types.EMPTY_PAGE](state, payload) {
+			Vue.set(state.phone.data, payload.page, $.extend(true, {}, CONST.BASE_BLANK))
+		},
 		[types.ADD_ITEM](state, payload) {
-			state.phone.data[state.currentPage].data.push(payload);
-			state.currentItemId = state.phone.data[state.currentPage].data.length - 1;
+			let data = state.phone.data[state.currentPage].data;
+			data = data ? data : [];
+			data.push(payload);
+			Vue.set(state.phone.data[state.currentPage], 'data', data);
+			state.currentItemId = data.length - 1;
 		},
 		[types.CHANGE_ITEM_STYLE](state, payload) {
 			for (let attr in payload) {
@@ -109,7 +183,7 @@ export default new Vuex.Store({
 		[types.SELECT_ITEM](state, payload) {
 			state.currentItemId = payload.index;
 		},
-		[types.CHANGE_PHONE](state, payload) {
+		[types.LOAD_DATA](state, payload) {
 			state.phone = payload.data;
 		},
 		[types.DEL_ITEM](state, payload) {

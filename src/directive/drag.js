@@ -23,6 +23,7 @@ Vue.directive('my-drag', {
 					'left': x + 'px',
 					'top': y + 'px'
 				})
+				return false;
 			});
 			$(document).on('mouseup', function() {
 				$(document).off('mousemove');
