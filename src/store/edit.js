@@ -141,9 +141,46 @@ export default new Vuex.Store({
 			commit(types.PANEL_HIDE, {
 				type: type
 			})
+		},
+		/**
+		 * 显示元素
+		 * @param collection
+		 */
+		showItem({ commit, state, getters }) {
+			commit(types.SHOW_ITEM, {
+				currentItem: getters.currentItem
+			})
+		},
+		/**
+		 * 改变animation
+		 * @param collection
+		 */
+		changeAni({ commit, state }, type) {
+			commit(types.CHANGE_ANI, type)
+		},
+		reloadAni({ commit, state, dispatch, getters }) {
+			commit(types.HIDE_ITEM, {
+				currentItem: getters.currentItem
+			})
+			setTimeout(function() {
+				dispatch('showItem');
+			}, 0)
 		}
 	},
 	mutations: {
+		[types.SHOW_ITEM](state, payload) {
+			Vue.set(payload.currentItem, 'if', true)
+		},
+		[types.HIDE_ITEM](state, payload) {
+			Vue.set(payload.currentItem, 'if', false);
+		},
+		[types.CHANGE_ANI](state, payload) {
+			// console.log(payload)
+			// alert(1)
+			// Vue.set(state.phone.data[state.currentPage].data[state.currentItemId].ani, 'animation-duration', payload['animation-duration'])
+			// Vue.set(state.phone.data[state.currentPage].data[state.currentItemId], 'display', 1)
+			Vue.set(state.phone.data[state.currentPage].data[state.currentItemId].style, 'animation', 'flash ' + payload['animation-duration'])
+		},
 		changeClass(state, payload) {
 			state.phone.data[state.currentPage].data[state.currentItemId].class.push('flash')
 		},

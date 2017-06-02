@@ -17,6 +17,10 @@ export const LOAD_DATA = 'LOAD_DATA'; //加载数据
 export const SELECT_ITEM = 'SELECT_ITEM' //选中元素
 export const DEL_ITEM = 'DEL_ITEM'; //删除元素
 export const ADD_ITEM = 'ADD_ITEM'; //新增元素
+export const SHOW_ITEM = 'SHOW_ITEM'; //新增元素
+export const HIDE_ITEM = 'HIDE_ITEM'; //隐藏元素
+export const RELOAD_ANI = 'RELOAD_ANI'; //隐藏元素
+export const CHANGE_ANI = 'CHANGE_ANI'; //隐藏元素
 export const CHANGE_ITEM_STYLE = 'CHANGE_ITEM_STYLE'; //改变元素style
 export const CHANGE_CURRENT_MAIN = 'CHANGE_CURRENT_MAIN'; //改变当前页的main参数
 /*-----------------------------------end 编辑器-------------------------------------------*/

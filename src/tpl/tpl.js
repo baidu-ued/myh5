@@ -19,6 +19,9 @@ export default {
 				left : '50px',
 				top : '50px',
 				color : '#666666'
+			},
+			ani : {
+				'animation-name' : 'flash'
 			}
 		}
 	},

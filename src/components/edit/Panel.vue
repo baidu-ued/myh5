@@ -154,8 +154,11 @@
             <textarea type="text" v-model="currentItem.content"></textarea>
         </div> -->
 		<div class="item-box">
-            <label @click="changeClass('flash')">flash</label>
-
+			<label>延迟</label>
+            <div class="item-box-control">
+                <input type="number" @input="changeAni({ 'animation-duration' : $event.target.value + 's'})" value="0" step="0.1" max="5" min="0">
+            </div>
+			<label @click="reloadAni">重新播放</label>
         </div>
         <div class="item-box">
             <label>透明度</label>
@@ -272,10 +275,18 @@ export default {
             }
     },
     methods: {
-        ...mapActions(['changeMain', 'changeStyle','changeClass']),
+        ...mapActions(['changeMain', 'changeStyle','changeClass', 'changeAni', 'reloadAni']),
             selectPanel: function(index) {
                 this.listIndex = index;
-            }
+            },
+			bbbbb : function(){
+				// this.currentItem.style.animation = '';
+				// setTimeout(() =>{
+				// 	// for(var attr in this.currentItem.ani){
+				// 	// 	this.currentItem.style.animation += this.currentItem.ani[attr] + ' ';
+				// 	// }
+				// }, 100)
+			}
     },
     data: function() {
         return {
