@@ -30,8 +30,10 @@ body{
 <div>
 	<PublicHeader/>
 	<div class="main">
+
 		<Panel></Panel>
 		<div class="content">
+			<div @click="addPage">添加一页</div>
 			<List></List>
 			<Pagination></Pagination>
 		</div>
@@ -65,7 +67,7 @@ export default {
 		this.changeType(this.type)
 	},
 	methods: {
-		...mapActions(['changeType', 'changePage']),
+		...mapActions(['changeType', 'changePage', 'addPage']),
 	},
 	components: {
 		PublicHeader,

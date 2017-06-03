@@ -1,8 +1,4 @@
-/**
- * 列表页
- */
-export const CHANGE_LIST = 'CHANGE_LIST';
-export const CHANGE_TYPE = 'CHANGE_TYPE';
+
 /**
  * 编辑页
  */

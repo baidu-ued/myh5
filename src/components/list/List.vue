@@ -105,17 +105,7 @@
 <section class="box-wrap">
     <ul class="list" id="aaa">
         <li class="item" v-for="i in list">
-            <div class="item-main">
-                <a href="#"><img class="bg" :src="i.bg" /></a>
-                <div class="marker">
-                    <img class="qr-code" src="http://z.sina.com.cn/s/qrcode/image?content=http://z.sina.com.cn/z/66987/&height=130&width=130" />
-                    <p class="marker-text">手机扫描查看</p>
-                    <div class="marker-options">
-                        <a class="prev option" target="_blank" href="//z.sina.com.cn/z/68606/">预览</a>
-                        <a class="choose option" href="/maker/?tempid=68606">选用</a>
-                    </div>
-                </div>
-            </div>
+            <a :href="'http://localhost:8080/edit/' + i.work_id" style="width:100%;height:100%;display:block;"></a>
             <div class="sitetitle">毕业季·我们不说再见</div>
         </li>
     </ul>

@@ -37,6 +37,7 @@ body{
 <script>
 import PanelPic from '../panel/pic.vue'
 import '../../css/reset.css'
+import '../../css/animation.css'
 import PublicHeader from '../public/Header.vue'
 import Page from './Page.vue'
 import Phone from './Phone.vue'

@@ -56,6 +56,7 @@
 <template>
 
 <section class="box-wrap" @mousedown="selectItem(-1)">
+	{{currentPage}}
     <ul class="drag-wrapper" id="aaa">
         <li @click="changePage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">
             <div @click.stop="delPage(index)" style="position:absolute;right:10px;top:0;font-size:20px;">删除</div>

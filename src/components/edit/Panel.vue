@@ -154,12 +154,39 @@
             <textarea type="text" v-model="currentItem.content"></textarea>
         </div> -->
 		<div class="item-box">
+			<label>动画</label>
+            <div class="item-box-control">
+				<select @input="changeAni({ 'animation-name' : $event.currentTarget.value }), changeAni({ 'animation-duration' : currentItem.style['animation-duration'] || '1s' })" :value="currentItem.style['animation-name'] || 'none'">
+                    <option value="none">----无-----</option>
+                    <option value="hide">隐藏</option>
+                    <option value="flash">闪烁</option>
+                    <option value="shake">摇动</option>
+                    <option value="bounce">弹性</option>
+                    <option value="tada">弹加摇动</option>
+                    <option value="swing">摇摆（小）</option>
+                    <option value="wobble">摇摆（大）	</option>
+                    <option value="pulse">脉冲放大</option>
+                </select>
+            </div>
+        </div>
+		<div class="item-box">
+			<label>播放时间</label>
+            <div class="item-box-control">
+                <input type="number" @input="changeAni({ 'animation-duration' : $event.target.value + 's'})" :value="parseFloat(currentItem.style['animation-duration']) || 1" step="0.1" max="5" min="0">
+            </div>
 			<label>延迟</label>
             <div class="item-box-control">
-                <input type="number" @input="changeAni({ 'animation-duration' : $event.target.value + 's'})" value="0" step="0.1" max="5" min="0">
+                <input type="number" @input="changeAni({ 'animation-delay' : $event.target.value + 's'})" :value="parseFloat(currentItem.style['animation-delay']) || 0" step="0.1" max="5" min="0">
             </div>
+			<label>播放次数</label>
+            <div class="item-box-control">
+                <input type="number" @input="changeAni({ 'animation-iteration-count' : $event.target.value})" :value="parseInt(currentItem.style['animation-iteration-count']) || 1" step="1" max="10" min="1">
+            </div>
+		</div>
+		<div class="item-box">
 			<label @click="reloadAni">重新播放</label>
-        </div>
+			<label @click="reloadAllAni">播放当页</label>
+		</div>
         <div class="item-box">
             <label>透明度</label>
             <div class="item-box-control">
@@ -275,7 +302,7 @@ export default {
             }
     },
     methods: {
-        ...mapActions(['changeMain', 'changeStyle','changeClass', 'changeAni', 'reloadAni']),
+        ...mapActions(['changeMain', 'changeStyle','changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
             selectPanel: function(index) {
                 this.listIndex = index;
             },

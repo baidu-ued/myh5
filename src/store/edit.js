@@ -28,6 +28,7 @@ export default new Vuex.Store({
 		},
 		/* 总页码:Number */
 		pageLength(state) {
+			// console.log(state)
 			return state.phone.data.length;
 		},
 		/* 当前页码:Number */
@@ -55,22 +56,34 @@ export default new Vuex.Store({
 			})
 		},
 		loadData({ commit, state }, data) {
+
 			$.ajax({
 				url: '/api/edit/get',
 				type: 'get',
-				data: data,
+				data: {
+					work_id : work_id
+				},
 				success: (rs) => {
+					console.log(rs)
+					let data = rs.data.data
+					if(!data){
+						data = $.extend(true, {}, state.phone)
+					}
 					commit(types.LOAD_DATA, {
-						data: rs.data.data
+						data: data
 					})
 				}
 			});
 		},
 		savePhoneData: function({ commit, state }, data) {
+			console.log(data)
 			$.ajax({
 				url: '/api/edit/save',
 				type: 'get',
-				data: data,
+				data: {
+					work_id : work_id,
+					data : JSON.stringify(data)
+				},
 				success: (rs) => {
 					console.log(rs);
 				}
@@ -155,15 +168,21 @@ export default new Vuex.Store({
 		 * 改变animation
 		 * @param collection
 		 */
-		changeAni({ commit, state }, type) {
-			commit(types.CHANGE_ANI, type)
+		changeAni({ commit, state, getters, dispatch }, ani) {
+			dispatch('changeStyle', ani);
+		},
+		reloadAllAni({ commit, state, dispatch, getters }) {
+
 		},
 		reloadAni({ commit, state, dispatch, getters }) {
-			commit(types.HIDE_ITEM, {
-				currentItem: getters.currentItem
-			})
+			let name = getters.currentItem.style['animation-name'];
+			dispatch('changeStyle',{
+				'animation-name' : 'none'
+			});
 			setTimeout(function() {
-				dispatch('showItem');
+				dispatch('changeStyle', {
+					'animation-name' : name
+				});
 			}, 0)
 		}
 	},
@@ -175,11 +194,16 @@ export default new Vuex.Store({
 			Vue.set(payload.currentItem, 'if', false);
 		},
 		[types.CHANGE_ANI](state, payload) {
-			// console.log(payload)
-			// alert(1)
-			// Vue.set(state.phone.data[state.currentPage].data[state.currentItemId].ani, 'animation-duration', payload['animation-duration'])
-			// Vue.set(state.phone.data[state.currentPage].data[state.currentItemId], 'display', 1)
-			Vue.set(state.phone.data[state.currentPage].data[state.currentItemId].style, 'animation', 'flash ' + payload['animation-duration'])
+			console.log(payload)
+			// for(let attr in payload.ani){
+			// 	Vue.set(payload.currentItem.ani, attr, payload.ani[attr]);
+			// }
+			// let ani = '';
+			// for(let attr in payload.currentItem.ani){
+			// 	ani += payload.currentItem.ani[attr] + ' ';
+			// }
+			// ani.trim();
+			// console.log(ani)
 		},
 		changeClass(state, payload) {
 			state.phone.data[state.currentPage].data[state.currentItemId].class.push('flash')

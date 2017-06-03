@@ -86,7 +86,7 @@
 <section class="box-wrap" v-my-select @mousedown="selectItem(-1)">
     <div class="phone-wrap">
         <div class="phone-top"></div>
-
+		<!-- {{currentItem}} -->
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
             <div v-if="i.if != false"  @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index}" :style="i.style"v-for="(i, index) in currentPhone.data">
 				<div class="phone-item-container" :id="i.attr.id" v-html="i.content"></div>

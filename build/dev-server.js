@@ -67,15 +67,34 @@ app.get('/show', function(req, res, next) {
 		res.end();
 	});
 })
-app.get('/:viewname?/:act', judegLogin, function(req, res, next) {
+app.get('/list', judegLogin, function(req, res, next) {
 	res.set('Content-Type', 'text/html');
-	if(!req.cookies.username && req.params.act != 'login'){
+	if(!req.cookies.username){
 		res.redirect('/login')
 		return;
-	}else if(req.params.act == 'login'){
-		res.redirect('/edit')
 	}
-	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/entry/' + req.params.act + '/index.html')
+	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/entry/list/index.html')
+});
+app.get('/edit/:act', judegLogin, function(req, res, next) {
+	res.set('Content-Type', 'text/html');
+	if(!req.cookies.username){
+		res.redirect('/login')
+		return;
+	}
+
+	res.render('/Users/BraisedCakes/Desktop/myh5/src/entry/edit/index.html', {
+		work_id: req.params.act
+	});
+
+	// res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/entry/edit/index.html')
+});
+app.get('/login', judegLogin, function(req, res, next) {
+	res.set('Content-Type', 'text/html');
+	if(req.cookies.username){
+		res.redirect('/list')
+		return;
+	}
+	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/entry/login/index.html')
 });
 
 app.use(staticPath, express.static('./static'))

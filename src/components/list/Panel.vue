@@ -29,7 +29,7 @@
 <section class="box-wrap">
     <div class="box">
         <ul>
-            <li :class="{ 'active' : type == i.ename}" @click="changeType(i.ename)" v-for="i in list">{{i.text}}</li>
+            <!-- <li :class="{ 'active' : type == i.ename}" @click="changeType(i.ename)" v-for="i in list">{{i.text}}</li> -->
         </ul>
     </div>
 
