@@ -26,13 +26,13 @@ header {
             align-items: center;
             margin: 0 10px;
             transition: 0.5s;
-			cursor: pointer;
+            cursor: pointer;
             svg {
                 font-size: 20px;
             }
-			span{
-				font-size: 12px;
-			}
+            span {
+                font-size: 12px;
+            }
         }
         li:hover {
             color: #ff5e5e;
@@ -46,7 +46,9 @@ header {
 
 <header>
     <div class="logo-wrap">
-        <img src="http://z.sina.com.cn/styles/images/logo.png" />
+        <a href="//localhost:8080/list" style="display:block;width:100%;height:100%;">
+            <img src="http://z.sina.com.cn/styles/images/logo.png" />
+        </a>
     </div>
 
     <ul class="ctrl-panel">
@@ -57,25 +59,25 @@ header {
             <span>文本</span>
         </li>
 
-		<li @click="panelShow(types.PIC)">
+        <li @click="panelShow(types.PIC)">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-tupian"></use>
             </svg>
             <span>图片</span>
         </li>
-		<li>
+        <li>
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-yinle"></use>
             </svg>
             <span>音乐</span>
         </li>
-		<li>
+        <li>
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-x-mpg"></use>
             </svg>
             <span>视频</span>
         </li>
-		<li>
+        <li>
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-biaodan"></use>
             </svg>
@@ -89,23 +91,11 @@ header {
             </svg>
             <span>保存</span>
         </li>
-        <li>
+        <li @click="out">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-fabu"></use>
             </svg>
-            <span>发布</span>
-        </li>
-        <li>
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-yulan"></use>
-            </svg>
-            <span>预览</span>
-        </li>
-        <li>
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-shezhi"></use>
-            </svg>
-            <span>设置</span>
+            <span>退出</span>
         </li>
     </ul>
 
@@ -123,16 +113,26 @@ from 'vuex'
 import * as api from '../../api/edit.js'
 import '../../iconfont/iconfont.js'
 import * as types from '../../const/item-types.js'
+import $ from 'jQuery'
 export default {
     computed: {
         ...mapGetters(['phoneData'])
     },
     methods: {
-        ...mapActions(['addItem', 'panelShow', 'savePhoneData'])
+        ...mapActions(['addItem', 'panelShow', 'savePhoneData']),
+		out:function(){
+			$.ajax({
+				url: '/api/login/signout',
+				type: 'get',
+				success: (rs) => {
+					console.log(rs);
+				}
+			});
+		}
     },
     data() {
         return {
-			types : types
+            types: types
         }
     },
 }

@@ -1,4 +1,33 @@
+<style>
+html, body{
+	height: 100%;
+}
+body{
+	background: #f7fafc;
+}
+</style>
 <style scoped lang="scss">
+.main-content{
+	display: flex;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	.login-box{
+		width:300px;
+		height: 100px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		h1{
+
+		}
+		h2{
+			font-size: 20px;
+		}
+	}
+}
 
 
 
@@ -6,23 +35,13 @@
 
 <template>
 
-<section class="layer-box">
-	<p>登录</p>
-    <label>用户名</label>
-    <input v-model="login_username" type="text" />
-    <label>密码</label>
-    <input v-model="login_password" type="text" />
-	<button @click="login">确定</button>
-	<p>注册</p>
-    <label>用户名</label>
-    <input v-model="signup_username" type="text" />
-    <label>密码</label>
-    <input v-model="signup_password"  type="text" />
-	<button @click="signup">确定</button>
+<section class="main-content">
+	<div class="login-box">
+		<h1>Myh5</h1>
+		<h2>h5页面制作工具_微信场景制作</h2>
+	</div>
 </section>
-
 </template>
-
 <script>
 import $ from 'jQuery'
 export default {

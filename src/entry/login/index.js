@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from '../../components/login/Login.vue'
+import App from '../../components/login/App.vue'
 // import store from '../../store/list.js'
 Vue.config.productionTip = false
 new Vue({

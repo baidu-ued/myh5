@@ -17,7 +17,7 @@ let login = (req, res) => {
 				status: 1,
 				msg: '获取成功',
 				data: docs[0],
-				href: '/edit'
+				href: '/list'
 			})
 		}
 	})
@@ -35,5 +35,13 @@ let signup = (req, res) => {
 		})
 	});
 }
+let signout = (req, res) =>{
+	res.clearCookie('username');
+	res.send({
+		msg : '退出成功'
+	})
+	
+}
 app.get('/api/login/login', login); //获取页面数据
 app.get('/api/login/signup', signup); //获取页面数据
+app.get('/api/login/signout', signout); //获取页面数据

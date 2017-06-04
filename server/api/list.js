@@ -14,7 +14,8 @@ let get = (req, res)=> {
 	var readFile1 = ()=> {
 		return new Promise((resolve, reject) =>{
 			myh5.count({
-				type : type
+				// type : type
+				username : req.cookies.username
 			}, (err, docs)=>{
 				resolve(docs)
 			})
@@ -23,7 +24,7 @@ let get = (req, res)=> {
 	var readFile2 = () =>{
 		return new Promise((resolve, reject)=> {
 			myh5.where({
-				// type: type
+				username : req.cookies.username
 			}).skip(page).limit(length).exec((err, docs)=>  {
 				resolve(docs)
 			})
@@ -50,7 +51,8 @@ let add = (req, res)=> {
 
 		new myh5({
 			work_id : ++count,
-			data : {}
+			data : {},
+			username : req.cookies.username
 		}).save();
 
 		res.send({
