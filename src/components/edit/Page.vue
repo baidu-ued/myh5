@@ -11,7 +11,7 @@
     box-shadow: 0 0 0 5px rgba(100, 100, 100, .5) inset;
 }
 
-.box-wrap {
+.page-list {
     position: absolute;
     left: 0;
     top: 50px;
@@ -21,18 +21,94 @@
     border-right: 1px solid #000;
     overflow: auto;
     background: #494950;
-    ul {
-        height: 1000px;
-        padding: 0 10px;
+	-webkit-user-select:none;
+    .page-sortable {
+        padding: 10px 0 30px;
         li {
             position: relative;
-            height: 200px;
-            border: 1px solid #000;
-            margin: 10px;
-            // width:175px;
+            overflow: hidden;
+            padding: 12px 15px 18px 25px;
+            label {
+                color: #fff;
+                text-align: center;
+                position: absolute;
+                left: 4px;
+                top: 9px;
+                width: 21px;
+                height: 30px;
+                padding: 5px 0;
+                font-size: 14px;
+            }
+            .item-content {
+                position: relative;
+                width: 112px;
+                height: 181px;
+                transition: .5s;
+                -webkit-perspective: 500px;
+                -webkit-perspective-origin: center center;
+                transform-style: preserve-3d;
+                .page {
+                    -webkit-transform: scale(.35);
+                    -webkit-transform-origin: top left;
+                    background-color: #333;
+                    position: relative;
+                    transform-style: preserve-3d;
+                    transition: .5s;
+                    width: 320px;
+                    height: 520px;
+                }
+            }
+            .item-option {
+                position: absolute;
+                top: 0;
+                left: 112px;
+                width: 50px;
+                height: 178px;
+                background-color: rgba(0, 0, 0, .5);
+                padding-top: 4px;
+                transition: .5s;
+                transform: translate3d(0, 0, 0) rotateY(90deg);
+                transform-origin: 0 0;
+                transform-style: preserve-3d;
+                .item-page {
+                    height: 24px;
+                    display: block;
+                    color: #c7c7c7;
+                    text-align: center;
+                    padding: 6px 0;
+                    border-top: 1px solid transparent;
+                    border-bottom: 1px solid transparent;
+                    svg {
+                        display: block;
+                        transform: skewY(-1deg) scaleX(1.5) translate(10px, 8px);
+                        font-size: 18px;
+                    }
+                }
+                .item-page:hover {
+                    background: rgba(0, 0, 0, .6);
+                    border-top: 1px solid rgba(0, 0, 0, .9);
+                    border-bottom: 1px solid rgba(80, 80, 80, .6);
+                    color: #ff5e5e;
+                    cursor: pointer;
+                }
+            }
         }
         li.active {
-            border-color: #cccccc;
+            label {
+                background: url(../../images/page_select.png) no-repeat;
+            }
+            .item-content {
+                outline: #ff5e5e solid 3px;
+            }
+        }
+        li:hover {
+            .page {
+                transform-origin: 0 0;
+                transform: rotateY(-25deg) scale(.3, .35);
+            }
+            .item-option {
+                transform: translate3d(-25px, 0, 40px) rotateY(59deg);
+            }
         }
     }
     .add-page-button {
@@ -55,17 +131,39 @@
 
 <template>
 
-<section class="box-wrap" @mousedown="selectItem(-1)">
-	{{currentPage}}
-    <ul class="drag-wrapper" id="aaa">
+<aside class="page-list" id="page-list" @mousedown="selectItem(-1)">
+    <ul class="page-sortable">
         <li @click="changePage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">
-            <div @click.stop="delPage(index)" style="position:absolute;right:10px;top:0;font-size:20px;">删除</div>
-			<div @click.stop="emptyPage(index)" style="position:absolute;right:10px;top:40px;font-size:20px;">重置</div>
-			<p>{{i}}</p>
-		</li>
+            <label>{{index + 1}}</label>
+            <div class="item-content">
+                <section class="page" data-notouch="" data-arrow="" style=""></section>
+                <div class="item-option">
+                    <!-- <div title="复制" class="item-page">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-fuzhi"></use>
+                        </svg>
+                    </div> -->
+                    <!-- <div title="存为模板" class="item-page">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-xingxing"></use>
+                        </svg>
+                    </div> -->
+                    <div @click.stop="emptyPage(index)" title="重置" class="item-page">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-zhongzhi"></use>
+                        </svg>
+                    </div>
+                    <div @click.stop="delPage(index)" title="删除" class="item-page">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-shanchu"></use>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </li>
     </ul>
     <div @click="addPage" class="add-page-button" id="addpage">+</div>
-</section>
+</aside>
 
 </template>
 
@@ -87,9 +185,7 @@ export default {
 
     },
     data: function() {
-        return {
-            list: [1, 2, 3, 4, 5, 6, 7, 8]
-        }
+        return {}
     }
 }
 
