@@ -28,13 +28,11 @@ body {
         <Phone></Phone>
         <Panel></Panel>
 		<Setting></Setting>
-        <PanelPic v-if="panelStatus[types.PIC]"></PanelPic>
+        <PanelPic></PanelPic>
+		<!-- <PanelPic v-if="panelStatus[types.PIC]"></PanelPic> -->
     </div>
-
 </div>
-
 </template>
-
 <script>
 import PanelPic from '../panel/pic.vue'
 import '../../css/reset.css'

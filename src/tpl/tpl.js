@@ -10,6 +10,9 @@ function getNewId(){
 	return 'myh5_item_' + store.getters.phoneData.main.itemNumId++;
 }
 export default {
+	/*
+		文本
+	*/
 	[types.TXT] : function(){
 		return {
 			type : types.TXT,
@@ -19,12 +22,12 @@ export default {
 				left : '50px',
 				top : '50px',
 				color : '#666666'
-			},
-			ani : {
-				'animation-name' : 'flash'
 			}
 		}
 	},
+	/*
+		文本
+	*/
 	[types.PIC] : function(payload){
 		let width = (payload.width / (PHONE_WIDTH / 100 * 4)).toFixed(0);
 		width = width > 100 ? 100 : width;
@@ -37,6 +40,25 @@ export default {
 				left : '0',
 				top : '0',
 				color : '#666666'
+			}
+		}
+	},
+	/*
+		热区
+
+		不显示，不能添加动画 为了点击事件
+	*/
+	[types.HOT_SPACE] : function(){
+		return {
+			type : types.HOT_SPACE,
+			content : '<div></div>',
+			class : [],
+			style : {
+				left : '50px',
+				top : '50px',
+				width : '100px',
+				height : '100px',
+				background : 'rgba(0,0,0,0.3)'
 			}
 		}
 	}

@@ -65,11 +65,11 @@ header {
             </svg>
             <span>图片</span>
         </li>
-        <li>
+        <li  @click="addItem({type : types.HOT_SPACE})">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-yinle"></use>
             </svg>
-            <span>音乐</span>
+            <span>热区</span>
         </li>
         <li>
             <svg class="icon" aria-hidden="true">
