@@ -1,6 +1,6 @@
 <style scoped lang="scss">
 
-.layer-box {
+.modal-dialog {
     width: 968px;
     height: 560px;
     background: #f7f7f7;
@@ -21,27 +21,32 @@
             font-weight: bold;
             color: #76838f;
         }
+        .close {
+            font-size: 20px;
+            font-weight: 700;
+            color: #c6c6c6;
+            padding: 0 15px;
+        }
+        .close:hover {
+            color: #7c7c7c;
+        }
     }
-    .container {
+    .main {
         position: relative;
         height: calc(100% - 61px);
         display: flex;
-        .left {
+        .panel {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height: 100%;
             width: 160px;
-            // background: #f7f7f7;
             left: 0;
-            .list {
-                // display: flex;
-                // flex-direction: column;
+            .panel-list {
                 .item {
                     text-indent: 20px;
                     line-height: 50px;
                     font-weight: bold;
-                    // background: #fff;
                     a {
                         color: #76838f;
                     }
@@ -50,8 +55,7 @@
                     background: #fff;
                 }
             }
-            .shangchuan {
-                // display: flex;
+            .upload {
                 width: 160px;
                 height: 50px;
                 background: #59c7f9;
@@ -71,22 +75,23 @@
                     font-weight: bold;
                 }
             }
+            .upload:hover {
+                background: #08a1ef;
+            }
         }
-        .shangchuan:hover {
-            background: #08a1ef;
-        }
-        .pic-list {
+        .main-container {
             background: #fff;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            .pic-lists {
+            width: 100%;
+            .pic-list {
                 display: flex;
                 flex-wrap: wrap;
                 padding: 20px;
                 height: 380px;
-				align-content : flex-start;
-                li {
+                align-content: flex-start;
+                .item {
                     width: 115px;
                     height: 115px;
                     background: #c9c9c9;
@@ -95,18 +100,46 @@
                     background-repeat: no-repeat;
                     background-position: center center;
                     background-color: #E6EBED;
+                    position: relative;
+                    .marker {
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        background: rgba(0, 0, 0, 0.6);
+                        opacity: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+                        a {
+                            display: block;
+                            width: 60px;
+                            height: 30px;
+                            text-align: center;
+                            line-height: 30px;
+                            margin: 5px 0;
+                            border-radius: 3px;
+                            color: #fff;
+                            border: 1px solid #fff;
+                            font-size: 14px;
+                        }
+                        a:hover {
+                            background: #59c7f9;
+                            border-color: #59c7f9;
+                        }
+                    }
                 }
-                li:nth-child(6n) {
+                .item:hover {
+                    .marker {
+                        opacity: 1;
+                    }
+                }
+                .item:nth-child(6n) {
                     margin: 0 0 15px;
-                }
-                img {
-                    width: 100%;
-                    height: 100%;
                 }
             }
             .page {
                 height: 50px;
-                // background: red;
             }
         }
     }
@@ -150,25 +183,28 @@
 
 <template>
 
-<section id="pic-layer-box" class="layer-box">
+<section id="pic-layer-box" class="modal-dialog">
     <div class="header">
         <h4>素材库</h4>
-        <div @click="panelHide('PIC')">x</div>
+        <a href="javascript:void(0);" class="close" @click="panelHide('PIC')">x</a>
     </div>
-    <div class="container">
-        <div class="left">
-            <ul class="list">
+    <div class="main">
+        <div class="panel">
+            <ul class="panel-list">
                 <li class="item active"><a href="javascript:void(0);">我的上传</a></li>
             </ul>
-            <div class="shangchuan">
+            <div class="upload">
                 <label>上传</label>
                 <input type="file" multiple="multiple" @change="uploadImg">
             </div>
         </div>
-        <div class="pic-list">
-            <ul class="pic-lists">
-                <li @click="addItem({type : types.PIC, width : i.width, height : i.height, src : i.src})" v-for="i in piclist" :data-width="i.width" :data-height="i.height" :style="{'background-image' : 'url(' + i.src +')'}">
-                    <p @click="del(i.pic_id)">删除</p>
+        <div class="main-container">
+            <ul class="pic-list">
+                <li class="item" v-for="i in piclist" :data-width="i.width" :data-height="i.height" :style="{'background-image' : 'url(' + i.src +')'}">
+                    <div class="marker">
+                        <a @click="del(i.pic_id)" href="javascript:void(0);">删除</a>
+                        <a @click="addItem({type : types.PIC, width : i.width, height : i.height, src : i.src})" href="javascript:void(0);">使用</a>
+                    </div>
                 </li>
             </ul>
             <div class="page">
@@ -196,7 +232,7 @@ export default {
     },
     data: function() {
         return {
-			types : types,
+            types: types,
             activePage: 1,
             piclist: [],
             pageNum: 1
@@ -206,38 +242,38 @@ export default {
         this.getpic();
     },
     methods: {
-		...mapActions(['addItem', 'panelHide']),
-        del: function(id) {
-            api.delPic({
-                pic_id: id
-            }, (rs) => {
+        ...mapActions(['addItem', 'panelHide']),
+            del: function(id) {
+                api.delPic({
+                    pic_id: id
+                }, (rs) => {
+                    this.getpic();
+                });
+            },
+            getpic: function() {
+                api.getPic({
+                    limit: 18,
+                    page: this.activePage,
+                }, (rs) => {
+                    this.pageNum = rs.data.pageNum;
+                    this.piclist = rs.data.data;
+                })
+            },
+            changePage: function(value) {
+                this.activePage = value;
                 this.getpic();
-            });
-        },
-        getpic: function() {
-            api.getPic({
-                limit: 18,
-                page: this.activePage,
-            }, (rs) => {
-                this.pageNum = rs.data.pageNum;
-                this.piclist = rs.data.data;
-            })
-        },
-        changePage: function(value) {
-            this.activePage = value;
-            this.getpic();
-        },
-        uploadImg: function(ev) {
-            var formData = new FormData();
-            Array.from(ev.target.files).forEach(function(item) {
-                formData.append('sina_img', item);
-            });
-            api.savePic(formData, (rs) => {
-                this.piclist.push(...rs.data);
-                this.activePage = 1;
-                this.getpic();
-            });
-        }
+            },
+            uploadImg: function(ev) {
+                var formData = new FormData();
+                Array.from(ev.target.files).forEach(function(item) {
+                    formData.append('sina_img', item);
+                });
+                api.savePic(formData, (rs) => {
+                    this.piclist.push(...rs.data);
+                    this.activePage = 1;
+                    this.getpic();
+                });
+            }
     }
 }
 

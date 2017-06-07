@@ -26,6 +26,7 @@ header {
             align-items: center;
             margin: 0 10px;
             transition: 0.5s;
+			position: relative;
             cursor: pointer;
             svg {
                 font-size: 20px;
@@ -50,8 +51,7 @@ header {
             <img src="http://z.sina.com.cn/styles/images/logo.png" />
         </a>
     </div>
-
-    <ul class="ctrl-panel">
+    <ul class="ctrl-panel" v-if="page != 'list'">
         <li @click="addItem({type : types.TXT})">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-wenben"></use>
@@ -85,12 +85,26 @@ header {
         </li>
     </ul>
     <ul class="opt-panel">
-        <li @click="savePhoneData(phoneData)">
+		<li @click="changeSetLayer(true)">
+			<svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-baocun"></use>
+            </svg>
+            <span>设置</span>
+        </li>
+        <li v-if="page != 'list'">
+            <a style="position:absolute;color:#fff;display:block;width:100%;height:100%;" :href="'http://localhost:8080/show?id=' +  work_id"></a>
+			<svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-baocun"></use>
+            </svg>
+            <span>预览</span>
+        </li>
+        <li v-if="page != 'list'" @click="savePhoneData(phoneData)">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-baocun"></use>
             </svg>
             <span>保存</span>
         </li>
+
         <li @click="out">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-fabu"></use>
@@ -118,21 +132,28 @@ export default {
     computed: {
         ...mapGetters(['phoneData'])
     },
-    methods: {
-        ...mapActions(['addItem', 'panelShow', 'savePhoneData']),
-		out:function(){
-			$.ajax({
-				url: '/api/login/signout',
-				type: 'get',
-				success: (rs) => {
-					console.log(rs);
-				}
-			});
+	props : {
+		page : {
+			type : String,
+			default : 'edit'
 		}
+	},
+    methods: {
+        ...mapActions(['addItem', 'panelShow', 'savePhoneData', 'changeSetLayer']),
+            out: function() {
+                $.ajax({
+                    url: '/api/login/signout',
+                    type: 'get',
+                    success: (rs) => {
+                        console.log(rs);
+                    }
+                });
+            }
     },
     data() {
         return {
-            types: types
+            types: types,
+			work_id : window.work_id
         }
     },
 }

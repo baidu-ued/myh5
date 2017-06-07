@@ -1,16 +1,16 @@
 <style>
-html {
-	background: #57585d;
-	/*height: 100%;*/
-	overflow: hidden;
 
+html {
+    background: #57585d;
+    /*height: 100%;*/
+    overflow: hidden;
 }
-body{
-	font-size: 12px;
+
+body {
+    font-size: 12px;
 }
-</style>
-<style scoped lang="scss">
-@import '../../css/global.scss';
+
+</style> <style scoped lang="scss"> @import '../../css/global.scss';
 .main {
     display: flex;
     .content {
@@ -24,56 +24,56 @@ body{
         flex-direction: column;
     }
 }
+
 </style>
 
 <template>
+
 <div>
-	<PublicHeader/>
-	<div class="main">
+    <PublicHeader page="list"/>
+    <div class="main">
 
-		<Panel></Panel>
-		<div class="content">
-			<div @click="addPage">添加一页</div>
-			<List></List>
-			<Pagination></Pagination>
-		</div>
+        <Panel></Panel>
+        <div class="content">
+            <List></List>
+            <!-- <Pagination></Pagination> -->
+        </div>
 
 
-	</div>
+    </div>
 </div>
+
 </template>
 
 <script>
+
 import '../../css/reset.css'
 import PublicHeader from '../public/Header.vue'
 import Panel from './Panel.vue'
 import List from './List.vue'
 import Pagination from './Pagination.vue'
-// import pullload from 'pullload'
 import {
-	mapGetters,
-	mapActions
+    mapGetters,
+    mapActions
 }
 from 'vuex'
 export default {
-	name: 'App',
-	data() {
-		return {}
+    name: 'App',
+    computed: {
+        ...mapGetters(['type', 'page'])
+    },
+	mounted : function(){
+		this.loadMore();
 	},
-	computed: {
-		...mapGetters(['type', 'page'])
-	},
-	created: function() {
-		this.changeType(this.type)
-	},
-	methods: {
-		...mapActions(['changeType', 'changePage', 'addPage']),
-	},
-	components: {
-		PublicHeader,
-		Panel,
-		List,
-		Pagination
-	}
+    methods: {
+        ...mapActions(['loadMore']),
+    },
+    components: {
+        PublicHeader,
+        Panel,
+        List,
+        Pagination
+    }
 }
+
 </script>

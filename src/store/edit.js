@@ -13,18 +13,31 @@ export default new Vuex.Store({
 			main: {
 				itemNumId: 0
 			},
+			set: {
+				title : '',	//标题
+				desc : '',	//描述
+				allowPage : true,	//是否允许翻页
+			},
 			data: [$.extend(true, {}, CONST.BASE_BLANK)]
 		},
 		currentItemId: -1,
-		panelStatus: {}
+		panelStatus: {},
+		settingLayer : false
 	},
 	getters: {
+		settingLayer(state){
+			return state.settingLayer
+		},
 		panelStatus(state) {
 			return state.panelStatus
 		},
 		/* 总页码:Number */
 		phoneData(state) {
 			return state.phone;
+		},
+		/* 总页码:Number */
+		phoneSet(state) {
+			return state.phone.set;
 		},
 		/* 总页码:Number */
 		pageLength(state) {
@@ -56,17 +69,16 @@ export default new Vuex.Store({
 			})
 		},
 		loadData({ commit, state }, data) {
-
 			$.ajax({
 				url: '/api/edit/get',
 				type: 'get',
 				data: {
-					work_id : work_id
+					work_id: work_id
 				},
 				success: (rs) => {
 					console.log(rs)
 					let data = rs.data.data
-					if(!data){
+					if (!data) {
 						data = $.extend(true, {}, state.phone)
 					}
 					commit(types.LOAD_DATA, {
@@ -81,8 +93,8 @@ export default new Vuex.Store({
 				url: '/api/edit/save',
 				type: 'get',
 				data: {
-					work_id : work_id,
-					data : JSON.stringify(data)
+					work_id: work_id,
+					data: JSON.stringify(data)
 				},
 				success: (rs) => {
 					console.log(rs);
@@ -171,22 +183,36 @@ export default new Vuex.Store({
 		changeAni({ commit, state, getters, dispatch }, ani) {
 			dispatch('changeStyle', ani);
 		},
-		reloadAllAni({ commit, state, dispatch, getters }) {
-
-		},
+		reloadAllAni({ commit, state, dispatch, getters }) {},
 		reloadAni({ commit, state, dispatch, getters }) {
 			let name = getters.currentItem.style['animation-name'];
-			dispatch('changeStyle',{
-				'animation-name' : 'none'
+			dispatch('changeStyle', {
+				'animation-name': 'none'
 			});
 			setTimeout(function() {
 				dispatch('changeStyle', {
-					'animation-name' : name
+					'animation-name': name
 				});
 			}, 0)
+		},
+		changeSet({commit, state}, a){
+			// console.log(999)
+			console.log(a)
+			commit('changeSet', a)
+		},
+		changeSetLayer({commit}, a){
+			commit('changeSetLayer', a)
 		}
 	},
 	mutations: {
+		changeSetLayer(state, payload){
+			state.settingLayer = payload;
+		},
+		changeSet(state, payload){
+			for (let attr in payload) {
+				Vue.set(state.phone.set, attr, payload[attr])
+			}
+		},
 		[types.SHOW_ITEM](state, payload) {
 			Vue.set(payload.currentItem, 'if', true)
 		},

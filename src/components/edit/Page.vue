@@ -15,15 +15,15 @@
     position: absolute;
     left: 0;
     top: 50px;
-    bottom: 0;
+    bottom: 31px;
     width: 175px;
     z-index: 2;
     border-right: 1px solid #000;
     overflow: auto;
     background: #494950;
-	-webkit-user-select:none;
+    -webkit-user-select: none;
     .page-sortable {
-        padding: 10px 0 30px;
+        padding: 10px 0;
         li {
             position: relative;
             overflow: hidden;
@@ -122,8 +122,9 @@
         left: 0;
         width: 175px;
         text-align: center;
-        cursor: pointer;
         z-index: 999;
+		cursor: pointer;
+        border-right: 1px solid #000;
     }
 }
 
@@ -180,12 +181,6 @@ export default {
     },
     methods: {
         ...mapActions(['changePage', 'addPage', 'delPage', 'selectItem', 'emptyPage'])
-    },
-    mounted: function() {
-
-    },
-    data: function() {
-        return {}
     }
 }
 

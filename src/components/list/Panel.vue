@@ -13,12 +13,10 @@
     bottom: 0;
     .box {
         height: 2000px;
-		li{
-
-		}
-		li.active{
-			color: red;
-		}
+        li {}
+        li.active {
+            color: red;
+        }
     }
 }
 
@@ -46,21 +44,21 @@ import {
 from 'vuex'
 export default {
     data() {
-            return {
-                list: [{
-                    text: '体育',
-                    ename: 'sports'
-                }, {
-                    text: '新闻',
-                    ename: 'news'
-                }]
-            }
-        },
-        computed: {
-            ...mapGetters(['type'])
-        },
-        methods: {...mapActions(['changeType'])
+        return {
+            list: [{
+                text: '体育',
+                ename: 'sports'
+            }, {
+                text: '新闻',
+                ename: 'news'
+            }]
         }
-}
+    },
+    computed: {
+        ...mapGetters(['type'])
+    },
+    methods: {...mapActions([])
+    }
+};
 
 </script>

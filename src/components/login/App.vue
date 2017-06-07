@@ -14,13 +14,10 @@ body{
 </style>
 
 <template>
-
 <section class="main-content">
-
 	<input type="text" placeholder="用户名" v-model="login_username"/>
 	<input type="text" placeholder="密码" v-model="login_password"/>
 	<button @click="login">登录</button>
-
 	<input type="text" placeholder="用户名" v-model="signup_username"/>
 	<input type="text" placeholder="密码" v-model="signup_password"/>
 	<button @click="signup">注册</button>

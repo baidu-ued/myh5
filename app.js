@@ -1,32 +1,10 @@
 let app = require('express')()
-
-
-function aaa(req, res, next){
-	console.log(111);
-	next();
-}
+var url = require('url');
 app.get('/aaa', function(req, res, next){
-	console.log('aafffa')
-	res.send('bbba')
-	res.end()
+	// console.log(req.url)
+	console.log(url.parse(req.url,true).query);
+	res.send('bbba');
+	res.end();
 })
 
-app.get('/api/login', function(req, res, next){
-	res.send({
-		a : 1
-	})
-	// res.redirect('/aaa');
-	// res.end();
-	// next();
-})
-app.get('/',function(req, res, next){
-	// console.log('bbb')
-	// res.redirect('/aaa');
-	// return;
-	// res.send('bbb')
-	res.sendFile('/Users/BraisedCakes/Desktop/myh5/index.html')
-	// res.end();
-})
-
-
-app.listen(8080)
+app.listen(8081)
