@@ -92,5 +92,10 @@ app.get('/login', judegLogin, function(req, res, next) {
 	}
 	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/entry/login/index.html')
 });
+
+app.get('/backstage', judegLogin, function(req, res, next) {
+	res.set('Content-Type', 'text/html');
+	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/entry/backstage/index.html')
+});
 app.use(staticPath, express.static('./static'))
 module.exports = app;

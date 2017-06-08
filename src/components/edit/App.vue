@@ -29,7 +29,7 @@ body {
         <Panel></Panel>
 		<Setting></Setting>
         <PanelPic></PanelPic>
-		<!-- <PanelPic v-if="panelStatus[types.PIC]"></PanelPic> -->
+		<!-- <PanelPic v-show="panelStatus[types.PIC]"></PanelPic> -->
     </div>
 </div>
 </template>

@@ -16,5 +16,6 @@ module.exports = {
 		'pic_id': { type: String, required: true },
 		'width': { type: Number, required: false },
 		'height': { type: Number, required: false },
+		'type' : { type: String, required: false },
 	}
 }

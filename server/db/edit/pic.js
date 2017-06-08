@@ -3,12 +3,22 @@
  * @param collection
  * @param option {limit, page}
  * @return 成功返回 {limit, page, data}
+option
+
+
+limit: 每页数量
+page : 当前第几页
+_id  : 正序倒序
+find : 筛选内容
+
  */
 module.exports.getPicSync = (collection, option) => {
 	let limit = Number(option.limit) || 18;
 	let page = Number(option.page) || 1;
+	let find = option.find || {};
+	let order = -1
 	return new Promise((resolve, reject) => {
-		collection.find().limit(limit).skip(limit * (page - 1)).exec((err, data) => {
+		collection.find(find).limit(limit).skip(limit * (page - 1)).sort({ _id: -1 }).exec((err, data) => {
 			if (err) {
 				throw err;
 			}
@@ -44,7 +54,7 @@ module.exports.delPicSync = (collection, delList) => {
 				$in: delList
 			}
 		}, (err, msg) => {
-			if(err){
+			if (err) {
 				throw err
 			}
 			resolve(msg.result.n)

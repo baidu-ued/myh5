@@ -92,7 +92,7 @@ header {
             <span>设置</span>
         </li>
         <li v-if="page != 'list'">
-            <a style="position:absolute;color:#fff;display:block;width:100%;height:100%;" :href="'http://localhost:8080/show?id=' +  work_id"></a>
+            <a target="_blank" style="position:absolute;color:#fff;display:block;width:100%;height:100%;" :href="'http://localhost:8080/show?id=' +  work_id"></a>
 			<svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-baocun"></use>
             </svg>

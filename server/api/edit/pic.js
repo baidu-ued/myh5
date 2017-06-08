@@ -6,14 +6,17 @@ let sizeOf = require('image-size');
 let dbHandel = require('../../db/handel.js')
 let util = require('../../util/index.js')
 let app = require('../../../build/dev-server.js')
+let fs = require('fs')
 let { getPicSync, getPicCountSync, delPicSync } = require('../../db/edit/pic.js')
+let http = require('http')
 let get = (req, res) => {
 	let pics = dbHandel.getModel('pics');
 	(async() => {
 		let count = await getPicCountSync(pics);
 		let data = await getPicSync(pics, {
 			limit: req.query.limit,
-			page: req.query.page
+			page: req.query.page,
+			find: {}
 		});
 		res.send({
 			status: 1,
@@ -34,24 +37,34 @@ let save = (req, res) => {
 		if (err) throw err;
 		let pics = dbHandel.getModel('pics');
 		let data = [];
-		files['sina_img'].forEach((item) => {
+		if (!files['picture']) {
+			res.send({
+				status: 1,
+				msg: '不成功'
+			})
+			return;
+		}
+		files['picture'].forEach((item) => {
 			exec('cp ' + item.path + ' ' + path.resolve(cwd, 'server/dbimg/'));
+			let pic_id = util.md5('pic');
 			data.push({
-				src: 'http://localhost:8080/dbimg/' + path.basename(item.path)
+				src: 'http://localhost:8080/dbimg/' + path.basename(item.path),
+				pic_id: pic_id
 			});
 			let dimensions = sizeOf(item.path);
 			new pics({
 				username: req.cookies.username,
-				pic_id: util.md5('pic'),
+				pic_id: pic_id,
 				src: 'http://localhost:8080/dbimg/' + path.basename(item.path),
-				width : dimensions.width,
-				height : dimensions.height
-			}).save();
-		})
-		res.send({
-			status: 1,
-			msg: '保存成功',
-			data: data
+				width: dimensions.width,
+				height: dimensions.height
+			}).save(() => {
+				res.send({
+					status: 1,
+					msg: '保存成功',
+					data: data
+				})
+			});
 		})
 	})
 }
@@ -65,6 +78,18 @@ let del = (req, res) => {
 		})
 	})()
 }
+
+let change = (req, res) => {
+	let pics = dbHandel.getModel('pics');
+	(async() => {
+		pics.update({ pic_id : req.query.pic_id }, { type : req.query.type }, ()=>{
+			res.send({
+				msg : '替换成功'
+			})
+		})
+	})()
+}
+app.get('/aj/pic/change', change); //删除图片
 app.get('/aj/pic/get', get); //获取图片
 app.get('/aj/pic/del', del); //删除图片
 app.post('/aj/pic/save', save); //保存图片
