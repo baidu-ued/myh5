@@ -1,3 +1,3 @@
-export const TXT = 'TXT';
-export const PIC = 'PIC';
-export const HOT_SPACE = 'HOT_SPACE'
+export const TXT = 'txt';
+export const PIC = 'pic';
+export const HOT_SPACE = 'hot_space'

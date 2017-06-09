@@ -154,6 +154,10 @@
             <textarea type="text" v-model="currentItem.content"></textarea>
         </div> -->
 		<div class="item-box">
+			<label>点击跳页</label>
+			<input @input="changeAttr({ 'goto' : $event.target.value})" type="text"/>
+		</div>
+		<div class="item-box">
 			<label>动画</label>
             <div class="item-box-control">
 				<select @input="changeAni({ 'animation-name' : $event.currentTarget.value }), changeAni({ 'animation-duration' : currentItem.style['animation-duration'] || '1s' })" :value="currentItem.style['animation-name'] || 'none'">
@@ -302,7 +306,7 @@ export default {
             }
     },
     methods: {
-        ...mapActions(['changeMain', 'changeStyle','changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
+        ...mapActions(['changeAttr', 'changeMain', 'changeStyle','changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
             selectPanel: function(index) {
                 this.listIndex = index;
             },

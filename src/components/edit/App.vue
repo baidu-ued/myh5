@@ -15,7 +15,6 @@ body {
     }
     background: #4c4c4e;
 }
-
 </style>
 
 <template>
@@ -28,8 +27,8 @@ body {
         <Phone></Phone>
         <Panel></Panel>
 		<Setting></Setting>
-        <PanelPic></PanelPic>
-		<!-- <PanelPic v-show="panelStatus[types.PIC]"></PanelPic> -->
+        <!-- <PanelPic></PanelPic> -->
+		<PanelPic v-show="panelStatus[types.PIC]"></PanelPic>
     </div>
 </div>
 </template>

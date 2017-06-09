@@ -5,6 +5,7 @@ import * as types from './mutation-types.js'
 import * as CONST from '../const/edit.js'
 import tpl from '../tpl/tpl.js'
 import * as api from '../api/edit.js'
+import * as itemTypes from '../const/item-types.js'
 Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
@@ -88,7 +89,7 @@ export default new Vuex.Store({
 			});
 		},
 		savePhoneData: function({ commit, state }, data) {
-			console.log(data)
+			console.log('保存成功', data)
 			$.ajax({
 				url: '/api/edit/save',
 				type: 'get',
@@ -202,9 +203,24 @@ export default new Vuex.Store({
 		},
 		changeSetLayer({commit}, a){
 			commit('changeSetLayer', a)
+		},
+		changeAttr({commit, state, getters}, data){
+
+			commit('changeAttr', {
+				item : getters.currentItem,
+				data : data
+			})
 		}
 	},
 	mutations: {
+		changeAttr(state, payload){
+			// state.
+			for(let attr in payload.data){
+				console.log(payload.item.attr)
+				Vue.set(payload.item.attr, attr, payload.data[attr]);
+			}
+			// console.log(payload.item)
+		},
 		changeSetLayer(state, payload){
 			state.settingLayer = payload;
 		},
@@ -262,11 +278,17 @@ export default new Vuex.Store({
 			Vue.set(state.phone.data[state.currentPage], 'data', data);
 			state.currentItemId = data.length - 1;
 		},
+
+
+
 		[types.CHANGE_ITEM_STYLE](state, payload) {
 			for (let attr in payload) {
 				Vue.set(state.phone.data[state.currentPage].data[state.currentItemId].style, attr, payload[attr])
 			}
 		},
+
+
+
 		[types.SELECT_ITEM](state, payload) {
 			state.currentItemId = payload.index;
 		},

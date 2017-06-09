@@ -16,7 +16,9 @@ module.exports.getPicSync = (collection, option) => {
 	let limit = Number(option.limit) || 18;
 	let page = Number(option.page) || 1;
 	let find = option.find || {};
-	let order = -1
+	let order = -1;
+
+	console.log(find)
 	return new Promise((resolve, reject) => {
 		collection.find(find).limit(limit).skip(limit * (page - 1)).sort({ _id: -1 }).exec((err, data) => {
 			if (err) {

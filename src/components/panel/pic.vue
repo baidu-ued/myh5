@@ -226,7 +226,7 @@
                 }
             }
             .page {
-                height: 50px;
+                height: 60px;
             }
         }
     }
@@ -241,22 +241,17 @@
     ul {
         display: flex;
     }
-    .aabbb {
-        width: 22px;
-        line-height: 22px;
-        padding: 6px;
-        text-align: center;
-    }
-
 	.vue-pagination-item {
-	    min-width: 35px;
-	    line-height: 36px;
+	    min-width: 34px;
+	    line-height: 34px;
 	    background: #fff;
 	    text-align: center;
 	    font-size: 12px;
 	    color: #76838f;
+		padding:0;
 	    border: 1px solid #ccd5db;
 	    margin: 5px;
+		border-radius: 4px;
 	    a {
 	        display: block;
 	        width: 100%;
@@ -271,7 +266,7 @@
 	.vue-pagination-item.active {
 	    background: #08a1ef;
 	    color: #fff;
-	    border-color: #ccd5db;
+	    border-color: #08a1ef;
 	    a {
 	        color: #fff;
 	    }
@@ -286,6 +281,36 @@
 	    a {
 	        color: #dddddd;
 	    }
+	}
+
+	.select-page{
+		display: flex;
+		align-items: center;
+		margin-left: 10px;
+		span{
+			font-size: 14px;
+			color: #76838f;
+		}
+		.vue-pagination-ipt{
+			width: 34px;
+			height: 34px;
+			text-align: center;
+			margin:0 5px;
+		}
+		a{
+			font-size: 12px;
+			color: #76838f;
+			// height: 30px;
+			width: 34px;
+			line-height: 34px;
+			text-align: center;
+			outline: none;
+			border: 1px solid #ccd5db;
+			background: #fff;
+			display: block;
+			margin-left: 5px;
+			border-radius: 4px;
+		}
 	}
 }
 
@@ -381,9 +406,11 @@ export default {
 				index : 0,
 				list : [{
 					name : '图片库',
-					ename : 'library'
+					ename : 'library',
+					type : '100'
 				},{
-					name : '我的上传'
+					name : '我的上传',
+					ename : ''
 				}]
 			},
         }
@@ -402,12 +429,31 @@ export default {
             },
 			aaa(index){
 				this.panel.index = index;
+				api.getPic({
+                    limit: 18,
+                    page: this.activePage,
+					type : 1005
+                }, (rs) => {
+					this.pageNum = rs.data.pageNum;
+                    this.piclist = rs.data.data;
+                    this.piclist.forEach((item) => {
+                        if (item.width > 115 && item.height >= 115) {
+                            item.bgSizeContain = true;
+
+                        }
+                    })
+                    if (this.piclist.length == 0) {
+                        this.tipMsg = '您还没有上传图片，请点击左下角上传!';
+                        this.listStatus = 'not-exist';
+                    } else {
+                        this.listStatus = 'exist';
+                    }
+				})
 			},
             getpic() {
                 api.getPic({
                     limit: 18,
                     page: this.activePage,
-
                 }, (rs) => {
                     this.pageNum = rs.data.pageNum;
                     this.piclist = rs.data.data;

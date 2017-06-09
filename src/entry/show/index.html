@@ -38,7 +38,7 @@
 			<% workData.data.data.forEach(function(page){ %>
 				<div class="swiper-slide" style="position:position;width:100%;height:100%;background:<%= page.main.background %>">
 					<% page.data && page.data.forEach(function(item){ %>
-						<div style="position:absolute;<%- fn(item.style) %>">
+						<div attr='<%- JSON.stringify(item.attr) %>' type="<%- item.type %>" class="<%- item.class %>" style="position:absolute;<%- fn(item.style) %>">
 							<%- item.content %>
 						</div>
 						<% }) %>

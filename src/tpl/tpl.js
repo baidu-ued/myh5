@@ -17,7 +17,7 @@ export default {
 		return {
 			type : types.TXT,
 			content : '空白文本',
-			class : [],
+			class : types.TXT.toLowerCase(),
 			style : {
 				left : '50px',
 				top : '50px',
@@ -34,7 +34,7 @@ export default {
 		return {
 			type : types.PIC,
 			content : `<img style="width:100%;height:100%;" src="${payload.src}"/>`,
-			class : [],
+			class : types.PIC.toLowerCase(),
 			style : {
 				width : width + '%',
 				left : '0',
@@ -52,7 +52,7 @@ export default {
 		return {
 			type : types.HOT_SPACE,
 			content : '<div></div>',
-			class : [],
+			class : types.HOT_SPACE.toLowerCase(),
 			style : {
 				left : '50px',
 				top : '50px',

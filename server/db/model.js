@@ -1,4 +1,7 @@
 module.exports = {
+	"admin" : {
+		pic_type : { type: Array, required: false }
+	},
 	"myh5": {
 		"type": { type: String, required: false },
 		"work_id": { type: Number, required: true },

@@ -4,6 +4,17 @@
 
 <div class="main">
     <h2>图片管理系统</h2>
+	<div>
+        <p>当前所有类型</p>
+        <ul>
+            <li v-for="i in typelist">{{i}}</li>
+        </ul>
+
+    </div>
+	<div>
+        <p>添加类型</p>
+        <input type="text" v-model="newType"/><button @click="addType">添加</button>
+    </div>
     <div>
         <p>当前所有官方图片</p>
         <ul>
@@ -33,7 +44,9 @@ export default {
                 list: [],
 				picurl : '',
 				newImg : { src : ''},
-				type : ''
+				type : '',
+				typelist : [],
+				newType : ''
             }
         },
 		/*
@@ -46,19 +59,29 @@ export default {
 		*/
         mounted: function() {
             $.ajax({
-                url: 'http://localhost:8080/aj/pic/get',
+                url: 'http://localhost:8080/aj/pic/getadmin',
 				data : {
 					page : 1,
-					limit : 18,
-					// category : 1
+					limit : 18
 				},
                 success: (rs) => {
                     console.log(rs)
-                    // this.list = rs.data.data;
+                    this.typelist = rs.data.pic_type;
                 }
             })
         },
         methods: {
+			addType(){
+				$.ajax({
+	                url: 'http://localhost:8080/aj/pic/setadmin',
+					data : {
+						type : this.newType
+					},
+	                success: (rs) => {
+	                    console.log(rs)
+	                }
+	            })
+			},
             uploadImg(ev) {
                 var formData = new FormData();
                 Array.from(ev.target.files).forEach((item) => {
