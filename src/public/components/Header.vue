@@ -97,7 +97,7 @@ header {
             </svg>
             <span>预览</span>
         </li>
-        <li v-if="page != 'list'" @click="savePhoneData(phoneData)">
+        <li v-if="page != 'list'" @click="savePhoneData()">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-baocun"></use>
             </svg>
@@ -124,12 +124,9 @@ import {
 }
 from 'vuex'
 
-import * as types from '../../public/tpl/types.js'
+import * as types from '../../page/edit/tpl/types.js'
 import $ from 'jQuery'
 export default {
-    computed: {
-        ...mapGetters(['phoneData'])
-    },
 	props : {
 		page : {
 			type : String,

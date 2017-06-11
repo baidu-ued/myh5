@@ -1,27 +1,22 @@
-let multiparty = require('multiparty');
-let exec = require('child_process').exec;
-let cwd = process.cwd();
-let path = require('path');
-let sizeOf = require('image-size');
-let dbHandel = require('../../db/handel.js')
-let util = require('../../util/index.js')
-let app = require('../../../build/dev-server.js')
-let fs = require('fs')
-let { getPicSync, getPicCountSync, delPicSync } = require('../../db/edit/pic.js')
-let http = require('http')
-let get = (req, res) => {
+const multiparty = require('multiparty');
+const exec = require('child_process').exec;
+const cwd = process.cwd();
+const path = require('path');
+const sizeOf = require('image-size');
+const dbHandel = require('../../db/handel.js')
+const util = require('../../util/index.js')
+const app = require('../../../build/dev-server.js')
+const fs = require('fs')
+const { saveCollectionSync, getCountSync, getDataSync, delDataSync } = require('../../promisify/index.js')
+const http = require('http')
+const get = (req, res) => {
 	let pics = dbHandel.getModel('pics');
 	(async() => {
-		let find = {};
-		if (req.query.type) {
-			find.type = req.query.type;
-		}
-		console.log(req.query)
-		let count = await getPicCountSync(pics);
-		let data = await getPicSync(pics, {
+		let count = await getCountSync(pics, {});
+		let data = await getDataSync(pics, {
 			limit: req.query.limit,
 			page: req.query.page,
-			find: find
+			order : { _id: -1 }
 		});
 		res.send({
 			status: 1,
@@ -36,93 +31,64 @@ let get = (req, res) => {
 		})
 	})()
 }
-let save = (req, res) => {
+const save = (req, res) => {
 	let form = new multiparty.Form();
 	form.parse(req, (err, fields, files) => {
 		if (err) throw err;
-		let pics = dbHandel.getModel('pics');
-		let data = [];
-		if (!files['picture']) {
-			res.send({
-				status: 1,
-				msg: '不成功'
-			})
-			return;
-		}
-		files['picture'].forEach((item) => {
-			exec('cp ' + item.path + ' ' + path.resolve(cwd, 'server/dbimg/'));
-			let pic_id = util.md5('pic');
-			data.push({
-				src: 'http://localhost:8080/dbimg/' + path.basename(item.path),
-				pic_id: pic_id
-			});
-			let dimensions = sizeOf(item.path);
-			new pics({
-				username: req.cookies.username,
-				pic_id: pic_id,
-				src: 'http://localhost:8080/dbimg/' + path.basename(item.path),
-				width: dimensions.width,
-				height: dimensions.height
-			}).save(() => {
+		(async() => {
+			let pics = dbHandel.getModel('pics');
+			let data = [];
+			if (!files['picture']) {
 				res.send({
 					status: 1,
-					msg: '保存成功',
-					data: data
+					msg: '类型应该为picture'
 				})
-			});
-		})
+				return;
+			}
+			for (let i = 0; i < files['picture'].length; i++) {
+				const item = files['picture'][i]
+				exec('cp ' + item.path + ' ' + path.resolve(cwd, 'server/dbimg/'))
+				const pic_id = util.md5('pic')
+				data.push({
+					src: 'http://localhost:8080/dbimg/' + path.basename(item.path),
+					pic_id: pic_id
+				})
+				const dimensions = sizeOf(item.path)
+				await saveCollectionSync(pics, {
+					username: req.cookies.username,
+					pic_id: pic_id,
+					src: 'http://localhost:8080/dbimg/' + path.basename(item.path),
+					width: dimensions.width,
+					height: dimensions.height
+				})
+			}
+			res.send({
+				status: 1,
+				msg: '上传成功',
+				data : data
+			})
+		})()
 	})
 }
-let del = (req, res) => {
+const del = (req, res) => {
 	let pics = dbHandel.getModel('pics');
 	(async() => {
-		let status = await delPicSync(pics, req.query.pic_id);
+		// let status = await delDataSync(pics, req.query.pic_id);
+		let list = req.query.pic_id;
+		list = typeof list == 'string' ? list.split() : list
+		let status = await delDataSync(pics, {
+			find: {
+				pic_id: {
+					$in: list
+				}
+			}
+		});
 		res.send({
 			status: 1,
 			msg: status ? '删除成功' : '删除失败'
 		})
 	})()
 }
-let change = (req, res) => {
-	let pics = dbHandel.getModel('pics');
-	(async() => {
-		pics.update({ pic_id: req.query.pic_id }, { type: req.query.type }, () => {
-			res.send({
-				msg: '替换成功'
-			})
-		})
-	})()
-}
-let pictype = (req, res) => {
-	let pics = dbHandel.getModel('admin');
-	if (req.query.act == 'add') {
-		pics.find((err, docs) => {
-			if (err) throw err
-			let pic_type = docs[0].pic_type;
-			let id = pic_type[pic_type.length - 1].id + 1;
-			pic_type.push({
-				name: req.query.type,
-				id: id
-			})
-			pics.update({}, { pic_type: pic_type }, (err, docs) => {
-				if (err) throw error
-				console.log(docs)
-				res.send({
-					msg: '添加成功'
-				})
-			})
-		})
-	} else if (req.query.act == 'get') {
-		pics.find((err, docs) => {
-			if (err) throw err
-			res.send({
-				data: docs[0]
-			})
-		})
-	}
-}
-app.get('/aj/pic/pictype', pictype); //删除图片
-app.get('/aj/pic/change', change); //删除图片
 app.get('/aj/pic/get', get); //获取图片
 app.get('/aj/pic/del', del); //删除图片
 app.post('/aj/pic/save', save); //保存图片
