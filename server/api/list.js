@@ -1,78 +1,48 @@
-let dbHandel = require('../db/handel.js')
-let app = require('../../build/dev-server.js')
-
-
-
-
-let get = (req, res)=> {
-	let obj = req.query
-	let myh5 = dbHandel.getModel('myh5')
-	let type = String(obj.type) || 'news'
-	let length = Number(obj.length) || 12
-	let page = Number((obj.page - 1) * length)
-
-	var readFile1 = ()=> {
-		return new Promise((resolve, reject) =>{
-			myh5.count({
-				// type : type
-				username : req.cookies.username
-			}, (err, docs)=>{
-				resolve(docs)
-			})
-		});
-	};
-	var readFile2 = () =>{
-		return new Promise((resolve, reject)=> {
-			myh5.where({
-				username : req.cookies.username
-			}).skip(page).limit(length).exec((err, docs)=>  {
-				resolve(docs)
-			})
-		});
-	};
-	var asyncReadFile = async ()=>  {
-		var count = await readFile1();
-		var data = await readFile2();
+const dbHandel = require('../db/handel.js')
+const app = require('../../build/dev-server.js')
+const util = require('util')
+const { getCountSync, getDataSync } = require('../promisify/index.js')
+const get = (req, res) => {
+	(async() => {
+		const myh5 = dbHandel.getModel('myh5')
+		const count = await getCountSync(myh5, {
+			username: req.cookies.username
+		})
+		const data = await getDataSync(myh5, {
+			limit: req.query.limit,
+			page: req.query.page,
+			find: {
+				username: req.cookies.username
+			}
+		})
 		res.send({
 			status: 1,
 			msg: '获取成功',
 			data: {
-				data: data,
-				pageNum : Math.ceil(count / length)
+				count: count,	//总数
+				data: data.data,	//数据
+				limit : data.limit,	//每页最大数量
+				page : data.page,	//当前第几页
+				pageNum: Math.ceil(count / data.limit)	//总共多少页
 			}
 		})
-	};
-	asyncReadFile()
+	})()
 }
-let add = (req, res)=> {
-	let myh5 = dbHandel.getModel('myh5');
-	(async ()=>{
-		let count = await getCount(myh5);
-
+const add = (req, res) => {
+	(async() => {
+		const myh5 = dbHandel.getModel('myh5')
+		const count = await getCountSync(myh5, {})
 		new myh5({
-			work_id : ++count,
-			data : {},
-			username : req.cookies.username
-		}).save();
-
-		res.send({
-			msg : '创建成功'
+			work_id: count + 1,
+			data: {},
+			username: req.cookies.username
+		}).save((err, docs)=>{
+			if(err) throw err
+			res.send({
+				msg: '创建成功'
+			})
 		})
-
-
-	})();
+	})()
 }
-/**
- * 获取所有图片数
- * @param collection
- * @return 成功返回总数
- */
-let getCount = (collection) => {
-	return new Promise((resolve, reject) => {
-		resolve(collection.count());
-	})
-}
-
-
-app.get('/api/list/get', get); //获取页面数据
-app.get('/api/list/add', add); //获取页面数据
+app.get('/api/list/get', get)
+app.get('/api/list/add', add)

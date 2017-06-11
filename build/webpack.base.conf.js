@@ -18,7 +18,7 @@ function getEntries(globPath) {
 	});
 	return entries;
 }
-var entries = getEntries('src/entry/**/index.js');
+var entries = getEntries('src/page/**/index.js');
 var entry = {}
 Object.keys(entries).forEach(function(name) {
 	// 每个页面生成一个entry，如果需要HotUpdate，在这里修改entry

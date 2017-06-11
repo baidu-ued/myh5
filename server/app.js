@@ -4,8 +4,8 @@ var mongoose = require('mongoose');
 mongoose.Promise = Promise;
 var db = mongoose.createConnection('mongodb://localhost/test');
 
-require('./api/login')
-require('./api/edit')
+// require('./api/login')
+// require('./api/edit')
 require('./api/list')
 
 app.listen(8080, function(err) {

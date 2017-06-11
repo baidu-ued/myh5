@@ -1,0 +1,12 @@
+html, body {
+  height: 100%;
+}
+
+html {
+  background: #57585d;
+  overflow: hidden;
+}
+
+body {
+  font-size: 12px;
+}
