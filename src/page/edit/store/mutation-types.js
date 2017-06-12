@@ -16,6 +16,7 @@ export const RELOAD_ANI = 'RELOAD_ANI'; //隐藏元素
 export const CHANGE_ANI = 'CHANGE_ANI'; //隐藏元素
 export const CHANGE_ITEM_STYLE = 'CHANGE_ITEM_STYLE'; //改变元素style
 export const CHANGE_ITEM_EVENT = 'CHANGE_ITEM_EVENT'; //改变元素style
+export const CHANGE_ITEM_CONTENT = 'CHANGE_ITEM_CONTENT';
 export const CHANGE_CURRENT_MAIN = 'CHANGE_CURRENT_MAIN'; //改变当前页的main参数
 /*-----------------------------------end 编辑器-------------------------------------------*/
 /*-----------------------------------面板-------------------------------------------*/

@@ -70,17 +70,11 @@ header {
             </svg>
             <span>热区</span>
         </li>
-        <li>
+        <li @click="panelShow(types.QRCODE)">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-x-mpg"></use>
             </svg>
-            <span>视频</span>
-        </li>
-        <li>
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-biaodan"></use>
-            </svg>
-            <span>表单</span>
+            <span>二维码</span>
         </li>
     </ul>
     <ul class="opt-panel">

@@ -153,7 +153,6 @@
             <p>文本</p>
             <textarea type="text" v-model="currentItem.content"></textarea>
         </div> -->
-		{{currentItem.event}}
         <div class="item-box">
             <label>点击跳页</label>
             <input @input="changeEvent([ 'goto', $event.target.value])" type="text" />
@@ -293,6 +292,7 @@ import {
 from 'vuex'
 import Vue from 'vue'
 import $ from 'jQuery'
+import tpl from '../tpl/tpl.js'
 import * as types from '../tpl/types.js'
 export default {
     computed: {
@@ -311,18 +311,10 @@ export default {
             }
     },
     methods: {
-        ...mapActions(['changeEvent', 'changeMain', 'changeStyle', 'changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
+        ...mapActions(['changeContent', 'changeEvent', 'changeMain', 'changeStyle', 'changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
             selectPanel: function(index) {
                 this.listIndex = index;
             },
-            bbbbb: function() {
-                // this.currentItem.style.animation = '';
-                // setTimeout(() =>{
-                // 	// for(var attr in this.currentItem.ani){
-                // 	// 	this.currentItem.style.animation += this.currentItem.ani[attr] + ' ';
-                // 	// }
-                // }, 100)
-            }
     },
     data: function() {
         return {

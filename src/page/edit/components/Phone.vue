@@ -86,9 +86,8 @@
 <section class="box-wrap" v-my-select @mousedown="selectItem(-1)">
     <div class="phone-wrap">
         <div class="phone-top"></div>
-		<!-- {{currentItem}} -->
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
-            <div v-if="i.if != false"  @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index}" :style="i.style"v-for="(i, index) in currentPhone.data">
+            <div @dblclick="panelShow(types.QRCODE)" v-if="i.if != false"  @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index}" :style="i.style"v-for="(i, index) in currentPhone.data">
 				<div class="phone-item-container" :id="i.attr.id" v-html="i.content"></div>
                 <div v-show="currentItemId == index">
                     <div v-my-changesize="{type : 'nw'}" class="ui-resizable-handle ui-resizable-nw"></div>
@@ -115,11 +114,16 @@ from 'vuex'
 import '../directive/drag.js'
 import '../directive/changesize.js'
 import '../directive/select.js'
-
+import * as types from '../tpl/types.js'
 export default {
     methods: {
-        ...mapActions(['selectItem', 'delItem']),
+        ...mapActions(['selectItem', 'delItem', 'panelShow']),
     },
+	data(){
+		return {
+			types : types
+		}
+	},
     computed: {
         ...mapGetters(['currentPhone', 'currentItemId', 'currentItem'])
     },

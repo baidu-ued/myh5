@@ -41,16 +41,18 @@ const actions = {
 	},
 	/* 增加元素 */
 	addItem({ commit, state, rootState, getters }, payload) {
-		let item = tpl[payload.type](payload);
-		let id = 'myh5_item_' + rootState.phone.main.itemNumId++;
-		item.attr ? item.attr.id = id : item.attr = { id: id };
-		commit(types.ADD_ITEM, {
-			currentPhone: getters.currentPhone,
-			item: item
-		});
-		commit(types.PANEL_HIDE, {
-			type: payload.type
-		})
+		(async() => {
+			let item = await tpl[payload.type](payload);
+			let id = 'myh5_item_' + rootState.phone.main.itemNumId++;
+			item.attr ? item.attr.id = id : item.attr = { id: id };
+			commit(types.ADD_ITEM, {
+				currentPhone: getters.currentPhone,
+				item: item
+			});
+			commit(types.PANEL_HIDE, {
+				type: payload.type
+			})
+		})()
 	},
 	delItem({ commit, state, getters }, index) {
 		commit(types.DEL_ITEM, {
@@ -78,10 +80,30 @@ const actions = {
 			currentItem: getters.currentItem,
 			data: data
 		})
+	},
+	changeContent({ commit, state, getters }, data) {
+		commit(types.CHANGE_ITEM_CONTENT, {
+			currentItem: getters.currentItem,
+			data: data
+		})
+	},
+	changeAttr({ commit, state, getters }, data) {
+		commit('changeAttr', {
+			currentItem: getters.currentItem,
+			data : data
+		})
 	}
 }
 // mutations
 const mutations = {
+	['changeAttr'](state, { currentItem, data }) {
+		for(let attr in data){
+			Vue.set(currentItem.attr, attr, data[attr]);
+		}
+	},
+	[types.CHANGE_ITEM_CONTENT](state, { currentItem, data }) {
+		Vue.set(currentItem, 'content', data);
+	},
 	[types.SELECT_ITEM](state, { index }) {
 		state.currentItemId = index;
 	},
