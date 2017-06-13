@@ -6,6 +6,7 @@ import phonex from './modules/phone.js'
 import panel from './modules/panel.js'
 import setting from './modules/setting.js'
 import * as types from './mutation-types.js'
+import * as tplTypes from '../tpl/types.js'
 Vue.use(Vuex);
 const BASE_BLANK = {
 	main: {
@@ -26,6 +27,12 @@ export default new Vuex.Store({
 			},
 			data: [$.extend(true, {}, BASE_BLANK)]
 		},
+		tplTypes: tplTypes
+	},
+	getters: {
+		tplTypes(state) {
+			return state.tplTypes
+		}
 	},
 	actions: {
 		loadData({ commit, state }, data) {
@@ -36,8 +43,8 @@ export default new Vuex.Store({
 					work_id: work_id
 				},
 				success: (rs) => {
-					console.log(rs)
-					let data = rs.data.data
+					// console.log(rs)
+					let data = rs.data.data;
 					if (!data) {
 						data = $.extend(true, {}, state.phone)
 					}

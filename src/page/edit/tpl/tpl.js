@@ -1,15 +1,7 @@
 import jQuery from 'jQuery'
 import * as types from './types.js'
 import { PHONE_WIDTH } from '../../../public/constant/index.js'
-/*
-	j_mydata_1
-	最后一个元素的id + 1;
-*/
 import store from '../store/index.js'
-
-function getNewId() {
-	return 'myh5_item_' + store.getters.phoneData.main.itemNumId++;
-}
 export default {
 	/*
 		文本
@@ -83,8 +75,8 @@ export default {
 			type: types.QRCODE,
 			content: '<div><img style="width:100%;height:100%;" src="' + rs.url + '"/></div>',
 			class: types.QRCODE.toLowerCase(),
-			attr : {
-				'href' : url
+			attr: {
+				'href': url
 			},
 			style: {
 				left: '50px',

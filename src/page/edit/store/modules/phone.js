@@ -35,15 +35,17 @@ const actions = {
 	/* 改变元素的style */
 	changeStyle({ commit, state, getters }, payload) {
 		commit(types.CHANGE_ITEM_STYLE, {
-			currentItem: getters.currentItem,
+			item: payload.item || getters.currentItem,
 			payload: payload
 		})
 	},
 	/* 增加元素 */
 	addItem({ commit, state, rootState, getters }, payload) {
 		(async() => {
-			let item = await tpl[payload.type](payload);
-			let id = 'myh5_item_' + rootState.phone.main.itemNumId++;
+			const item = await tpl[payload.type](payload);
+			const id = 'myh5_item_' + rootState.phone.main.itemNumId++;
+			const zIndex = getters.currentPhone.data.length + 1;
+			item.style['z-index'] = zIndex;
 			item.attr ? item.attr.id = id : item.attr = { id: id };
 			commit(types.ADD_ITEM, {
 				currentPhone: getters.currentPhone,
@@ -65,7 +67,7 @@ const actions = {
 	},
 	reloadAllAni({ commit, state, dispatch, getters }) {},
 	reloadAni({ commit, state, dispatch, getters }) {
-		let name = getters.currentItem.style['animation-name'];
+		const name = getters.currentItem.style['animation-name'];
 		dispatch('changeStyle', {
 			'animation-name': 'none'
 		});
@@ -88,16 +90,97 @@ const actions = {
 		})
 	},
 	changeAttr({ commit, state, getters }, data) {
-		commit('changeAttr', {
+		commit(types.CHANGE_ITEM_ATTR, {
 			currentItem: getters.currentItem,
-			data : data
+			data: data
 		})
-	}
+	},
+	/*
+		置顶
+	*/
+	toTopLimit({ commit, state, getters, dispatch }) {
+		const nowIndex = getters.currentItem.style['z-index'];
+		getters.currentPhone.data.forEach((item) => {
+			if (item.style['z-index'] > nowIndex) {
+				commit(types.CHANGE_ITEM_STYLE, {
+					item: item,
+					payload: {
+						'z-index': item.style['z-index'] - 1
+					}
+				})
+			}
+		})
+		commit(types.CHANGE_ITEM_STYLE, {
+			item: getters.currentItem,
+			payload: {
+				'z-index': getters.currentPhone.data.length
+			}
+		})
+	},
+	toTop({ commit, state, getters, dispatch }) {
+		const nowIndex = getters.currentItem.style['z-index'];
+		for (let i = 0; i < getters.currentPhone.data.length; i++) {
+			if (getters.currentPhone.data[i].style['z-index'] == nowIndex + 1) {
+				commit(types.CHANGE_ITEM_STYLE, {
+					item: getters.currentPhone.data[i],
+					payload: {
+						'z-index': getters.currentPhone.data[i].style['z-index'] - 1
+					}
+				})
+				break;
+			}
+		}
+		commit(types.CHANGE_ITEM_STYLE, {
+			item: getters.currentItem,
+			payload: {
+				'z-index': nowIndex + 1
+			}
+		})
+	},
+	toBottomLimit({ commit, state, getters, dispatch }) {
+		const nowIndex = getters.currentItem.style['z-index'];
+		getters.currentPhone.data.forEach((item) => {
+			if (item.style['z-index'] < nowIndex) {
+				commit(types.CHANGE_ITEM_STYLE, {
+					item: item,
+					payload: {
+						'z-index': item.style['z-index'] + 1
+					}
+				})
+			}
+		})
+		commit(types.CHANGE_ITEM_STYLE, {
+			item: getters.currentItem,
+			payload: {
+				'z-index': 1
+			}
+		})
+	},
+	toBottom({ commit, state, getters, dispatch }) {
+		const nowIndex = getters.currentItem.style['z-index'];
+		for (let i = 0; i < getters.currentPhone.data.length; i++) {
+			if (getters.currentPhone.data[i].style['z-index'] == nowIndex - 1) {
+				commit(types.CHANGE_ITEM_STYLE, {
+					item: getters.currentPhone.data[i],
+					payload: {
+						'z-index': getters.currentPhone.data[i].style['z-index'] + 1
+					}
+				})
+				break;
+			}
+		}
+		commit(types.CHANGE_ITEM_STYLE, {
+			item: getters.currentItem,
+			payload: {
+				'z-index': nowIndex - 1
+			}
+		})
+	},
 }
 // mutations
 const mutations = {
-	['changeAttr'](state, { currentItem, data }) {
-		for(let attr in data){
+	[types.CHANGE_ITEM_ATTR](state, { currentItem, data }) {
+		for (const attr in data) {
 			Vue.set(currentItem.attr, attr, data[attr]);
 		}
 	},
@@ -107,9 +190,9 @@ const mutations = {
 	[types.SELECT_ITEM](state, { index }) {
 		state.currentItemId = index;
 	},
-	[types.CHANGE_ITEM_STYLE](state, { currentItem, payload }) {
-		for (let attr in payload) {
-			Vue.set(currentItem.style, attr, payload[attr])
+	[types.CHANGE_ITEM_STYLE](state, { item, payload }) {
+		for (const attr in payload) {
+			Vue.set(item.style, attr, payload[attr])
 		}
 	},
 	[types.DEL_ITEM](state, { currentPhone, index }) {

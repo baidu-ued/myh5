@@ -21,6 +21,9 @@ export const getPic = function(data, cb) {
 		data: data,
 		success: (rs) => {
 			console.log(rs)
+			rs.data.data.forEach((item)=>{
+				item.src = 'http://10.236.55.45:8080/dbimg/' + item.src;
+			})
 			cb && cb(rs);
 		}
 	});

@@ -16,8 +16,8 @@
 		<Phone></Phone>
 		<Panel></Panel>
 		<Setting></Setting>
-		<PanelPic v-show="panelStatus[types.PIC]"></PanelPic>
-		<PanelQrcode v-if="panelStatus[types.QRCODE]"></PanelQrcode>
+		<PanelPic v-show="panelStatus[tplTypes.PIC]"></PanelPic>
+		<PanelQrcode v-if="panelStatus[tplTypes.QRCODE]"></PanelQrcode>
 	</div>
 </div>
 </template>
@@ -30,7 +30,6 @@ import Page from './Page.vue'
 import Phone from './Phone.vue'
 import Panel from './Panel.vue'
 import Setting from './Setting.vue'
-import * as types from '../tpl/types.js'
 import {
 	mapGetters,
 	mapActions
@@ -41,15 +40,10 @@ export default {
 		...mapActions(['selectItem', 'loadData']),
 	},
 	computed: {
-		...mapGetters(['panelStatus'])
+		...mapGetters(['panelStatus', 'tplTypes'])
 	},
 	mounted() {
 		this.loadData();
-	},
-	data() {
-		return {
-			types: types
-		}
 	},
 	components: {
 		PublicHeader,

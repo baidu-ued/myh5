@@ -313,7 +313,7 @@
 <section id="pic-layer-box" class="modal-dialog">
     <div class="header">
         <h4>素材库</h4>
-        <a href="javascript:void(0);" class="close" @click="panelHide(types.PIC)">x</a>
+        <a href="javascript:void(0);" class="close" @click="panelHide(tplTypes.PIC)">x</a>
     </div>
     <div class="main">
         <div class="panel">
@@ -343,7 +343,7 @@
                 <li class="item" v-for="i in piclist" :data-width="i.width" :data-height="i.height" :style="{'background-image' : 'url(' + i.src +')', 'background-size' : i.bgSizeContain ? 'contain' : 'auto'}">
                     <div class="marker">
                         <a @click="del(i.pic_id)" href="javascript:void(0);">删除</a>
-                        <a @click="addItem({type : types.PIC, width : i.width, height : i.height, src : i.src})" href="javascript:void(0);">使用</a>
+                        <a @click="addItem({type : tplTypes.PIC, width : i.width, height : i.height, src : i.src})" href="javascript:void(0);">使用</a>
                     </div>
                 </li>
             </ul>
@@ -374,19 +374,18 @@ import {
 from 'vuex'
 import Pagination from 'vuejs-pagination'
 import * as api from '../../api/index.js'
-import * as types from '../../tpl/types.js'
 export default {
     components: {
         Pagination
     },
     computed: {
-        currentPanel() {
-            return this.panel.list[this.panel.index]
-        }
+        ...mapGetters(['tplTypes']),
+            currentPanel() {
+                return this.panel.list[this.panel.index]
+            }
     },
     data() {
         return {
-            types: types,
             activePage: 1,
             piclist: [],
             pageNum: 1,
@@ -396,17 +395,17 @@ export default {
             panel: {
                 index: 0,
                 list: [{
-                    name: '我的上传',
-                    ename: ''
-                }]
-				// list: [{
-                //     name: '图片库',
-                //     ename: 'library',
-                //     type: '100'
-                // }, {
-                //     name: '我的上传',
-                //     ename: ''
-                // }]
+                        name: '我的上传',
+                        ename: ''
+                    }]
+                    // list: [{
+                    //     name: '图片库',
+                    //     ename: 'library',
+                    //     type: '100'
+                    // }, {
+                    //     name: '我的上传',
+                    //     ename: ''
+                    // }]
             },
         }
     },
@@ -471,7 +470,7 @@ export default {
                 this.getpic();
             },
             uploadImg(ev) {
-				var formData = new FormData();
+                var formData = new FormData();
                 Array.from(ev.target.files).forEach(function(item) {
                     formData.append('picture', item);
                 });

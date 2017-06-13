@@ -57,7 +57,7 @@ const save = (req, res) => {
 				await saveCollectionSync(pics, {
 					username: req.cookies.username,
 					pic_id: pic_id,
-					src: 'http://localhost:8080/dbimg/' + path.basename(item.path),
+					src: path.basename(item.path),
 					width: dimensions.width,
 					height: dimensions.height
 				})

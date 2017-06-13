@@ -2,6 +2,7 @@
 
 .box-wrap {
     margin: 20px auto;
+	position: relative;
     .phone-wrap {
         width: 320px;
         // height: 520px;
@@ -15,7 +16,7 @@
             background: url(../images/phone_bottom1.png);
         }
         .phone {
-            height: 520px;
+            height: 486px;
             background: #fff;
             position: relative;
             .control-mask-show {
@@ -83,8 +84,8 @@
 
 <template>
 
-<section class="box-wrap" v-my-select @mousedown="selectItem(-1)">
-    <div class="phone-wrap">
+<section class="box-wrap">
+    <div class="phone-wrap" v-my-select @mousedown="selectItem(-1)">
         <div class="phone-top"></div>
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
             <div @dblclick="panelShow(types.QRCODE)" v-if="i.if != false"  @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index}" :style="i.style"v-for="(i, index) in currentPhone.data">
@@ -100,6 +101,12 @@
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
     </div>
+	<div style="width:50px;font-size:12px;display:flex;flex-direction:column;height:100px;position:absolute;right:-50px;top:30%;">
+		<span @click="toTopLimit">置顶</span>
+		<span @click="toTop">向上一级</span>
+		<span @click="toBottom">向下一级</span>
+		<span @click="toBottomLimit">置底</span>
+	</div>
 </section>
 
 </template>
@@ -117,7 +124,7 @@ import '../directive/select.js'
 import * as types from '../tpl/types.js'
 export default {
     methods: {
-        ...mapActions(['selectItem', 'delItem', 'panelShow']),
+        ...mapActions(['selectItem', 'delItem', 'panelShow', 'toTop', 'toTopLimit', 'toBottom', 'toBottomLimit']),
     },
 	data(){
 		return {

@@ -1,6 +1,7 @@
 <style scoped lang="scss">
 
 .modal-dialog {
+	z-index: 999;
     user-select: none;
     width: 500px;
     background: #f7f7f7;
@@ -112,7 +113,7 @@
 <section id="pic-layer-box" class="modal-dialog">
     <div class="header">
         <h4>二维码</h4>
-        <a href="javascript:void(0);" class="close" @click="panelHide(types.QRCODE)">x</a>
+        <a href="javascript:void(0);" class="close" @click="panelHide(tplTypes.QRCODE)">x</a>
     </div>
     <div class="main">
         <div class="text">
@@ -122,7 +123,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-cancle" @click="panelHide(types.QRCODE)">取消</a>
+            <a class="modal-cancle" @click="panelHide(tplTypes.QRCODE)">取消</a>
             <a class="btn btn-primary" @click="confirm()">确定</a>
         </div>
     </div>
@@ -137,13 +138,12 @@ import {
     mapActions
 }
 from 'vuex'
-import * as types from '../../tpl/types.js'
 import tpl from '../../tpl/tpl.js'
 import { hasSelected } from '../../util/index.js'
 
 export default {
     computed: {
-		...mapGetters(['currentItem', 'currentItemId']),
+		...mapGetters(['currentItem', 'currentItemId', 'tplTypes']),
         currentPanel() {
             return this.panel.list[this.panel.index]
         },
@@ -154,7 +154,6 @@ export default {
     data() {
         return {
             url: location.href,
-            types: types
         }
     },
     methods: {
@@ -168,11 +167,11 @@ export default {
 	                this.changeContent(newItem.content);
 				}else{
 					this.addItem({
-						type : types.QRCODE,
+						type : this.tplTypes.QRCODE,
 						url  : this.$refs.input.value
 					})
 				}
-				this.panelHide(types.QRCODE)
+				this.panelHide(this.tplTypes.QRCODE)
             }
     }
 }

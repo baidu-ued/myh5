@@ -4,6 +4,9 @@ let hot = {
 		$('.' + itemTypes.HOT_SPACE).css('opacity', 0);
 	}
 }
+const ctrlAnimation = {
+
+}
 $(document).on('click', '.item', function(){
 	console.log(rootSwiper.slides.length)
 	let arr = $(this).attr('event').split(',');
@@ -19,6 +22,7 @@ $(document).on('click', '.item', function(){
 
 
 hot.init();
+
 window.rootSwiper = new Swiper('#wrapAll', {
 	direction: 'vertical',
 	loop: phoneSet.allowPage,
