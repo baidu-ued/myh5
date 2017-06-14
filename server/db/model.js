@@ -20,5 +20,10 @@ module.exports = {
 		'width': { type: Number, required: false },
 		'height': { type: Number, required: false },
 		'type' : { type: String, required: false },
+	},
+	'music': {
+		'username': { type: String, required: false },
+		'src': { type: String, required: true },
+		'type' : { type: String, required: false },
 	}
 }

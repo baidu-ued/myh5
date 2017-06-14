@@ -1,8 +1,8 @@
 <style scoped lang="scss">
 
 .modal-dialog {
+    z-index: 999;
     width: 968px;
-	z-index: 999;
     background: #f7f7f7;
     position: absolute;
     left: calc(50% - 484px);
@@ -122,6 +122,9 @@
                     li:hover {
                         color: #08a1ef;
                     }
+                    li.active {
+                        color: #08a1ef;
+                    }
                 }
                 .category-input {
                     margin: 9px 0;
@@ -144,53 +147,29 @@
                 display: flex;
                 flex-wrap: wrap;
                 padding: 20px;
-                height: 380px;
+                height: 300px;
                 align-content: flex-start;
+                flex-direction: column;
+                .item:nth-child(2n-1) {
+                    background: #f7f7f7;
+                }
                 .item {
-                    width: 115px;
-                    height: 115px;
-                    background: #c9c9c9;
-                    margin: 0 15px 15px 0;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                    background-color: #E6EBED;
-                    position: relative;
-                    .marker {
-                        width: 100%;
-                        height: 100%;
-                        position: absolute;
-                        background: rgba(0, 0, 0, 0.6);
-                        opacity: 0;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        flex-direction: column;
-                        a {
-                            display: block;
-                            width: 60px;
-                            height: 30px;
-                            text-align: center;
-                            line-height: 30px;
-                            margin: 5px 0;
-                            border-radius: 3px;
-                            color: #fff;
-                            border: 1px solid #fff;
-                            font-size: 14px;
-                        }
-                        a:hover {
-                            background: #59c7f9;
-                            border-color: #59c7f9;
-                        }
-                    }
+                    height: 30px;
+                    padding: 0 10px;
+                    font-size: 12px;
+                    line-height: 30px;
+                    color: #666;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: space-between;
                 }
+				.item.active{
+					background: #08a1ef;
+                    color: #fff;
+				}
                 .item:hover {
-                    .marker {
-                        opacity: 1;
-                    }
-                }
-                .item:nth-child(6n) {
-                    margin: 0 0 15px;
+                    background: #08a1ef;
+                    color: #fff;
                 }
             }
             .loading {
@@ -211,6 +190,11 @@
                     font-weight: bold;
                 }
             }
+			.cancel-music{
+				font-size: 12px;
+				margin:20px 20px 0;
+				color: #76838f;
+			}
             .none-box {
                 padding-top: 160px;
                 width: 100%;
@@ -227,12 +211,52 @@
             }
             .page {
                 height: 60px;
+				display: flex;
+				padding:20px;
+				align-items: center;
+				justify-content: space-between;
             }
+			.modal-footer {
+	            // align-self: flex-end;
+	            // padding: 20px;
+	            .modal-cancle {
+	                margin-right: 20px;
+	                color: #76838f;
+	                cursor: pointer;
+	                padding: 7px 12px;
+	                line-height: 1.42857143;
+	                font-size: 14px;
+	            }
+	            .modal-cancle:hover {
+	                color: #08a1ef;
+	            }
+	        }
+	        .btn-primary {
+	            display: inline-block;
+	            margin-bottom: 0;
+	            font-weight: 400;
+	            text-align: center;
+	            vertical-align: middle;
+	            cursor: pointer;
+	            border: 1px solid transparent;
+	            white-space: nowrap;
+	            padding: 7px 12px;
+	            font-size: 14px;
+	            line-height: 1.42857143;
+	            border-radius: 3px;
+	            color: #fff;
+	            background-color: #44cb83;
+	        }
+	        .btn-primary:hover {
+	            color: #fff;
+	            background-color: #8cdfb3;
+	        }
         }
     }
 }
 
-</style> <style lang="scss"> .vue-pagination-container {
+</style>
+ <style lang="scss"> .vue-pagination-container {
     display: flex;
     align-items: center;
     // margin-left: 50px;
@@ -312,24 +336,25 @@
 <template>
 
 <section id="pic-layer-box" class="modal-dialog">
+	<audio ref="xaudio"></audio>
     <div class="header">
-        <h4>素材库</h4>
+        <h4>音乐素材</h4>
         <a href="javascript:void(0);" class="close" @click="panelHide(tplTypes.PIC)">x</a>
     </div>
     <div class="main">
         <div class="panel">
             <ul class="panel-list">
-                <li v-for="(i, index) in panel.list" @click="aaa(index)" class="item" :class="{active : index == panel.index}"><a href="javascript:void(0);">{{i.name}}</a></li>
+                <li v-for="(i, index) in panel.list" class="item" :class="{active : index == panel.index}"><a href="javascript:void(0);">{{i.name}}</a></li>
             </ul>
             <div class="upload">
                 <label>上传</label>
-                <input type="file" multiple="multiple" @change="uploadImg">
+                <!-- <input type="file" multiple="multiple" @change="uploadImg"> -->
             </div>
         </div>
         <div class="main-container">
-            <div v-if="currentPanel.ename == 'library'" class="category">
+            <div class="category">
                 <ul class="category-list">
-                    <li>最热</li>
+                    <li class="active">最热</li>
                     <li>汽车</li>
                     <li>gif</li>
                 </ul>
@@ -341,13 +366,18 @@
                 </div>
             </div>
             <ul v-if="listStatus == 'exist'" class="pic-list">
-                <li class="item" v-for="i in piclist" :data-width="i.width" :data-height="i.height" :style="{'background-image' : 'url(' + i.src +')', 'background-size' : i.bgSizeContain ? 'contain' : 'auto'}">
-                    <div class="marker">
-                        <a @click="del(i.pic_id)" href="javascript:void(0);">删除</a>
-                        <a @click="addItem({type : tplTypes.PIC, width : i.width, height : i.height, src : i.src})" href="javascript:void(0);">使用</a>
+                <li :data-src="i.path" :data-sourceid="i.sourceId" @click="xxx(index)" class="item" :class="{active : index == selectIndex}" v-for="(i, index) in piclist">
+                    <div>
+                        <span>{{i.name}}</span>
                     </div>
+                    <span @click="playAudio(i.path)">播放</span>
                 </li>
             </ul>
+			<div v-show="selectedMusic" class="cancel-music">
+				<span>{已选择}</span>
+				<span>{{selectedMusic}}</span>
+				<a @click="close" href="javascript:void(0);">关闭</a>
+			</div>
             <div class="loading" v-if="listStatus == 'none'">
                 <img src="../../images/loading.gif" />
                 <p>加载中，请稍后</p>
@@ -358,7 +388,11 @@
                 <p>{{tipMsg}}</p>
             </div>
             <div v-if="listStatus == 'exist'" class="page">
-                <Pagination :page-num="pageNum" :active-page="activePage" :page-size="7" v-on:change="changePage"></Pagination>
+                <Pagination :page-num="3" :active-page="1" :page-size="7" v-on:change=""></Pagination>
+				<div class="modal-footer">
+		            <a class="modal-cancle" @click="panelHide(tplTypes.QRCODE)">取消</a>
+		            <a class="btn btn-primary" @click="confirm()">确定</a>
+		        </div>
             </div>
         </div>
     </div>
@@ -389,98 +423,43 @@ export default {
         return {
             activePage: 1,
             piclist: [],
+			selectIndex : -1,
             pageNum: 1,
+			selectedMusic : '',
             tipMsg: '',
-            listStatus: 'none', // none 请求回来之前  exist 有内容   not-exist 没有内容
-
+            listStatus: 'exist', // none 请求回来之前  exist 有内容   not-exist 没有内容
             panel: {
                 index: 0,
                 list: [{
-                        name: '我的上传',
-                        ename: ''
-                    }]
-                    // list: [{
-                    //     name: '图片库',
-                    //     ename: 'library',
-                    //     type: '100'
-                    // }, {
-                    //     name: '我的上传',
-                    //     ename: ''
-                    // }]
+                    name: '我的上传',
+                    ename: ''
+                }]
             },
         }
     },
     mounted() {
-        this.getpic();
-    },
+		$.ajax({
+			url : 'http://store.eqxiu.com/api/product/cat/listProdByCate?attrGroupId=3&category=890040&pageNo=1&pageSize=10',
+			type : 'get',
+			success :(rs) =>{
+				this.piclist = rs.list;
+				console.log(rs)
+			}
+		})
+	},
     methods: {
         ...mapActions(['addItem', 'panelHide']),
-            del(id) {
-                api.delPic({
-                    pic_id: id
-                }, (rs) => {
-                    this.getpic();
-                });
-            },
-            aaa(index) {
-                this.panel.index = index;
-                api.getPic({
-                    limit: 18,
-                    page: this.activePage,
-                    type: 1005
-                }, (rs) => {
-                    this.pageNum = rs.data.pageNum;
-                    this.piclist = rs.data.data;
-                    this.piclist.forEach((item) => {
-                        if (item.width > 115 && item.height >= 115) {
-                            item.bgSizeContain = true;
-
-                        }
-                    })
-                    if (this.piclist.length == 0) {
-                        this.tipMsg = '您还没有上传图片，请点击左下角上传!';
-                        this.listStatus = 'not-exist';
-                    } else {
-                        this.listStatus = 'exist';
-                    }
-                })
-            },
-            getpic() {
-                api.getPic({
-                    limit: 18,
-                    page: this.activePage,
-                }, (rs) => {
-                    this.pageNum = rs.data.pageNum;
-                    this.piclist = rs.data.data;
-                    this.piclist.forEach((item) => {
-                        if (item.width > 115 && item.height >= 115) {
-                            item.bgSizeContain = true;
-
-                        }
-                    })
-                    if (this.piclist.length == 0) {
-                        this.tipMsg = '您还没有上传图片，请点击左下角上传!';
-                        this.listStatus = 'not-exist';
-                    } else {
-                        this.listStatus = 'exist';
-                    }
-                })
-            },
-            changePage(value) {
-                this.activePage = value;
-                this.getpic();
-            },
-            uploadImg(ev) {
-                var formData = new FormData();
-                Array.from(ev.target.files).forEach(function(item) {
-                    formData.append('picture', item);
-                });
-                api.savePic(formData, (rs) => {
-                    // this.piclist.push(...rs.data);
-                    this.activePage = 1;
-                    this.getpic();
-                });
-            }
+		xxx(index){
+			this.selectIndex = index;
+			this.selectedMusic = this.piclist[index].name
+		},
+		playAudio(a){
+			this.$refs.xaudio.src = 'http://res1.eqh5.com/' + a;
+			this.$refs.xaudio.play();
+		},
+		close(){
+			this.selectedMusic = '';
+		}
     }
 }
 

@@ -65,7 +65,12 @@
 </body>
 <script>
 var phoneSet = <%- JSON.stringify(workData.data.set) %>;
-// alert(window.screen.height)
+
+navigator.geolocation.getCurrentPosition(function(position){
+	alert(1)
+}, function(){
+	alert(2)
+})
 </script>
 <script src="http://localhost:8080/show.js"></script>
 </html>

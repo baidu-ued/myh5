@@ -32,3 +32,4 @@ app.get('/api/edit/get', get); //获取页面数据
 app.get('/api/edit/save', save); //保存数据
 require('./edit/pic.js')	//图片接口
 require('./edit/qrcode.js')	//二维码接口
+require('./edit/music.js')	//图片接口
