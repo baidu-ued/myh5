@@ -163,10 +163,10 @@
                     display: flex;
                     justify-content: space-between;
                 }
-				.item.active{
-					background: #08a1ef;
+                .item.active {
+                    background: #08a1ef;
                     color: #fff;
-				}
+                }
                 .item:hover {
                     background: #08a1ef;
                     color: #fff;
@@ -190,11 +190,11 @@
                     font-weight: bold;
                 }
             }
-			.cancel-music{
-				font-size: 12px;
-				margin:20px 20px 0;
-				color: #76838f;
-			}
+            .cancel-music {
+                font-size: 12px;
+                margin: 20px 20px 0;
+                color: #76838f;
+            }
             .none-box {
                 padding-top: 160px;
                 width: 100%;
@@ -211,52 +211,51 @@
             }
             .page {
                 height: 60px;
-				display: flex;
-				padding:20px;
-				align-items: center;
-				justify-content: space-between;
+                display: flex;
+                padding: 20px;
+                align-items: center;
+                justify-content: space-between;
             }
-			.modal-footer {
-	            // align-self: flex-end;
-	            // padding: 20px;
-	            .modal-cancle {
-	                margin-right: 20px;
-	                color: #76838f;
-	                cursor: pointer;
-	                padding: 7px 12px;
-	                line-height: 1.42857143;
-	                font-size: 14px;
-	            }
-	            .modal-cancle:hover {
-	                color: #08a1ef;
-	            }
-	        }
-	        .btn-primary {
-	            display: inline-block;
-	            margin-bottom: 0;
-	            font-weight: 400;
-	            text-align: center;
-	            vertical-align: middle;
-	            cursor: pointer;
-	            border: 1px solid transparent;
-	            white-space: nowrap;
-	            padding: 7px 12px;
-	            font-size: 14px;
-	            line-height: 1.42857143;
-	            border-radius: 3px;
-	            color: #fff;
-	            background-color: #44cb83;
-	        }
-	        .btn-primary:hover {
-	            color: #fff;
-	            background-color: #8cdfb3;
-	        }
+            .modal-footer {
+                // align-self: flex-end;
+                // padding: 20px;
+                .modal-cancle {
+                    margin-right: 20px;
+                    color: #76838f;
+                    cursor: pointer;
+                    padding: 7px 12px;
+                    line-height: 1.42857143;
+                    font-size: 14px;
+                }
+                .modal-cancle:hover {
+                    color: #08a1ef;
+                }
+            }
+            .btn-primary {
+                display: inline-block;
+                margin-bottom: 0;
+                font-weight: 400;
+                text-align: center;
+                vertical-align: middle;
+                cursor: pointer;
+                border: 1px solid transparent;
+                white-space: nowrap;
+                padding: 7px 12px;
+                font-size: 14px;
+                line-height: 1.42857143;
+                border-radius: 3px;
+                color: #fff;
+                background-color: #44cb83;
+            }
+            .btn-primary:hover {
+                color: #fff;
+                background-color: #8cdfb3;
+            }
         }
     }
 }
 
-</style>
- <style lang="scss"> .vue-pagination-container {
+</style> <style lang="scss"> .vue-pagination-container {
     display: flex;
     align-items: center;
     // margin-left: 50px;
@@ -336,7 +335,7 @@
 <template>
 
 <section id="pic-layer-box" class="modal-dialog">
-	<audio ref="xaudio"></audio>
+    <audio ref="xaudio"></audio>
     <div class="header">
         <h4>音乐素材</h4>
         <a href="javascript:void(0);" class="close" @click="panelHide(tplTypes.PIC)">x</a>
@@ -354,9 +353,7 @@
         <div class="main-container">
             <div class="category">
                 <ul class="category-list">
-                    <li class="active">最热</li>
-                    <li>汽车</li>
-                    <li>gif</li>
+                    <li :class="{active : category.index == index}" @click="category.index = index, get()" v-for="(i, index) in category.list">{{i.name}}</li>
                 </ul>
                 <div class="category-input">
                     <input type="text" placeholder="搜索" />
@@ -373,11 +370,11 @@
                     <span @click="playAudio(i.path)">播放</span>
                 </li>
             </ul>
-			<div v-show="selectedMusic" class="cancel-music">
-				<span>{已选择}</span>
-				<span>{{selectedMusic}}</span>
-				<a @click="close" href="javascript:void(0);">关闭</a>
-			</div>
+            <div v-show="selectedMusic" class="cancel-music">
+                <span>{已选择}</span>
+                <span>{{selectedMusic}}</span>
+                <a @click="close" href="javascript:void(0);">关闭</a>
+            </div>
             <div class="loading" v-if="listStatus == 'none'">
                 <img src="../../images/loading.gif" />
                 <p>加载中，请稍后</p>
@@ -388,11 +385,11 @@
                 <p>{{tipMsg}}</p>
             </div>
             <div v-if="listStatus == 'exist'" class="page">
-                <Pagination :page-num="3" :active-page="1" :page-size="7" v-on:change=""></Pagination>
-				<div class="modal-footer">
-		            <a class="modal-cancle" @click="panelHide(tplTypes.QRCODE)">取消</a>
-		            <a class="btn btn-primary" @click="confirm()">确定</a>
-		        </div>
+                <Pagination :page-num="pageNum" :active-page="activePage" v-on:change="change"></Pagination>
+                <div class="modal-footer">
+                    <a class="modal-cancle" @click="panelHide(tplTypes.QRCODE)">取消</a>
+                    <a class="btn btn-primary" @click="confirm()">确定</a>
+                </div>
             </div>
         </div>
     </div>
@@ -408,13 +405,13 @@ import {
 }
 from 'vuex'
 import Pagination from 'vuejs-pagination'
-import * as api from '../../api/index.js'
+import * as api from '../../api/music.js'
 export default {
     components: {
         Pagination
     },
     computed: {
-        ...mapGetters(['tplTypes']),
+        ...mapGetters(['tplTypes', 'current']),
             currentPanel() {
                 return this.panel.list[this.panel.index]
             }
@@ -422,44 +419,77 @@ export default {
     data() {
         return {
             activePage: 1,
-            piclist: [],
-			selectIndex : -1,
             pageNum: 1,
-			selectedMusic : '',
+            piclist: [],
+            selectIndex: -1,
+            selectedMusic: '',
             tipMsg: '',
             listStatus: 'exist', // none 请求回来之前  exist 有内容   not-exist 没有内容
             panel: {
                 index: 0,
                 list: [{
-                    name: '我的上传',
+                    name: '音乐库',
                     ename: ''
                 }]
             },
+            select: {
+                index: -1,
+                music: '',
+            },
+            category: {
+                index: 0,
+                list: [{
+                    name: '年中大促',
+                    category: 890009
+                }, {
+                    name: '招聘',
+                    category: 889901
+                }, {
+                    name: '安静',
+                    category: 889905
+                }, {
+                    name: '欢快',
+                    category: 889906
+                }, {
+                    name: '庄重',
+                    category: 889908
+                }]
+            }
         }
     },
     mounted() {
-		$.ajax({
-			url : 'http://store.eqxiu.com/api/product/cat/listProdByCate?attrGroupId=3&category=890040&pageNo=1&pageSize=10',
-			type : 'get',
-			success :(rs) =>{
-				this.piclist = rs.list;
-				console.log(rs)
-			}
-		})
-	},
+        this.get();
+    },
     methods: {
         ...mapActions(['addItem', 'panelHide']),
-		xxx(index){
-			this.selectIndex = index;
-			this.selectedMusic = this.piclist[index].name
-		},
-		playAudio(a){
-			this.$refs.xaudio.src = 'http://res1.eqh5.com/' + a;
-			this.$refs.xaudio.play();
-		},
-		close(){
-			this.selectedMusic = '';
-		}
+            confirm() {
+
+            },
+            get() {
+                api.getMusic({
+                    pageNo: this.activePage,
+                    category: this.category.list[this.category.index].category
+                }, (rs) => {
+                    console.log(rs.map)
+                    this.piclist = rs.list;
+                    this.pageNum = Math.ceil(rs.map.count / 10);
+                })
+            },
+            xxx(index) {
+                this.selectIndex = index;
+                this.selectedMusic = this.piclist[index].name;
+            },
+            playAudio(a) {
+                this.$refs.xaudio.src = 'http://res1.eqh5.com/' + a;
+                this.$refs.xaudio.play();
+            },
+            close() {
+                this.selectedMusic = '';
+            },
+            change(index) {
+                this.activePage = index;
+                this.get();
+            }
     }
 }
 
