@@ -10,7 +10,8 @@ import * as tplTypes from '../tpl/types.js'
 Vue.use(Vuex);
 const BASE_BLANK = {
 	main: {
-		background: '#ffffff'
+		background: '#ffffff',
+		music : ''
 	},
 	data: []
 }
@@ -43,7 +44,7 @@ export default new Vuex.Store({
 					work_id: work_id
 				},
 				success: (rs) => {
-					// console.log(rs)
+					console.log(rs)
 					let data = rs.data.data;
 					if (!data) {
 						data = $.extend(true, {}, state.phone)
@@ -55,6 +56,7 @@ export default new Vuex.Store({
 			});
 		},
 		savePhoneData: function({ commit, state }) {
+			console.log(state.phone)
 			$.ajax({
 				url: '/api/edit/save',
 				type: 'get',

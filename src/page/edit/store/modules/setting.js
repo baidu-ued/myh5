@@ -25,6 +25,13 @@ const actions = {
 			payload: payload
 		})
 	},
+	changeMain({ commit, state, rootState }, { attr , data }) {
+		commit('xxx', {
+			phone: rootState.phone,
+			attr : 'music',
+			data: data
+		})
+	},
 }
 // mutations
 const mutations = {
@@ -35,6 +42,10 @@ const mutations = {
 		for (let attr in payload) {
 			Vue.set(phone.set, attr, payload[attr])
 		}
+	},
+	xxx(state, { phone, data, attr }) {
+
+		Vue.set(phone.main, attr, data)
 	},
 }
 export default {

@@ -7,6 +7,16 @@ let hot = {
 const ctrlAnimation = {
 
 }
+
+const music = {
+	init(){
+		if(phoneMain.music && phoneMain.music.path){
+			$('audio').attr('src', 'http://res1.eqh5.com/store/35a3f72ba00d441a8d9a6fab0a4b388a.mp3')
+			$('audio')[0].play();
+		}
+	}
+}
+
 $(document).on('click', '.item', function(){
 	console.log(rootSwiper.slides.length)
 	let arr = $(this).attr('event').split(',');
@@ -22,7 +32,7 @@ $(document).on('click', '.item', function(){
 
 
 hot.init();
-
+music.init();
 window.rootSwiper = new Swiper('#wrapAll', {
 	direction: 'vertical',
 	loop: phoneSet.allowPage,

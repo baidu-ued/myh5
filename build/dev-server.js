@@ -33,6 +33,7 @@ app.use(devMiddleware)
 let staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(express.static('src'));
 app.use('/dbimg', express.static('server/dbimg'));
+app.use('/dbmusic', express.static('server/dbmusic'));
 // 路由
 function judegLogin(req, res, next) {
 	if (!req.cookies.username) {

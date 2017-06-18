@@ -16,6 +16,7 @@
 		height: 100%;
 		position: relative;
 	}
+
 	.swiper-container {
 		width: 100%;
 		height: 100%;
@@ -47,24 +48,26 @@
 		<div class="swiper-wrapper">
 			<% workData.data.data.forEach(function(page){ %>
 				<div class="swiper-slide" style="position:position;width:100%;height:100%;background:<%= page.main.background %>">
-					<!-- <div class="xxx"> -->
+
 					<% page.data && page.data.forEach(function(item){ %>
 
 						<div event="<%- item.event %>" type="<%- item.type %>" class="item <%- item.class %>" style="position:absolute;<%- fn(item.style) %>">
 							<%- item.content %>
 						</div>
-					<% }) %>
-					<!-- </div> -->
+						<% }) %>
 				</div>
 				<% }) %>
 		</div>
 	</div>
+	<audio></audio>
 	<!-- built files will be auto injected -->
 	<script src="../../public/library/jquery.min.js"></script>
 	<script src="../../public/library/swiper.min.js"></script>
 </body>
 <script>
-var phoneSet = <%- JSON.stringify(workData.data.set) %>;
+	var phoneMain = <%- JSON.stringify(workData.data.main) %>;
+	var phoneSet = <%- JSON.stringify(workData.data.set) %>;
 </script>
 <script src="http://localhost:8080/show.js"></script>
+
 </html>

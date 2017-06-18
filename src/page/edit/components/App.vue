@@ -21,7 +21,7 @@
         <Setting></Setting>
         <PanelPic v-show="panelStatus[tplTypes.PIC]"></PanelPic>
         <PanelQrcode v-if="panelStatus[tplTypes.QRCODE]"></PanelQrcode>
-		<PanelMusic></PanelMusic>
+		<PanelMusic v-if="panelStatus[tplTypes.MUSIC]"></PanelMusic>
     </div>
 </div>
 
