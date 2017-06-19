@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import tpl from '../tpl/tpl.js'
 import page from './modules/page.js'
-import phonex from './modules/phone.js'
+import m_phone from './modules/phone.js'
 import panel from './modules/panel.js'
 import setting from './modules/setting.js'
 import * as types from './mutation-types.js'
@@ -72,7 +72,7 @@ export default new Vuex.Store({
 	},
 	modules: {
 		page,
-		phonex,
+		m_phone,
 		panel,
 		setting
 	},

@@ -22,6 +22,8 @@
         <PanelPic v-show="panelStatus[tplTypes.PIC]"></PanelPic>
         <PanelQrcode v-if="panelStatus[tplTypes.QRCODE]"></PanelQrcode>
 		<PanelMusic v-if="panelStatus[tplTypes.MUSIC]"></PanelMusic>
+		<PanelShape v-if="panelStatus[tplTypes.SHAPE]"></PanelShape> -->
+		<!-- <PanelShape></PanelShape> -->
     </div>
 </div>
 
@@ -32,6 +34,7 @@
 import PanelPic from './panel/pic.vue'
 import PanelQrcode from './panel/qrcode.vue'
 import PanelMusic from './panel/music.vue'
+import PanelShape from './panel/shape.vue'
 import PublicHeader from '../../../public/components/Header.vue'
 import Page from './Page.vue'
 import Phone from './Phone.vue'
@@ -60,7 +63,8 @@ export default {
         Setting,
         PanelPic,
         PanelQrcode,
-		PanelMusic
+		PanelMusic,
+		PanelShape
     }
 }
 

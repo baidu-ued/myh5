@@ -333,6 +333,7 @@
                     <li>汽车</li>
                     <li>gif</li>
                 </ul>
+
                 <div class="category-input">
                     <input type="text" placeholder="搜索" />
                     <svg class="icon" aria-hidden="true">
@@ -341,7 +342,7 @@
                 </div>
             </div>
             <ul v-if="listStatus == 'exist'" class="pic-list">
-                <li class="item" v-for="i in piclist" :data-width="i.width" :data-height="i.height" :style="{'background-image' : 'url(' + i.src +')', 'background-size' : i.bgSizeContain ? 'contain' : 'auto'}">
+                <li class="item" v-for="i in piclist" :data-width="i.width" :data-height="i.height" :style="{'background-image' : 'url(' + 'http://ors5gu12t.bkt.clouddn.com/112.png?imageView2/2/w/230/h/230/q/75|imageslim' +')', 'background-size' : i.bgSizeContain ? 'contain' : 'auto'}">
                     <div class="marker">
                         <a @click="del(i.pic_id)" href="javascript:void(0);">删除</a>
                         <a @click="addItem({type : tplTypes.PIC, width : i.width, height : i.height, src : i.src})" href="javascript:void(0);">使用</a>
@@ -476,6 +477,7 @@ export default {
                     formData.append('picture', item);
                 });
                 api.savePic(formData, (rs) => {
+					// console.log()
                     // this.piclist.push(...rs.data);
                     this.activePage = 1;
                     this.getpic();

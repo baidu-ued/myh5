@@ -82,6 +82,12 @@ header {
             </svg>
             <span>音乐</span>
         </li>
+		<li @click="panelShow(types.SHAPE)">
+			<svg class="icon" aria-hidden="true">
+				<use xlink:href="#icon-x-mpg"></use>
+			</svg>
+			<span>形状</span>
+		</li>
     </ul>
     <ul class="opt-panel">
 		<li @click="changeSetLayer(true)">

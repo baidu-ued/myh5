@@ -1,7 +1,7 @@
 // require('./check-versions')()
 let config = require('../config')
 if (!process.env.NODE_ENV) {
-	process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
+	// process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
 let path = require('path')
 let express = require('express')
@@ -94,9 +94,9 @@ app.get('/login', judegLogin, function(req, res, next) {
 	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/page/login/index.html')
 });
 //
-// app.get('/backstage', judegLogin, function(req, res, next) {
-// 	res.set('Content-Type', 'text/html');
-// 	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/entry/backstage/index.html')
-// });
+app.get('/backstage', judegLogin, function(req, res, next) {
+	res.set('Content-Type', 'text/html');
+	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/page/backstage/index.html')
+});
 app.use(staticPath, express.static('./static'))
 module.exports = app;

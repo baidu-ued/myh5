@@ -2,11 +2,14 @@
 
 .box-wrap {
     margin: 20px auto;
-	position: relative;
+    // width: 100%;
+    flex: 1;
+    position: relative;
     .phone-wrap {
         width: 320px;
         // height: 520px;
         position: relative;
+        margin: 0 auto;
         .phone-top {
             height: 43px;
             background: url(../images/phone_top1.png);
@@ -84,29 +87,32 @@
 
 <template>
 
-<section class="box-wrap">
-    <div class="phone-wrap" v-my-select @mousedown="selectItem(-1)">
+<section class="box-wrap" v-my-select>
+    <div class="phone-wrap" @mousedown="selectItem(-1)">
         <div class="phone-top"></div>
+
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
-            <div @dblclick="panelShow(types.QRCODE)" v-if="i.if != false"  @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index}" :style="i.style"v-for="(i, index) in currentPhone.data">
-				<div class="phone-item-container" :id="i.attr.id" v-html="i.content"></div>
+            <div @dblclick="panelShow(types.QRCODE)" v-if="i.if != false" @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index}"
+            :style="i.style" v-for="(i, index) in currentPhone.data">
+                <div class="phone-item-container" :id="i.attr.id" v-html="i.content"></div>
                 <div v-show="currentItemId == index">
                     <div v-my-changesize="{type : 'nw'}" class="ui-resizable-handle ui-resizable-nw"></div>
                     <div v-my-changesize="{type : 'ne'}" class="ui-resizable-handle ui-resizable-ne"></div>
                     <div v-my-changesize="{type : 'sw'}" class="ui-resizable-handle ui-resizable-sw"></div>
                     <div v-my-changesize="{type : 'se'}" class="ui-resizable-handle ui-resizable-se"></div>
                 </div>
+				{{multSelected(index)}}
             </div>
         </div>
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
     </div>
-	<div style="width:50px;font-size:12px;display:flex;flex-direction:column;height:100px;position:absolute;right:-50px;top:30%;">
-		<span @click="toTopLimit">置顶</span>
-		<span @click="toTop">向上一级</span>
-		<span @click="toBottom">向下一级</span>
-		<span @click="toBottomLimit">置底</span>
-	</div>
+    <div style="width:50px;font-size:12px;display:flex;flex-direction:column;height:100px;position:absolute;right:-50px;top:30%;">
+        <span @click="toTopLimit">置顶</span>
+        <span @click="toTop">向上一级</span>
+        <span @click="toBottom">向下一级</span>
+        <span @click="toBottomLimit">置底</span>
+    </div>
 </section>
 
 </template>
@@ -122,15 +128,23 @@ import '../directive/drag.js'
 import '../directive/changesize.js'
 import '../directive/select.js'
 import * as types from '../tpl/types.js'
+import {
+    multSelected
+}
+from '../util/index.js'
 export default {
     methods: {
         ...mapActions(['selectItem', 'delItem', 'panelShow', 'toTop', 'toTopLimit', 'toBottom', 'toBottomLimit']),
+            multSelected:multSelected
     },
-	data(){
-		return {
-			types : types
-		}
-	},
+    data() {
+        return {
+            types: types
+        }
+    },
+    mounted() {
+        // alert(this.judgefn());
+    },
     computed: {
         ...mapGetters(['currentPhone', 'currentItemId', 'currentItem'])
     },

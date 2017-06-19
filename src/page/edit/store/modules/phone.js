@@ -4,7 +4,8 @@ import tpl from '../../tpl/tpl.js'
 import panel from './panel'
 // initial state
 const state = {
-	currentItemId: -1
+	currentItemId: -1,
+	multSelect : []
 }
 // getters
 const getters = {
@@ -176,9 +177,15 @@ const actions = {
 			}
 		})
 	},
+	multSelect({commit, getters}, index){
+		commit('multSelect', index)
+	}
 }
 // mutations
 const mutations = {
+	multSelect(state, index){
+		state.multSelect = index;
+	},
 	[types.CHANGE_ITEM_ATTR](state, { currentItem, data }) {
 		for (const attr in data) {
 			Vue.set(currentItem.attr, attr, data[attr]);

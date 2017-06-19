@@ -16,58 +16,64 @@ Vue.directive('my-select', {
 	},
 	bind: function(el, binding) {
 		$(el).on('mousedown', (ev) => {
-			// var arr = store.getters.currentPhone.data;
-			// var xxxLeft = $('#phone').offset().left;
-			// var xxxTop = $('#phone').offset().top;
-			// var initX = ev.clientX;
-			// var initY = ev.clientY;
-			// $('#j-choice-box').css('display', 'block')
-			// $(document).on('mousemove', (ev) => {
-			// 	var width = ev.clientX - initX;
-			// 	var height = ev.clientY - initY;
-			// 	if (ev.clientX - initX < 0) {
-			// 		var left = initX - Math.abs(width);
-			// 		width = -ev.clientX + initX;
-			// 	} else {
-			// 		left = initX;
-			// 	}
-			// 	if (ev.clientY - initY < 0) {
-			// 		var top = initY - Math.abs(height);
-			// 		height = -ev.clientY + initY;
-			// 	} else {
-			// 		top = initY;
-			// 	}
-			// 	$('#j-choice-box').css({
-			// 		'left': left + 'px',
-			// 		'top': top + 'px',
-			// 		'width': width + 'px',
-			// 		'height': height + 'px',
-			// 	})
-			// 	var xxxx = [];
-			// 	arr.forEach(function(item, index) {
-			// 		var left2 = xxxLeft + parseInt(item.style.left);
-			// 		var width2 = parseInt(item.style.width);
-			// 		var top2 = xxxTop + parseInt(item.style.top);
-			// 		var height2 = parseInt(item.style.height);
-			//
-			// 		if (left + width >= left2 && left <= left2 + width2 && top + height >= top2 && top <= top2 + height2) {
-			// 			xxxx.push(index);
-			// 		}
-			// 	});
-			// 	console.log(xxxx);
-			// 	// Store.dispatch('selectItem', xxxx)
-			// });
-			// $(document).on('mouseup', (ev) => {
-			// 	$(document).off('mousemove');
-			// 	$(document).off('mouseup');
-			// 	$('#j-choice-box').css({
-			// 		'display': 'none',
-			// 		'width': 0,
-			// 		'height': 0,
-			// 		'left': 0,
-			// 		'top': 0
-			// 	})
-			// });
+			let arr = store.getters.currentPhone.data;
+			let oldX = ev.clientX;
+			let oldY = ev.clientY;
+			let x, y, w, h;
+			$('#j-choice-box').show();
+			const {
+				left: phoneLeft,
+				top: phoneTop
+			} = $('#phone').offset();
+			$(document).on('mousemove', (ev) => {
+				let nowX = ev.clientX;
+				let nowY = ev.clientY;
+				if (nowX > oldX) {
+					x = oldX;
+					w = nowX - oldX;
+				} else {
+					x = nowX;
+					w = oldX - nowX;
+				}
+				if (nowY > oldY) {
+					y = oldY;
+					h = nowY - oldY;
+				} else {
+					y = nowY;
+					h = oldY - nowY;
+				}
+				$('#j-choice-box').css({
+					left: x + 'px',
+					top: y + 'px',
+					width: w + 'px',
+					height: h + 'px',
+				});
+				var list = [];
+				arr.forEach((item, index) => {
+					var { left, top, width, height} = item.style;
+					left = parseFloat(left);
+					top = parseFloat(top);
+					width = parseFloat(width);
+					height = parseFloat(height);
+					if(phoneLeft + left > x + w || phoneLeft + left + width < x || phoneTop+top > y + h || phoneTop + top + height < y){
+
+					}else{
+						list.push(index);
+					}
+				})
+				store.dispatch('multSelect', list)
+			})
+			$(document).on('mouseup', (ev) => {
+				$(document).off('mousemove');
+				$(document).off('mouseup');
+				$('#j-choice-box').css({
+					'display': 'none',
+					'width': 0,
+					'height': 0,
+					'left': 0,
+					'top': 0
+				})
+			})
 		});
 	}
 })

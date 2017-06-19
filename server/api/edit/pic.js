@@ -7,6 +7,7 @@ const dbHandel = require('../../db/handel.js')
 const util = require('../../util/index.js')
 const app = require('../../../build/dev-server.js')
 const fs = require('fs')
+// const upload = require('./upload.js')
 const { saveCollectionSync, getCountSync, getDataSync, delDataSync } = require('../../promisify/index.js')
 const http = require('http')
 const get = (req, res) => {

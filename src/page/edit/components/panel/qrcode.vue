@@ -157,7 +157,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['addItem', 'panelHide', 'changeContent', 'changeAttr', 'hasSelected']),
+        ...mapActions(['addItem', 'panelHide', 'changeContent', 'changeAttr']),
             confirm: async function() {
                 const newItem = await tpl.qrcode({
                     url: this.$refs.input.value
