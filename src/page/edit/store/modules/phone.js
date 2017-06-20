@@ -5,10 +5,13 @@ import panel from './panel'
 // initial state
 const state = {
 	currentItemId: -1,
-	multSelect : []
+	multSelectId : []
 }
 // getters
 const getters = {
+	multSelectId(state){
+		return state.multSelectId;
+	},
 	/* 当前页:Object */
 	currentPhone(state, getters, rootState) {
 		return rootState.phone.data[rootState.page.currentPage];
@@ -27,11 +30,24 @@ const getters = {
 }
 // actions
 const actions = {
-	/* 根据id选择元素 */
+
+	//取消选择
+	cancelSelect({commit, state}, index){
+		console.log('取消')
+		commit(types.CANCEL_SELECT)
+	},
+	/* 根据id选择元素, 并且如果当前处于多选状态， 就 */
 	selectItem({ commit, state }, index) {
-		commit(types.SELECT_ITEM, {
-			index: typeof index == 'undefined' || typeof index == 'object' ? -1 : index
-		})
+		if(state.multSelectId.length != 0){
+			return;
+		}else{
+			if(typeof index == 'object' && index.length == 1){
+				index = index[0];
+			}
+			commit(types.SELECT_ITEM, {
+				index: index
+			})
+		}
 	},
 	/* 改变元素的style */
 	changeStyle({ commit, state, getters }, payload) {
@@ -177,15 +193,17 @@ const actions = {
 			}
 		})
 	},
-	multSelect({commit, getters}, index){
-		commit('multSelect', index)
-	}
+	// multSelect({commit, getters}, index){
+	// 	if(index)
+	// 	console.log(index);
+	// 	commit('multSelect', index)
+	// }
 }
 // mutations
 const mutations = {
-	multSelect(state, index){
-		state.multSelect = index;
-	},
+	// multSelect(state, index){
+	// 	state.multSelect = index;
+	// },
 	[types.CHANGE_ITEM_ATTR](state, { currentItem, data }) {
 		for (const attr in data) {
 			Vue.set(currentItem.attr, attr, data[attr]);
@@ -195,7 +213,18 @@ const mutations = {
 		Vue.set(currentItem, 'content', data);
 	},
 	[types.SELECT_ITEM](state, { index }) {
-		state.currentItemId = index;
+		// console.log(index)
+		if(typeof index == 'object'){
+			state.multSelectId = index;
+			state.currentItemId = -1;
+		}else if(index != -1){
+			state.currentItemId = index;
+			state.multSelectId = [];
+		}else{
+			state.currentItemId = -1;
+			state.multSelectId = [];
+		}
+
 	},
 	[types.CHANGE_ITEM_STYLE](state, { item, payload }) {
 		for (const attr in payload) {
@@ -215,6 +244,10 @@ const mutations = {
 	[types.CHANGE_ITEM_EVENT](state, { currentItem, data }) {
 		Vue.set(currentItem, 'event', data);
 	},
+	[types.CANCEL_SELECT](state){
+		state.currentItemId = -1;
+		state.multSelectId = [];
+	}
 }
 export default {
 	state,

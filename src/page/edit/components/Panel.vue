@@ -133,7 +133,7 @@
 <section class="box-wrap">
     <ul class="panel-tabs">
         <li v-if="currentItemId == -1" class="tab-item active" data-i="0">页面设置</li>
-        <li @click="selectPanel(index)" v-if="currentItemId != -1 && !i.except.includes(currentItem.type)" v-for="(i, index) in list" class="tab-item" :class="{ active : index == listIndex}" data-i="0">{{i.title}}</li>
+        <li @click="selectPanel(index)" v-if="isSelected(index, false)" v-for="(i, index) in list" class="tab-item" :class="{ active : index == listIndex}" data-i="0">{{i.title}}</li>
     </ul>
     <div class="panel-list" v-if="currentItemId == -1">
         <div class="panel-item">
@@ -294,6 +294,10 @@ import Vue from 'vue'
 import $ from 'jQuery'
 import tpl from '../tpl/tpl.js'
 import * as types from '../tpl/types.js'
+import {
+    isSelected
+}
+from '../util/index.js'
 export default {
     computed: {
         ...mapGetters(['currentPhone', 'currentItem', 'currentItemId']),
@@ -312,6 +316,7 @@ export default {
     },
     methods: {
         ...mapActions(['changeContent', 'changeEvent', 'changeMain', 'changeStyle', 'changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
+            isSelected: isSelected,
             selectPanel: function(index) {
                 this.listIndex = index;
             },

@@ -139,7 +139,7 @@ import {
 }
 from 'vuex'
 import tpl from '../../tpl/tpl.js'
-import { hasSelected } from '../../util/index.js'
+import { isSelected } from '../../util/index.js'
 
 export default {
     computed: {
@@ -162,15 +162,15 @@ export default {
                 const newItem = await tpl.qrcode({
                     url: this.$refs.input.value
                 });
-				if(hasSelected()){
-					this.changeAttr({'href' : this.$refs.input.value})
-	                this.changeContent(newItem.content);
-				}else{
-					this.addItem({
-						type : this.tplTypes.QRCODE,
-						url  : this.$refs.input.value
-					})
-				}
+				// if(hasSelected()){
+				// 	this.changeAttr({'href' : this.$refs.input.value})
+	            //     this.changeContent(newItem.content);
+				// }else{
+				// 	this.addItem({
+				// 		type : this.tplTypes.QRCODE,
+				// 		url  : this.$refs.input.value
+				// 	})
+				// }
 				this.panelHide(this.tplTypes.QRCODE)
             }
     }

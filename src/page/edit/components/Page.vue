@@ -24,6 +24,7 @@
     -webkit-user-select: none;
     .page-sortable {
         padding: 10px 0;
+		position: relative;
         li {
             position: relative;
             overflow: hidden;
@@ -43,7 +44,7 @@
                 position: relative;
                 width: 112px;
                 height: 181px;
-                transition: .5s;
+                // transition: .5s;
                 -webkit-perspective: 500px;
                 -webkit-perspective-origin: center center;
                 transform-style: preserve-3d;
@@ -123,7 +124,7 @@
         width: 175px;
         text-align: center;
         z-index: 999;
-		cursor: pointer;
+        cursor: pointer;
         border-right: 1px solid #000;
     }
 }
@@ -134,7 +135,7 @@
 
 <aside class="page-list" id="page-list" @mousedown="selectItem(-1)">
     <ul class="page-sortable">
-        <li @click="changePage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">
+        <li @mousedown="changePage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">
             <label>{{index + 1}}</label>
             <div class="item-content">
                 <section class="page" data-notouch="" data-arrow="" style=""></section>
@@ -175,12 +176,27 @@ import {
     mapActions
 }
 from 'vuex'
+import VueSort from 'vue-sort'
 export default {
     computed: {
-        ...mapGetters(['pageLength', 'currentPage'])
+        ...mapGetters(['pageLength', 'currentPage', 'phoneData'])
     },
     methods: {
-        ...mapActions(['changePage', 'addPage', 'delPage', 'selectItem', 'emptyPage'])
+        ...mapActions(['sortPage', 'changePage', 'addPage', 'delPage', 'selectItem', 'emptyPage'])
+    },
+    mounted() {
+        // setTimeout(()=>{
+			// console.log(this.phoneData);
+		// }, 0);
+        new VueSort('.page-sortable', {
+            itemsClass: 'v-sort-item',
+            onMouseUp: (s)=> {
+				this.sortPage({
+					list : s.sort(this.phoneData.data),
+					index : s.activeIndex
+				});
+            }
+        })
     }
 }
 

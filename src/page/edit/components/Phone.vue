@@ -24,6 +24,11 @@
             position: relative;
             .control-mask-show {
                 outline: #007afc solid 1px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
             }
             .phone-item {
                 position: absolute;
@@ -86,22 +91,20 @@
 </style>
 
 <template>
-
-<section class="box-wrap" v-my-select>
-    <div class="phone-wrap" @mousedown="selectItem(-1)">
-        <div class="phone-top"></div>
-
+<section class="box-wrap" v-my-select @mousedown="cancelSelect">
+    <div class="phone-wrap">
+        <div class="phone-top">{{multSelectId}}</div>
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
-            <div @dblclick="panelShow(types.QRCODE)" v-if="i.if != false" @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :class="{ 'control-mask-show' : currentItemId == index}"
+            <div @dblclick="panelShow(types.QRCODE)" v-if="i.if != false" @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item"
             :style="i.style" v-for="(i, index) in currentPhone.data">
                 <div class="phone-item-container" :id="i.attr.id" v-html="i.content"></div>
-                <div v-show="currentItemId == index">
+				{{isSelected(index)}}
+                <div :class="{ 'control-mask-show' : isSelected(index)}" v-show="isSelected(index)">
                     <div v-my-changesize="{type : 'nw'}" class="ui-resizable-handle ui-resizable-nw"></div>
                     <div v-my-changesize="{type : 'ne'}" class="ui-resizable-handle ui-resizable-ne"></div>
                     <div v-my-changesize="{type : 'sw'}" class="ui-resizable-handle ui-resizable-sw"></div>
                     <div v-my-changesize="{type : 'se'}" class="ui-resizable-handle ui-resizable-se"></div>
                 </div>
-				{{multSelected(index)}}
             </div>
         </div>
         <div class="phone-left"></div>
@@ -129,13 +132,14 @@ import '../directive/changesize.js'
 import '../directive/select.js'
 import * as types from '../tpl/types.js'
 import {
-    multSelected
+	isSelected
 }
 from '../util/index.js'
 export default {
     methods: {
-        ...mapActions(['selectItem', 'delItem', 'panelShow', 'toTop', 'toTopLimit', 'toBottom', 'toBottomLimit']),
-            multSelected:multSelected
+        ...mapActions(['isTrue', 'cancelSelect', 'selectItem', 'delItem', 'panelShow', 'toTop', 'toTopLimit', 'toBottom', 'toBottomLimit']),
+
+			isSelected : isSelected
     },
     data() {
         return {
@@ -143,10 +147,10 @@ export default {
         }
     },
     mounted() {
-        // alert(this.judgefn());
+
     },
     computed: {
-        ...mapGetters(['currentPhone', 'currentItemId', 'currentItem'])
+        ...mapGetters(['multSelectId', 'currentPhone', 'currentItemId', 'currentItem'])
     },
 }
 

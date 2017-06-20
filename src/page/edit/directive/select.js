@@ -61,7 +61,7 @@ Vue.directive('my-select', {
 						list.push(index);
 					}
 				})
-				store.dispatch('multSelect', list)
+				store.dispatch('selectItem', list)
 			})
 			$(document).on('mouseup', (ev) => {
 				$(document).off('mousemove');

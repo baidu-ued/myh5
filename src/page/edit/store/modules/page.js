@@ -23,9 +23,17 @@ const getters = {
 const actions = {
 	/* 改变页码 */
 	changePage({ commit, state }, page) {
+
 		commit(types.CHANGE_PAGE, {
 			page: page
 		})
+	},
+	sortPage({ commit, state, getters, dispatch }, { list, index }) {
+		commit(types.SORT_PAGE, {
+			phoneData: getters.phoneData,
+			list: list
+		});
+		dispatch('changePage', index)
 	},
 	/* 增加一页 */
 	addPage({ commit, state, getters }) {
@@ -55,6 +63,9 @@ const actions = {
 }
 // mutations
 const mutations = {
+	[types.SORT_PAGE](state, { phoneData, list }) {
+		phoneData.data = list;
+	},
 	[types.CHANGE_PAGE](state, { page }) {
 		state.currentPage = page;
 	},
