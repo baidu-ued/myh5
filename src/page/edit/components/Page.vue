@@ -133,7 +133,7 @@
 
 <template>
 
-<aside class="page-list" id="page-list" @mousedown="selectItem(-1)">
+<aside class="page-list" id="page-list" @mousedown="cancelSelect()">
     <ul class="page-sortable">
         <li @mousedown="changePage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">
             <label>{{index + 1}}</label>
@@ -182,12 +182,9 @@ export default {
         ...mapGetters(['pageLength', 'currentPage', 'phoneData'])
     },
     methods: {
-        ...mapActions(['sortPage', 'changePage', 'addPage', 'delPage', 'selectItem', 'emptyPage'])
+        ...mapActions(['cancelSelect', 'sortPage', 'changePage', 'addPage', 'delPage', 'selectItem', 'emptyPage'])
     },
     mounted() {
-        // setTimeout(()=>{
-			// console.log(this.phoneData);
-		// }, 0);
         new VueSort('.page-sortable', {
             itemsClass: 'v-sort-item',
             onMouseUp: (s)=> {

@@ -93,12 +93,11 @@
 <template>
 <section class="box-wrap" v-my-select @mousedown="cancelSelect">
     <div class="phone-wrap">
-        <div class="phone-top">{{multSelectId}}</div>
+        <div class="phone-top"></div>
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
             <div @dblclick="panelShow(types.QRCODE)" v-if="i.if != false" @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item"
             :style="i.style" v-for="(i, index) in currentPhone.data">
                 <div class="phone-item-container" :id="i.attr.id" v-html="i.content"></div>
-				{{isSelected(index)}}
                 <div :class="{ 'control-mask-show' : isSelected(index)}" v-show="isSelected(index)">
                     <div v-my-changesize="{type : 'nw'}" class="ui-resizable-handle ui-resizable-nw"></div>
                     <div v-my-changesize="{type : 'ne'}" class="ui-resizable-handle ui-resizable-ne"></div>

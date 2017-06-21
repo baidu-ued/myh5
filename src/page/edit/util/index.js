@@ -15,7 +15,7 @@ export const hasSelected = function() {
 	isSelected(1, false) 索引=1的元素是否是多选
 */
 export const isSelected = function(index , multiLine) {
-	if(typeof index == 'undefined' && (store.getters.currentItemId != -1 || store.getters.m_phone.multSelectId.length != 0)){
+	if(typeof index == 'undefined' && (store.getters.currentItemId != -1 || store.state.m_phone.multSelectId.length != 0)){
 		return true;
 	}else if(typeof index == 'number' && typeof multiLine == 'undefined' && (store.getters.currentItemId == index || store.state.m_phone.multSelectId.includes(index))){
 		return true;

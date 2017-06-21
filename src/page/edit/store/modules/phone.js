@@ -30,7 +30,6 @@ const getters = {
 }
 // actions
 const actions = {
-
 	//取消选择
 	cancelSelect({commit, state}, index){
 		console.log('取消')
@@ -51,6 +50,7 @@ const actions = {
 	},
 	/* 改变元素的style */
 	changeStyle({ commit, state, getters }, payload) {
+		console.log(payload);
 		commit(types.CHANGE_ITEM_STYLE, {
 			item: payload.item || getters.currentItem,
 			payload: payload

@@ -41,14 +41,18 @@ const actions = {
 			phoneData: getters.phoneData
 		})
 	},
-	/*	删除一页 */
+	/*	删除一页
+	 */
 	delPage({ commit, state, dispatch, getters }, page) {
 		if (getters.pageLength > 1) {
 			commit(types.DEL_PAGE, {
 				phoneData: getters.phoneData,
 				page: page
 			});
-			dispatch('changePage', 0);
+			console.log(state.currentPage, getters.phoneData.data.length)
+			if(state.currentPage > getters.phoneData.data.length - 1){
+				dispatch('changePage', getters.phoneData.data.length - 1);
+			}
 		} else {
 			console.log('最少1页， 是否清空该页内容')
 		}
