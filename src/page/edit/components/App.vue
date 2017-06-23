@@ -21,9 +21,9 @@
         <Setting></Setting>
         <PanelPic v-show="panelStatus[tplTypes.PIC]"></PanelPic>
         <PanelQrcode v-if="panelStatus[tplTypes.QRCODE]"></PanelQrcode>
-		<PanelMusic v-if="panelStatus[tplTypes.MUSIC]"></PanelMusic>
-		<PanelShape v-if="panelStatus[tplTypes.SHAPE]"></PanelShape> -->
-		<!-- <PanelShape></PanelShape> -->
+        <PanelMusic v-if="panelStatus[tplTypes.MUSIC]"></PanelMusic>
+        <PanelShape v-if="panelStatus[tplTypes.SHAPE]"></PanelShape> -->
+        <!-- <PanelShape></PanelShape> -->
     </div>
 </div>
 
@@ -63,8 +63,8 @@ export default {
         Setting,
         PanelPic,
         PanelQrcode,
-		PanelMusic,
-		PanelShape
+        PanelMusic,
+        PanelShape
     }
 }
 
