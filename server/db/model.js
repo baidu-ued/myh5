@@ -14,12 +14,14 @@ module.exports = {
 		'username': { type: String, required: true }
 	},
 	'pics': {
-		'username': { type: String, required: true },
+		'username': { type: String, required: false },
 		'src': { type: String, required: true },
-		'pic_id': { type: String, required: true },
+		'id': { type: String, required: true },
+		'sourceId': { type: String, required: false },
 		'width': { type: Number, required: false },
 		'height': { type: Number, required: false },
 		'type' : { type: String, required: false },
+		'createTime' : { type: String, required: false },
 	},
 	'music': {
 		'username': { type: String, required: false },
