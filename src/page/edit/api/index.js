@@ -22,7 +22,7 @@ export const getPic = function(data, cb) {
 		success: (rs) => {
 			console.log(rs)
 			rs.data.data.forEach((item)=>{
-				item.src = 'http://localhost:8080/dbimg/' + item.src;
+				item.src = 'http://ors5gu12t.bkt.clouddn.com/' + item.src + '?imageView2/2/w/230/h/230/q/75|imageslim';
 			})
 			cb && cb(rs);
 		}
