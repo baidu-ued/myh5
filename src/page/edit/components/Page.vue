@@ -1,30 +1,19 @@
 <style scoped lang="scss">
 
-::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-    min-height: 20px;
-    background-clip: content-box;
-    box-shadow: 0 0 0 5px rgba(100, 100, 100, .5) inset;
-}
-
 .page-list {
     position: absolute;
     left: 0;
     top: 50px;
     bottom: 31px;
     width: 175px;
-    z-index: 2;
+    z-index: 999;
     border-right: 1px solid #000;
     overflow: auto;
     background: #494950;
     -webkit-user-select: none;
     .page-sortable {
         padding: 10px 0;
-		position: relative;
+        position: relative;
         li {
             position: relative;
             overflow: hidden;
@@ -135,21 +124,11 @@
 
 <aside class="page-list" id="page-list" @mousedown="cancelSelect()">
     <ul class="page-sortable">
-        <li @mousedown="changePage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">
+        <li @mousedown="selectPage(index)" v-for="(i, index) in pageLength" class="v-sort-item" v-bind:class="{active : index == currentPage}">
             <label>{{index + 1}}</label>
             <div class="item-content">
-                <section class="page" data-notouch="" data-arrow="" style=""></section>
+                <section class="page"></section>
                 <div class="item-option">
-                    <!-- <div title="复制" class="item-page">
-                        <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-fuzhi"></use>
-                        </svg>
-                    </div> -->
-                    <!-- <div title="存为模板" class="item-page">
-                        <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-xingxing"></use>
-                        </svg>
-                    </div> -->
                     <div @click.stop="emptyPage(index)" title="重置" class="item-page">
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-zhongzhi"></use>
@@ -182,16 +161,16 @@ export default {
         ...mapGetters(['pageLength', 'currentPage', 'phoneData'])
     },
     methods: {
-        ...mapActions(['cancelSelect', 'sortPage', 'changePage', 'addPage', 'delPage', 'selectItem', 'emptyPage'])
+        ...mapActions(['cancelSelect', 'sortPage', 'selectPage', 'addPage', 'delPage', 'emptyPage'])
     },
     mounted() {
         new VueSort('.page-sortable', {
             itemsClass: 'v-sort-item',
-            onMouseUp: (s)=> {
-				this.sortPage({
-					list : s.sort(this.phoneData.data),
-					index : s.activeIndex
-				});
+            onMouseUp: (s) => {
+                this.sortPage({
+                    list: s.sort(this.phoneData.data),
+                    index: s.activeIndex
+                });
             }
         })
     }

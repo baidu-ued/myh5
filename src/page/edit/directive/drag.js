@@ -11,10 +11,6 @@ Vue.directive('my-drag', {
             }
 			let isMove = false;
 			console.log(store.state.m_phone.multSelectId)
-
-
-
-
 			// store.state.m_phone.multSelectId.forEach((item, index)=>{
 			// 	var oldLeft = x = parseInt(store.getters.currentPhone.data[item].style.left);
 			// 	var oldTop = y = parseInt(store.getters.currentPhone.data[item].style.top);

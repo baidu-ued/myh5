@@ -25,8 +25,11 @@ module.exports = {
 		'createTime' : { type: String, required: false },
 	},
 	'music': {
-		'username': { type: String, required: false },
 		'src': { type: String, required: true },
+		'name': { type: String, required: false },
 		'type' : { type: String, required: false },
+		'sourceId': { type: String, required: false },
+		'id': { type: String, required: false },
+		'createTime' : { type: String, required: false },
 	}
 }

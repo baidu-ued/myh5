@@ -3,7 +3,7 @@
 export const ADD_PAGE = 'ADD_PAGE'; //添加
 export const DEL_PAGE = 'DEL_PAGE'; //删除
 export const SORT_PAGE = 'SORT_PAGE';
-export const CHANGE_PAGE = 'CHANGE_PAGE';//选择某页
+export const SELECT_PAGE = 'SELECT_PAGE';//选择某页
 export const EMPTY_PAGE = 'EMPTY_PAGE';	//清空页面
 /*-----------------------------------end 页码---------------------------------------*/
 /*-----------------------------------编辑器-------------------------------------------*/
