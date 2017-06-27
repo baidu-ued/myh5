@@ -1,13 +1,15 @@
 const { promisify } = require('util')
 /**
- * 获取总数
+ * 保存
  * @param collection
  * @param option
  * @param cb
  * @return 成功返回总数
  */
 module.exports.saveCollectionSync = promisify((collection, option = {}, cb) => {
-	new collection(option).save(() => {
+	new collection(option).save((err, docs) => {
+		console.log(err);
+		console.log(docs)
 		cb(null)
 	})
 });
@@ -29,7 +31,7 @@ module.exports.getCountSync = promisify((collection, option = {}, cb) => {
  * @return 成功返回数据
  */
 module.exports.getDataSync = promisify((collection, option = {}, cb) => {
-	const limit = Number(option.limit) || 18
+	const limit = Number(option.limit) || 15
 	const page = Number(option.page) || 1
 	const find = option.find || {}
 	const order = option.order || {}
