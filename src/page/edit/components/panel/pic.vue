@@ -2,7 +2,7 @@
 
 .modal-dialog {
     width: 968px;
-	z-index: 999;
+    z-index: 999;
     background: #f7f7f7;
     position: absolute;
     left: calc(50% - 484px);
@@ -120,6 +120,9 @@
                         cursor: pointer;
                     }
                     li:hover {
+                        color: #08a1ef;
+                    }
+                    li.active {
                         color: #08a1ef;
                     }
                 }
@@ -318,8 +321,12 @@
     </div>
     <div class="main">
         <div class="panel">
+            <!--
+				图片库
+				我的上传
+			-->
             <ul class="panel-list">
-                <li v-for="(i, index) in panel.list" @click="aaa(index)" class="item" :class="{active : index == panel.index}"><a href="javascript:void(0);">{{i.name}}</a></li>
+                <li v-for="(i, index) in panel.list" @click="changePanel(index)" class="item" :class="{active : index == panel.index}"><a href="javascript:void(0);">{{i.name}}</a></li>
             </ul>
             <div class="upload">
                 <label>上传</label>
@@ -329,11 +336,8 @@
         <div class="main-container">
             <div v-if="currentPanel.ename == 'library'" class="category">
                 <ul class="category-list">
-                    <li>最热</li>
-                    <li>汽车</li>
-                    <li>gif</li>
+                    <li @click="changeCategory(index)" :class="{active : category.index == index}" v-for='(i, index) in category.list'>{{i.name}}</li>
                 </ul>
-
                 <div class="category-input">
                     <input type="text" placeholder="搜索" />
                     <svg class="icon" aria-hidden="true">
@@ -344,7 +348,7 @@
             <ul v-if="listStatus == 'exist'" class="pic-list">
                 <li class="item" v-for="i in piclist" :data-width="i.width" :data-height="i.height" :style="{'background-image' : 'url(' + i.src +')', 'background-size' : i.bgSizeContain ? 'contain' : 'auto'}">
                     <div class="marker">
-                        <a @click="del(i.pic_id)" href="javascript:void(0);">删除</a>
+                        <a @click="del(i.id)" href="javascript:void(0);">删除</a>
                         <a @click="addItem({type : tplTypes.PIC, width : i.width, height : i.height, src : i.src})" href="javascript:void(0);">使用</a>
                     </div>
                 </li>
@@ -363,6 +367,7 @@
             </div>
         </div>
     </div>
+	
 </section>
 
 </template>
@@ -393,43 +398,93 @@ export default {
             pageNum: 1,
             tipMsg: '',
             listStatus: 'none', // none 请求回来之前  exist 有内容   not-exist 没有内容
-
+            category: {
+                index: 0,
+                list: []
+            },
             panel: {
                 index: 0,
+                // list: [{
+                //         name: '我的上传',
+                //         ename: ''
+                //     }]
                 list: [{
-                        name: '我的上传',
-                        ename: ''
-                    }]
-                    // list: [{
-                    //     name: '图片库',
-                    //     ename: 'library',
-                    //     type: '100'
-                    // }, {
-                    //     name: '我的上传',
-                    //     ename: ''
-                    // }]
+                    name: '图片库',
+                    ename: 'library'
+                }, {
+                    name: '我的上传',
+                    ename: 'my'
+                }]
             },
         }
     },
     mounted() {
-        this.getpic();
+        $.ajax({
+            url: '/api/admin/pic/type',
+            data: {
+                act: 'get'
+            },
+            success: (rs) => {
+                console.log('获取type', rs);
+                this.category.list = rs.data;
+                this.getpic();
+            }
+        });
     },
     methods: {
         ...mapActions(['addItem', 'panelHide']),
+			/**
+			 * 改变类型
+			 * @param index 类型索引
+			 */
+            changeCategory(index) {
+                this.activePage = 1;
+                this.category.index = index;
+                this.getpic();
+            },
+			/**
+			 * 改变面板
+			 * @param index 面板索引
+			 */
+			changePanel(index = 0) {
+                this.panel.index = index;
+				this.activePage = 1;
+				if(this.panel.list[index].ename == 'library'){
+					this.getpic()
+				}else{
+					this.getpic('my');
+				}
+            },
+			/**
+			 * 改变页码
+			 * @param value 当前页
+			 */
+			changePage(value) {
+                this.activePage = value;
+                this.getpic();
+            },
+			/**
+			 * 删除图片
+			 * @param id 图片id
+			 */
             del(id) {
                 api.delPic({
-                    pic_id: id
+                    id: id
                 }, (rs) => {
                     this.getpic();
                 });
             },
-            aaa(index) {
-                this.panel.index = index;
+			/**
+			 * 改变页码
+			 * @param type 类型
+			 */
+            getpic(type) {
                 api.getPic({
                     limit: 18,
                     page: this.activePage,
-                    type: 1005
+                    types: type || this.category.list[this.category.index].id,
                 }, (rs) => {
+                    console.log(rs)
                     this.pageNum = rs.data.pageNum;
                     this.piclist = rs.data.data;
                     this.piclist.forEach((item) => {
@@ -446,41 +501,19 @@ export default {
                     }
                 })
             },
-            getpic() {
-                api.getPic({
-                    limit: 18,
-                    page: this.activePage,
-                }, (rs) => {
-                    this.pageNum = rs.data.pageNum;
-                    this.piclist = rs.data.data;
-                    this.piclist.forEach((item) => {
-                        if (item.width > 115 && item.height >= 115) {
-                            item.bgSizeContain = true;
-
-                        }
-                    })
-                    if (this.piclist.length == 0) {
-                        this.tipMsg = '您还没有上传图片，请点击左下角上传!';
-                        this.listStatus = 'not-exist';
-                    } else {
-                        this.listStatus = 'exist';
-                    }
-                })
-            },
-            changePage(value) {
-                this.activePage = value;
-                this.getpic();
-            },
+			/**
+			 * 上传图片
+			 * @param event
+			 */
             uploadImg(ev) {
                 var formData = new FormData();
                 Array.from(ev.target.files).forEach(function(item) {
                     formData.append('picture', item);
                 });
                 api.savePic(formData, (rs) => {
-					// console.log()
                     // this.piclist.push(...rs.data);
                     this.activePage = 1;
-                    this.getpic();
+                    this.getpic('my');
                 });
             }
     }

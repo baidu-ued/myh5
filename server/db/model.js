@@ -1,6 +1,6 @@
 module.exports = {
-	"admin" : {
-		pic_type : { type: Array, required: false }
+	"pic_admin" : {
+		types : { type: Array, required: false, default : [] }
 	},
 	"myh5": {
 		"type": { type: String, required: false },
@@ -20,7 +20,8 @@ module.exports = {
 		'sourceId': { type: String, required: false },
 		'width': { type: Number, required: false },
 		'height': { type: Number, required: false },
-		'type' : { type: String, required: false },
+		'type' : { type: Object, required: false },
+		'types' : { type: String, required: false },
 		'createTime' : { type: String, required: false },
 	},
 	'music': {

@@ -15,6 +15,7 @@ export const savePic = function(data, cb) {
 }
 
 export const getPic = function(data, cb) {
+	console.log(data)
 	$.ajax({
 		url: '/aj/pic/get',
 		type: 'get',

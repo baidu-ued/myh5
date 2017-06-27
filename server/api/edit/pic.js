@@ -7,30 +7,47 @@ const dbHandel = require('../../db/handel.js')
 const util = require('../../util/index.js')
 const app = require('../../../build/dev-server.js')
 const fs = require('fs')
-// const upload = require('./upload.js')
 const { saveCollectionSync, getCountSync, getDataSync, delDataSync } = require('../../promisify/index.js')
+const { uploadFile } = require('../../upload/index.js')
 const http = require('http')
-const get = (req, res) => {
-	let pics = dbHandel.getModel('pics');
-	(async() => {
-		let count = await getCountSync(pics, {});
-		let data = await getDataSync(pics, {
-			limit: req.query.limit,
-			page: req.query.page,
-			order : { _id: -1 }
-		});
-		res.send({
-			status: 1,
-			msg: '获取成功',
-			data: {
-				page: data.page,
-				pageNum: Math.ceil(count / data.limit),
-				count: count,
-				limit: data.limit,
-				data: data.data
-			}
-		})
-	})()
+/**
+ * 规则
+ * 如果types存在， 就获取该类型图片
+ * 如果types不存在， 就获取所有图片
+ */
+const get = async(req, res) => {
+	const pics = dbHandel.getModel('pics')
+	const find = {}
+	if (req.query.types) {
+		find.types = String(req.query.types)
+	}
+	/**
+	 	获取总数
+	*/
+	let count = await getCountSync(pics, find);
+	/**
+	 	获取指定数据
+	*/
+	let data = await getDataSync(pics, {
+		limit: req.query.limit,
+		page: req.query.page,
+		order: { _id: -1 },
+		find: find
+	});
+	/**
+	 	发送回调
+	*/
+	res.send({
+		status: 1,
+		msg: '获取成功',
+		data: {
+			page: data.page,	//当前页
+			pageNum: Math.ceil(count / data.limit),	//页码
+			count: count,	//总个数
+			limit: data.limit,	//每个页数
+			data: data.data	//数据
+		}
+	})
 }
 const save = (req, res) => {
 	let form = new multiparty.Form();
@@ -48,25 +65,28 @@ const save = (req, res) => {
 			}
 			for (let i = 0; i < files['picture'].length; i++) {
 				const item = files['picture'][i]
-				exec('cp ' + item.path + ' ' + path.resolve(cwd, 'server/dbimg/'))
+				// exec('cp ' + item.path + ' ' + path.resolve(cwd, 'server/dbimg/'))
 				const pic_id = util.md5('pic')
+				var name = util.md5('pic') + item.originalFilename.slice(item.originalFilename.indexOf('.'));
+				await uploadFile(name, item.path)
 				data.push({
-					src: 'http://localhost:8080/dbimg/' + path.basename(item.path),
-					pic_id: pic_id
+					src: name,
+					id: pic_id
 				})
 				const dimensions = sizeOf(item.path)
 				await saveCollectionSync(pics, {
 					username: req.cookies.username,
-					pic_id: pic_id,
-					src: path.basename(item.path),
+					id: util.md5('pic'),
+					src: name,
 					width: dimensions.width,
-					height: dimensions.height
+					height: dimensions.height,
+					types: 'my'
 				})
 			}
 			res.send({
 				status: 1,
 				msg: '上传成功',
-				data : data
+				data: data
 			})
 		})()
 	})
@@ -74,7 +94,6 @@ const save = (req, res) => {
 const del = (req, res) => {
 	let pics = dbHandel.getModel('pics');
 	(async() => {
-		// let status = await delDataSync(pics, req.query.pic_id);
 		let list = req.query.pic_id;
 		list = typeof list == 'string' ? list.split() : list
 		let status = await delDataSync(pics, {
