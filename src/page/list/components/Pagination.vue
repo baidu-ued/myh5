@@ -40,9 +40,9 @@
 
 <template>
 
-<Pagination :page-num="pageNum" wrapperClass="page-wrap" pageItemClass="page-item" :active-page="activePage" v-on:change="change">
+<Pagination :page-num="pageNum" wrapperClass="page-wrap" pageItemClass="page-item" :current-page="activePage" v-on:change="change">
 </Pagination>
-
+<!-- sadf -->
 </template>
 
 <script>
@@ -54,6 +54,7 @@ import {
 }
 from 'vuex'
 import Pagination from 'vuejs-pagination'
+// alert(Pagination)
 export default {
     data: function() {
         return {

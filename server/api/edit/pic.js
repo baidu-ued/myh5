@@ -11,7 +11,7 @@ const { saveCollectionSync, getCountSync, getDataSync, delDataSync } = require('
 const { uploadFile } = require('../../upload/index.js')
 const http = require('http')
 /**
- * 规则
+ * 获取图片
  * 如果types存在， 就获取该类型图片
  * 如果types不存在， 就获取所有图片
  */
@@ -49,6 +49,9 @@ const get = async(req, res) => {
 		}
 	})
 }
+/**
+ * 保存图片
+ */
 const save = (req, res) => {
 	let form = new multiparty.Form();
 	form.parse(req, (err, fields, files) => {
@@ -91,10 +94,17 @@ const save = (req, res) => {
 		})()
 	})
 }
+/**
+ * 删除指定图片
+ * @param collection
+ * @param option
+ * @param cb
+ * @return 成功返回总数
+ */
 const del = (req, res) => {
 	let pics = dbHandel.getModel('pics');
 	(async() => {
-		let list = req.query.pic_id;
+		let list = req.query.id;
 		list = typeof list == 'string' ? list.split() : list
 		let status = await delDataSync(pics, {
 			find: {

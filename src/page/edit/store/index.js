@@ -11,7 +11,7 @@ Vue.use(Vuex);
 const BASE_BLANK = {
 	main: {
 		background: '#ffffff',
-		music : ''
+		music: ''
 	},
 	data: []
 }
@@ -36,7 +36,10 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		loadData({ commit, state }, data) {
+		/**
+		 * 加载数据
+		 */
+		loadData({ commit, state }) {
 			$.ajax({
 				url: '/api/edit/get',
 				type: 'get',
@@ -55,8 +58,10 @@ export default new Vuex.Store({
 				}
 			});
 		},
+		/**
+		 * 保存数据
+		 */
 		savePhoneData: function({ commit, state }) {
-			console.log(state.phone)
 			$.ajax({
 				url: '/api/edit/save',
 				type: 'get',
@@ -70,15 +75,15 @@ export default new Vuex.Store({
 			});
 		},
 	},
+	mutations: {
+		[types.LOAD_DATA](state, { data }) {
+			state.phone = data;
+		}
+	},
 	modules: {
 		page,
 		m_phone,
 		panel,
 		setting
-	},
-	mutations: {
-		[types.LOAD_DATA](state, payload) {
-			state.phone = payload.data;
-		}
 	}
 })
