@@ -213,7 +213,6 @@ const mutations = {
 		Vue.set(currentItem, 'content', data);
 	},
 	[types.SELECT_ITEM](state, { index }) {
-		// console.log(index)
 		if(typeof index == 'object'){
 			state.multSelectId = index;
 			state.currentItemId = -1;
@@ -224,7 +223,6 @@ const mutations = {
 			state.currentItemId = -1;
 			state.multSelectId = [];
 		}
-
 	},
 	[types.CHANGE_ITEM_STYLE](state, { item, payload }) {
 		for (const attr in payload) {

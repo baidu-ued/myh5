@@ -385,7 +385,7 @@
                 <p>{{tipMsg}}</p>
             </div>
             <div v-show="loadStatus == 'exist'" class="page">
-                <Pagination ref="ppp" :cache-list="piclist" :types="category.list[category.index].name" :page-num="pageNum" :active-page="activePage" v-on:change="change"></Pagination>
+                <Pagination ref="ppp" :cache-list="piclist" :types="category.list[category.index].name" :page-num="pageNum" :current-page="activePage" v-on:change="change"></Pagination>
                 <div class="modal-footer">
                     <a class="modal-cancle" @click="panelHide(tplTypes.MUSIC)">取消</a>
                     <a class="btn btn-primary" @click="confirm()">确定</a>

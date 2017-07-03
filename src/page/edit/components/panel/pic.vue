@@ -363,11 +363,11 @@
                 <p>{{tipMsg}}</p>
             </div>
             <div v-if="listStatus == 'exist'" class="page">
-                <Pagination :page-num="pageNum" :active-page="activePage" :page-size="7" v-on:change="changePage"></Pagination>
+                <Pagination :page-num="pageNum" :current-page="activePage" :page-size="7" v-on:change="changePage"></Pagination>
             </div>
         </div>
     </div>
-	
+
 </section>
 
 </template>
