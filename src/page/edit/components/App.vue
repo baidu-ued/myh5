@@ -22,7 +22,7 @@
         <PanelPic v-show="panelStatus[tplTypes.PIC]"></PanelPic>
         <PanelQrcode v-if="panelStatus[tplTypes.QRCODE]"></PanelQrcode>
         <PanelMusic v-if="panelStatus[tplTypes.MUSIC]"></PanelMusic>
-        <PanelShape v-if="panelStatus[tplTypes.SHAPE]"></PanelShape> -->
+        <PanelShape v-if="panelStatus[tplTypes.SHAPE]"></PanelShape> 
         <!-- <PanelShape></PanelShape> -->
     </div>
 </div>

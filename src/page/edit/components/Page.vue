@@ -166,6 +166,7 @@ export default {
     mounted() {
         new VueSort('.page-sortable', {
             itemsClass: 'v-sort-item',
+
             onMouseUp: (s) => {
                 this.sortPage({
                     list: s.sort(this.phoneData.data),
