@@ -28,14 +28,34 @@ export default new Vuex.Store({
 			},
 			data: [$.extend(true, {}, BASE_BLANK)]
 		},
-		tplTypes: tplTypes
+		tplTypes: tplTypes,
+		colorPicker : {
+			show : false,
+			color : '',
+			attr : ''
+		}
 	},
 	getters: {
 		tplTypes(state) {
 			return state.tplTypes
-		}
+		},
+		colorPicker(state){
+			return state.colorPicker;
+		},
 	},
 	actions: {
+
+		colorPickerShow({commit}, {color, attr}){
+			commit('colorPickerShow', {
+				color : color,
+				attr : attr
+			})
+		},
+		colorPickerHide({commit}, val){
+			commit('colorPickerHide', {
+
+			});
+		},
 		/**
 		 * 加载数据
 		 */
@@ -78,6 +98,14 @@ export default new Vuex.Store({
 	mutations: {
 		[types.LOAD_DATA](state, { data }) {
 			state.phone = data;
+		},
+		colorPickerShow(state, { color, attr }){
+			state.colorPicker.show = true;
+			state.colorPicker.color = color;
+			state.colorPicker.attr = attr;
+		},
+		colorPickerHide(state){
+			state.colorPicker.show = false;
 		}
 	},
 	modules: {
