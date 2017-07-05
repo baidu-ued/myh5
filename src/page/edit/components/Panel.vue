@@ -147,20 +147,20 @@
             </div>
         </div>
     </div>
-
     <div class="ooooo" v-if="currentItemId != -1">
         <!-- <div class="public-color-wrap">
             <p>文本</p>
             <textarea type="text" v-model="currentItem.content"></textarea>
         </div> -->
         <div class="item-box">
-            <label>点击跳页</label>
+            <label>点击跳页{{ccc}}</label>
             <input @input="changeEvent([ 'goto', $event.target.value])" type="text" />
         </div>
         <div class="item-box">
             <label>跳转链接</label>
             <input @input="changeEvent([ 'href' ,$event.target.value])" type="text" />
         </div>
+
         <div class="item-box">
             <label>动画</label>
             <div class="item-box-control">
@@ -248,16 +248,20 @@
                 <input class="control-number" type="number" @input="changeStyle({ 'transform' : 'rotate(' + $event.currentTarget.value +'deg)' })" :value="transformRotate" step="1" max="359" min="0">
             </div>
         </div>
-        <!-- <div class="public-color-wrap">
-            <p>文字颜色</p>
-            <input class="public-color-input" type="color" :value="currentItem.style.color || '#666666'" @change="changeStyle({ 'color' : $event.target.value })">
-            <input class="public-text-input" type="text" :value="currentItem.style.color || '#ffffff'" @input="changeStyle({ 'color' : $event.target.value })">
+        <div class="public-color-wrap">
+            <label>文字颜色</label>
+			<div data-type="color" @click="xxx($event.currentTarget), colorPickerShow({ color : currentItem.style['color'] || '#666', attr : 'color'})" style="position:absolute;z-index:99999;width:50px;height:20px;left:30%;" :style="{background:currentItem.style.color}"></div>
+
         </div>
         <div class="public-color-wrap">
             <p>背景颜色</p>
-            <input class="public-color-input" type="color" :value="currentItem.style.background || '#ffffff'" @change="changeStyle({ 'background' : $event.target.value })">
-            <input class="public-text-input" type="text" :value="currentItem.style.background || '#ffffff'" @input="changeStyle({ 'background' : $event.target.value })">
+			<div @click="colorPickerShow({ color : currentItem.style['background'] || '#666', attr : 'background'})" style="position:absolute;z-index:99999;width:50px;height:20px;left:30%;" :style="{background:currentItem.style.background}"></div>
         </div>
+		<div class="public-color-wrap">
+            <p>边框颜色</p>
+			<div @click="colorPickerShow({ color : currentItem.style['border-color'] || '#666', attr : 'border-color'})" style="position:absolute;z-index:99999;width:50px;height:20px;left:30%;" :style="{background:currentItem.style['border-color']}"></div>
+        </div>
+		<!--
 		<div class="public-color-wrap">
             <p>文字大小</p>
             <input class="public-text-input" type="number" :value="parseInt(currentItem.style.fontSize) || parseInt(items.css('fontSize'))" @input="changeStyle({ 'fontSize' : $event.target.value + 'px'})">px
@@ -277,7 +281,7 @@
             <p>高度</p>
             <input class="public-text-input" type="number" :value="parseInt(currentItem.style.height) || parseInt(items.css('height'))" @input="changeStyle({ 'height' : $event.target.value + 'px'})">px
         </div>
-		-->
+	-->
     </div>
 </section>
 
@@ -298,6 +302,7 @@ import {
     isSelected
 }
 from '../util/index.js'
+
 export default {
     computed: {
         ...mapGetters(['currentPhone', 'currentItem', 'currentItemId']),
@@ -312,14 +317,26 @@ export default {
                 } else {
                     return this.currentItem.style.transform.match(/rotate\((\d+)deg\)/)[1];
                 }
-            }
+            },
+			ccc(){
+				// console.log(this.colors)
+				if(this.colors.rgba){
+					return this.colors.rgba['r'] + ',' + this.colors.rgba['g']  + ',' + this.colors.rgba['b']  + ',' + this.colors.rgba['a']
+				}else{
+					return '#ffffff';
+				}
+				// return this.colors.rgba;
+			}
     },
     methods: {
-        ...mapActions(['changeContent', 'changeEvent', 'changeMain', 'changeStyle', 'changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
+        ...mapActions(['colorPickerShow', 'changeContent', 'changeEvent', 'changeMain', 'changeStyle', 'changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
             isSelected: isSelected,
             selectPanel: function(index) {
                 this.listIndex = index;
             },
+			xxx(){
+				console.log(arguments)
+			}
     },
     data: function() {
         return {
@@ -335,7 +352,7 @@ export default {
             }],
             listIndex: 0,
             bbb: '',
-
+			colors : '',
 
 
 

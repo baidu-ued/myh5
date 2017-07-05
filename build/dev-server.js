@@ -50,7 +50,7 @@ app.get('/show', function(req, res, next) {
 	let id = url.parse(req.url, true).query['id'];
 	myh5.find({ work_id: id }, (err, docs) => {
 		if (docs[0].data) {
-			res.render('/Users/BraisedCakes/Desktop/myh5/src/page/show/index.html', {
+			res.render('/Users/BraisedCakes/Desktop/github/myh5/src/page/show/index.html', {
 				workData: docs[0],
 				fn: function(json) {
 					let str = '';
@@ -73,7 +73,7 @@ app.get('/list', function(req, res, next) {
 		res.redirect('/login')
 		return;
 	}
-	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/page/list/index.html')
+	res.sendFile('/Users/BraisedCakes/Desktop/github/myh5/src/page/list/index.html')
 });
 app.get('/edit/:act', judegLogin, function(req, res, next) {
 	res.set('Content-Type', 'text/html');
@@ -81,7 +81,7 @@ app.get('/edit/:act', judegLogin, function(req, res, next) {
 		res.redirect('/login')
 		return;
 	}
-	res.render('/Users/BraisedCakes/Desktop/myh5/src/page/edit/index.html', {
+	res.render('/Users/BraisedCakes/Desktop/github/myh5/src/page/edit/index.html', {
 		work_id: req.params.act
 	});
 });
@@ -91,12 +91,12 @@ app.get('/login', judegLogin, function(req, res, next) {
 		res.redirect('/list')
 		return;
 	}
-	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/page/login/index.html')
+	res.sendFile('/Users/BraisedCakes/Desktop/github/myh5/src/page/login/index.html')
 });
 //
 app.get('/backstage', judegLogin, function(req, res, next) {
 	res.set('Content-Type', 'text/html');
-	res.sendFile('/Users/BraisedCakes/Desktop/myh5/src/page/backstage/index.html')
+	res.sendFile('/Users/BraisedCakes/Desktop/github/myh5/src/page/backstage/index.html')
 });
 app.use(staticPath, express.static('./static'))
 module.exports = app;

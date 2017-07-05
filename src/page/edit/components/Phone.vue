@@ -94,6 +94,7 @@
 <section class="box-wrap" v-my-select @mousedown="cancelSelect">
     <div class="phone-wrap">
         <div class="phone-top"></div>
+		
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
             <div @dblclick="panelShow(types.QRCODE)" v-if="i.if != false" @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item"
             :style="i.style" v-for="(i, index) in currentPhone.data">

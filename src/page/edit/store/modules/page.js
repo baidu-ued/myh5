@@ -32,6 +32,8 @@ const actions = {
 	 * @param {Number} page 页码
 	 */
 	selectPage({ commit, state }, page) {
+		// alert(1)
+		console.log(page)
 		commit(types.SELECT_PAGE, {
 			page: page
 		})
