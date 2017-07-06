@@ -1,30 +1,37 @@
 import Vue from 'vue'
-import * as types from '../mutation-types'
+const types = {
+	PANEL_SHOW: 'PANEL_SHOW',
+	PANEL_HIDE: 'PANEL_HIDE'
+}
 // initial state
-// shape: [{ id, quantity }]
 const state = {
 	panelStatus: {}
 }
 // getters
 const getters = {
+	/**
+	 * [panelStatus description]
+	 * @return {Object}       面板状态对象
+	 */
 	panelStatus(state) {
 		return state.panelStatus
 	}
 }
 // actions
 const actions = {
-	/* 增加一页 */
-	changeMain({ commit, getters }, payload) {
-		commit(types.CHANGE_CURRENT_MAIN, {
-			currentPhone: getters.currentPhone,
-			payload: payload
-		});
-	},
+	/**
+	 * 面板显示
+	 * @param  {String} type   需要展示的面板类型(元素什么类型面板就是什么类型)
+	 */
 	panelShow({ commit, state }, type) {
 		commit(types.PANEL_SHOW, {
 			type: type
 		})
 	},
+	/**
+	 * 面板隐藏
+	 * @param  {String} type   需要隐藏的面板类型(元素什么类型面板就是什么类型)
+	 */
 	panelHide({ commit, state }, type) {
 		commit(types.PANEL_HIDE, {
 			type: type
@@ -33,9 +40,6 @@ const actions = {
 }
 // mutations
 const mutations = {
-	[types.CHANGE_CURRENT_MAIN](state, { currentPhone, payload }) {
-		currentPhone.main[payload[0]] = payload[1];
-	},
 	[types.PANEL_SHOW](state, { type }) {
 		Vue.set(state.panelStatus, type, 1);
 	},

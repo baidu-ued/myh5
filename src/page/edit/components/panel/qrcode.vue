@@ -1,7 +1,7 @@
 <style scoped lang="scss">
 
 .modal-dialog {
-	z-index: 999;
+    z-index: 999;
     user-select: none;
     width: 500px;
     background: #f7f7f7;
@@ -139,17 +139,20 @@ import {
 }
 from 'vuex'
 import tpl from '../../tpl/tpl.js'
-import { isSelected } from '../../util/index.js'
+import {
+    isSelected
+}
+from '../../util/index.js'
 
 export default {
     computed: {
-		...mapGetters(['currentItem', 'currentItemId', 'tplTypes']),
-        currentPanel() {
-            return this.panel.list[this.panel.index]
-        },
-		currentHref(){
-			return this.currentItem && this.currentItem.attr && this.currentItem.attr.href || this.url
-		}
+        ...mapGetters(['currentItem', 'currentItemId', 'tplTypes']),
+            currentPanel() {
+                return this.panel.list[this.panel.index]
+            },
+            currentHref() {
+                return this.currentItem && this.currentItem.attr && this.currentItem.attr.href || this.url
+            }
     },
     data() {
         return {
@@ -157,21 +160,23 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['addItem', 'panelHide', 'changeContent', 'changeAttr']),
+        ...mapActions(['addItem', 'panelHide', 'updateItemContent', 'updateItemAttr']),
             confirm: async function() {
                 const newItem = await tpl.qrcode({
                     url: this.$refs.input.value
                 });
-				if(isSelected()){
-					this.changeAttr({'href' : this.$refs.input.value})
-	                this.changeContent(newItem.content);
-				}else{
-					this.addItem({
-						type : this.tplTypes.QRCODE,
-						url  : this.$refs.input.value
-					})
-				}
-				this.panelHide(this.tplTypes.QRCODE)
+                if (isSelected()) {
+                    this.updateItemAttr({
+                        'href': this.$refs.input.value
+                    })
+                    this.updateItemContent(newItem.content);
+                } else {
+                    this.addItem({
+                        type: this.tplTypes.QRCODE,
+                        url: this.$refs.input.value
+                    })
+                }
+                this.panelHide(this.tplTypes.QRCODE)
             }
     }
 }

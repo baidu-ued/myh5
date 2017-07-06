@@ -1,10 +1,3 @@
-
-/*-----------------------------------页码-------------------------------------------*/
-export const ADD_PAGE = 'ADD_PAGE'; //添加
-export const DEL_PAGE = 'DEL_PAGE'; //删除
-export const SORT_PAGE = 'SORT_PAGE';
-export const SELECT_PAGE = 'SELECT_PAGE';//选择某页
-export const EMPTY_PAGE = 'EMPTY_PAGE';	//清空页面
 /*-----------------------------------end 页码---------------------------------------*/
 /*-----------------------------------编辑器-------------------------------------------*/
 export const LOAD_DATA = 'LOAD_DATA'; //加载数据
@@ -21,6 +14,7 @@ export const CHANGE_ITEM_EVENT = 'CHANGE_ITEM_EVENT'; //改变元素style
 export const CHANGE_ITEM_CONTENT = 'CHANGE_ITEM_CONTENT';
 export const CHANGE_ITEM_ATTR = 'CHANGE_ITEM_ATTR';
 export const CHANGE_CURRENT_MAIN = 'CHANGE_CURRENT_MAIN'; //改变当前页的main参数
+export const UPDATE_ITEM = 'UPDATE_ITEM';
 /*-----------------------------------end 编辑器-------------------------------------------*/
 /*-----------------------------------面板-------------------------------------------*/
 export const PANEL_HIDE = 'PANEL_HIDE' //隐藏

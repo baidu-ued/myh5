@@ -91,12 +91,11 @@
 </style>
 
 <template>
-<section class="box-wrap" v-my-select @mousedown="cancelSelect">
+<section class="box-wrap" v-my-select>
     <div class="phone-wrap">
         <div class="phone-top"></div>
-		
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
-            <div @dblclick="panelShow(types.QRCODE)" v-if="i.if != false" @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item"
+            <div @dblclick="panelShow(tplTypes.QRCODE)" v-if="i.if != false" @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item"
             :style="i.style" v-for="(i, index) in currentPhone.data">
                 <div class="phone-item-container" :id="i.attr.id" v-html="i.content"></div>
                 <div :class="{ 'control-mask-show' : isSelected(index)}" v-show="isSelected(index)">
@@ -110,11 +109,11 @@
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
     </div>
-    <div style="width:50px;font-size:12px;display:flex;flex-direction:column;height:100px;position:absolute;right:-50px;top:30%;">
-        <span @click="toTopLimit">置顶</span>
-        <span @click="toTop">向上一级</span>
-        <span @click="toBottom">向下一级</span>
-        <span @click="toBottomLimit">置底</span>
+    <div style="width:50px;font-size:12px;display:flex;flex-direction:column;height:100px;position:absolute;background:red;left:500px;top:30%;">
+        <span @click="updateItemZIndex('++')">置顶</span>
+        <span @click="updateItemZIndex('+1')">向上一级</span>
+        <span @click="updateItemZIndex('-1')">向下一级</span>
+        <span @click="updateItemZIndex('--')">置底</span>
     </div>
 </section>
 
@@ -130,27 +129,17 @@ from 'vuex'
 import '../directive/drag.js'
 import '../directive/changesize.js'
 import '../directive/select.js'
-import * as types from '../tpl/types.js'
 import {
 	isSelected
 }
 from '../util/index.js'
 export default {
     methods: {
-        ...mapActions(['isTrue', 'cancelSelect', 'selectItem', 'delItem', 'panelShow', 'toTop', 'toTopLimit', 'toBottom', 'toBottomLimit']),
-
+        ...mapActions(['updateItemZIndex', 'cancelSelect', 'selectItem', 'delItem', 'panelShow']),
 			isSelected : isSelected
     },
-    data() {
-        return {
-            types: types
-        }
-    },
-    mounted() {
-
-    },
     computed: {
-        ...mapGetters(['multSelectId', 'currentPhone', 'currentItemId', 'currentItem'])
+        ...mapGetters(['tplTypes', 'multSelectId', 'currentPhone', 'currentItemId', 'currentItem'])
     },
 }
 
