@@ -154,13 +154,12 @@
         </div> -->
         <div class="item-box">
             <label>点击跳页{{ccc}}</label>
-            <input @input="changeEvent([ 'goto', $event.target.value])" type="text" />
+            <input @input="updateItemEvent([ 'goto', $event.target.value])" type="text" />
         </div>
         <div class="item-box">
             <label>跳转链接</label>
-            <input @input="changeEvent([ 'href' ,$event.target.value])" type="text" />
+            <input @input="updateItemEvent([ 'href' ,$event.target.value])" type="text" />
         </div>
-
         <div class="item-box">
             <label>动画</label>
             <div class="item-box-control">
@@ -251,7 +250,6 @@
         <div class="public-color-wrap">
             <label>文字颜色</label>
 			<div data-type="color" @click="xxx($event.currentTarget), colorPickerShow({ color : currentItem.style['color'] || '#666', attr : 'color'})" style="position:absolute;z-index:99999;width:50px;height:20px;left:30%;" :style="{background:currentItem.style.color}"></div>
-
         </div>
         <div class="public-color-wrap">
             <p>背景颜色</p>
@@ -261,11 +259,11 @@
             <p>边框颜色</p>
 			<div @click="colorPickerShow({ color : currentItem.style['border-color'] || '#666', attr : 'border-color'})" style="position:absolute;z-index:99999;width:50px;height:20px;left:30%;" :style="{background:currentItem.style['border-color']}"></div>
         </div>
-		<!--
 		<div class="public-color-wrap">
             <p>文字大小</p>
             <input class="public-text-input" type="number" :value="parseInt(currentItem.style.fontSize) || parseInt(items.css('fontSize'))" @input="changeStyle({ 'fontSize' : $event.target.value + 'px'})">px
         </div>
+
 		<div class="public-color-wrap">
             <button @click="changeStyle({ 'fontWeight' : items.css('fontWeight') == 'bold' ? 'normal' : 'bold'})">加粗</button>
         </div>
@@ -281,7 +279,7 @@
             <p>高度</p>
             <input class="public-text-input" type="number" :value="parseInt(currentItem.style.height) || parseInt(items.css('height'))" @input="changeStyle({ 'height' : $event.target.value + 'px'})">px
         </div>
-	-->
+
     </div>
 </section>
 
@@ -329,7 +327,7 @@ export default {
 			}
     },
     methods: {
-        ...mapActions(['colorPickerShow', 'changeContent', 'changeEvent', 'changeMain', 'changeStyle', 'changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
+        ...mapActions(['colorPickerShow', 'updateItemEvent', 'changeMain', 'changeStyle', 'changeClass', 'changeAni', 'reloadAni', 'reloadAllAni']),
             isSelected: isSelected,
             selectPanel: function(index) {
                 this.listIndex = index;

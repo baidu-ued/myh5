@@ -1,4 +1,10 @@
 import $ from 'jQuery'
+/**
+ * 保存图片
+ * @param  {[type]}   data [description]
+ * @param  {Function} cb   [description]
+ * @return {[type]}        [description]
+ */
 export const savePic = function(data, cb) {
 	$.ajax({
 		url: '/aj/pic/save',
@@ -13,7 +19,11 @@ export const savePic = function(data, cb) {
 		}
 	});
 }
-
+/**
+ * 获取图片
+ * @param  {[type]}   data [description]
+ * @param  {Function} cb   回调
+ */
 export const getPic = function(data, cb) {
 	console.log(data)
 	$.ajax({
@@ -29,7 +39,12 @@ export const getPic = function(data, cb) {
 		}
 	});
 }
-
+/**
+ * 删除图片
+ * @param  {[type]}   data [description]
+ * @param  {Function} cb   [description]
+ * @return {[type]}        [description]
+ */
 export const delPic = function(data, cb) {
 	$.ajax({
 		url: '/aj/pic/del',

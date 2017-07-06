@@ -2,45 +2,55 @@ import Vue from 'vue'
 import * as types from '../mutation-types'
 import tpl from '../../tpl/tpl.js'
 import panel from './panel'
+/**
+ * mutations 增， 删， 改
+ * 选中， 取消选中
+ * 增加， 删除
+ * 修改
+ */
 // initial state
 const state = {
 	currentItemId: -1,
-	multSelectId : []
+	multSelectId: []
 }
 // getters
 const getters = {
-	multSelectId(state){
+	multSelectId(state) {
 		return state.multSelectId;
 	},
-	/* 当前页:Object */
+	/**
+	 * @return {Object} 当前页数据
+	 */
 	currentPhone(state, getters, rootState) {
 		return rootState.phone.data[rootState.page.currentPage];
 	},
-	/* 当前元素id:Number */
+	/**
+	 * @return {Number} 当前元素id
+	 */
 	currentItemId(state) {
 		return state.currentItemId;
 	},
-	/* 当前元素:Object */
+	/**
+	 * @return {Object} 当前元素
+	 */
 	currentItem(state, getters) {
 		return getters.currentPhone.data[state.currentItemId] || {};
 	},
+	/**
+	 * @return {Object} phone数据
+	 */
 	phoneData(state, getters, rootState) {
 		return rootState.phone
 	},
 }
 // actions
 const actions = {
-	//取消选择
-	cancelSelect({commit, state}, index){
-		console.log('取消')
-		commit(types.CANCEL_SELECT)
-	},
 	/* 根据id选择元素, 并且如果当前处于多选状态， 就 */
 	selectItem({ commit, state }, index) {
-		if(state.multSelectId.length != 0){
+		if (state.multSelectId.length != 0) {
 			return;
-		}else{
-			if(typeof index == 'object' && index.length == 1){
+		} else {
+			if (typeof index == 'object' && index.length == 1) {
 				index = index[0];
 			}
 			commit(types.SELECT_ITEM, {
@@ -48,14 +58,29 @@ const actions = {
 			})
 		}
 	},
-	/* 改变元素的style */
+	/**
+	 * 取消选中元素
+	 */
+	cancelSelect({ commit, state }) {
+		commit(types.CANCEL_SELECT)
+	},
+	/**
+	 * 改变元素的style
+	 * @param  {[type]} commit  [description]
+	 * @param  {[type]} state   [description]
+	 * @param  {[type]} getters [description]
+	 * @param  {[type]} payload [description]
+	 * @return {[type]}         [description]
+	 */
 	changeStyle({ commit, state, getters }, payload) {
 		console.log(payload);
-		commit(types.CHANGE_ITEM_STYLE, {
+		commit(types.UPDATE_ITEM, {
 			item: payload.item || getters.currentItem,
-			payload: payload
+			key: 'style',
+			val: payload
 		})
 	},
+	changeItem() {},
 	/* 增加元素 */
 	addItem({ commit, state, rootState, getters }, payload) {
 		(async() => {
@@ -68,11 +93,16 @@ const actions = {
 				currentPhone: getters.currentPhone,
 				item: item
 			});
+			console.log(item)
 			commit(types.PANEL_HIDE, {
 				type: payload.type
 			})
 		})()
 	},
+	/**
+	 * 删除元素
+	 * @param  {Number} index  元素索引
+	 */
 	delItem({ commit, state, getters }, index) {
 		commit(types.DEL_ITEM, {
 			currentPhone: getters.currentPhone,
@@ -94,157 +124,164 @@ const actions = {
 			});
 		}, 0)
 	},
-	changeEvent({ commit, state, getters }, data) {
-		commit(types.CHANGE_ITEM_EVENT, {
-			currentItem: getters.currentItem,
-			data: data
+	/**
+	 * 更新元素的event属性
+	 * @param  {[type]} commit  [description]
+	 * @param  {[type]} state   [description]
+	 * @param  {[type]} getters [description]
+	 * @param  {[type]} val     [description]
+	 * @return {[type]}         [description]
+	 */
+	updateItemEvent({ commit, state, getters }, val) {
+		commit(types.UPDATE_ITEM, {
+			item: getters.currentItem,
+			key: 'event',
+			val: val
 		})
 	},
-	changeContent({ commit, state, getters }, data) {
-		commit(types.CHANGE_ITEM_CONTENT, {
-			currentItem: getters.currentItem,
-			data: data
+	/**
+	 * 修改元素content
+	 * @param  {String} content  新元素content
+	 */
+	updateItemContent({ commit, state, getters }, content) {
+		commit(types.UPDATE_ITEM, {
+			item: getters.currentItem,
+			key: 'content',
+			val: content
 		})
 	},
-	changeAttr({ commit, state, getters }, data) {
-		commit(types.CHANGE_ITEM_ATTR, {
-			currentItem: getters.currentItem,
-			data: data
+	/**
+	 * 修改元素attr
+	 * @param  {Object} data  data
+	 */
+	updateItemAttr({ commit, state, getters }, data) {
+		commit(types.UPDATE_ITEM, {
+			item: getters.currentItem,
+			key: 'attr',
+			val: data
 		})
 	},
-	/*
-		置顶
-	*/
-	toTopLimit({ commit, state, getters, dispatch }) {
+	/**
+	 * 修改元素层级
+	 * @param  ++ 置顶， +1 上移一位， -1 下移一位， -- 置底
+	 */
+	updateItemZIndex({ commit, getters }, type) {
+		const data = getters.currentPhone.data;
 		const nowIndex = getters.currentItem.style['z-index'];
-		getters.currentPhone.data.forEach((item) => {
-			if (item.style['z-index'] > nowIndex) {
-				commit(types.CHANGE_ITEM_STYLE, {
+		let newIndex;
+		if (data.length == 1) {
+			return;
+		}
+		for (let i = 0; i < data.length; i++) {
+			let item = getters.currentPhone.data[i];
+			if (type == '++' && item.style['z-index'] > nowIndex) {
+				commit(types.UPDATE_ITEM, {
 					item: item,
-					payload: {
+					key: 'style',
+					val: {
 						'z-index': item.style['z-index'] - 1
 					}
-				})
-			}
-		})
-		commit(types.CHANGE_ITEM_STYLE, {
-			item: getters.currentItem,
-			payload: {
-				'z-index': getters.currentPhone.data.length
-			}
-		})
-	},
-	toTop({ commit, state, getters, dispatch }) {
-		const nowIndex = getters.currentItem.style['z-index'];
-		for (let i = 0; i < getters.currentPhone.data.length; i++) {
-			if (getters.currentPhone.data[i].style['z-index'] == nowIndex + 1) {
-				commit(types.CHANGE_ITEM_STYLE, {
+				});
+				newIndex = data.length;
+			} else if (type == '+1' && item.style['z-index'] == nowIndex + 1) {
+				commit(types.UPDATE_ITEM, {
 					item: getters.currentPhone.data[i],
-					payload: {
-						'z-index': getters.currentPhone.data[i].style['z-index'] - 1
+					key: 'style',
+					val: {
+						'z-index': nowIndex - 1
 					}
-				})
+				});
+				newIndex = nowIndex + 1;
 				break;
-			}
-		}
-		commit(types.CHANGE_ITEM_STYLE, {
-			item: getters.currentItem,
-			payload: {
-				'z-index': nowIndex + 1
-			}
-		})
-	},
-	toBottomLimit({ commit, state, getters, dispatch }) {
-		const nowIndex = getters.currentItem.style['z-index'];
-		getters.currentPhone.data.forEach((item) => {
-			if (item.style['z-index'] < nowIndex) {
-				commit(types.CHANGE_ITEM_STYLE, {
+			} else if (type == '-1' && item.style['z-index'] == nowIndex - 1) {
+				commit(types.UPDATE_ITEM, {
+					item: getters.currentPhone.data[i],
+					key: 'style',
+					val: {
+						'z-index': nowIndex + 1
+					}
+				});
+				newIndex = nowIndex - 1;
+				break;
+			} else if (type == '--' && item.style['z-index'] < nowIndex) {
+				commit(types.UPDATE_ITEM, {
 					item: item,
-					payload: {
+					key: 'style',
+					val: {
 						'z-index': item.style['z-index'] + 1
 					}
-				})
+				});
+				newIndex = 1;
 			}
-		})
-		commit(types.CHANGE_ITEM_STYLE, {
+		};
+		commit(types.UPDATE_ITEM, {
 			item: getters.currentItem,
-			payload: {
-				'z-index': 1
+			key: 'style',
+			val: {
+				'z-index': newIndex
 			}
-		})
-	},
-	toBottom({ commit, state, getters, dispatch }) {
-		const nowIndex = getters.currentItem.style['z-index'];
-		for (let i = 0; i < getters.currentPhone.data.length; i++) {
-			if (getters.currentPhone.data[i].style['z-index'] == nowIndex - 1) {
-				commit(types.CHANGE_ITEM_STYLE, {
-					item: getters.currentPhone.data[i],
-					payload: {
-						'z-index': getters.currentPhone.data[i].style['z-index'] + 1
-					}
-				})
-				break;
-			}
-		}
-		commit(types.CHANGE_ITEM_STYLE, {
-			item: getters.currentItem,
-			payload: {
-				'z-index': nowIndex - 1
-			}
-		})
-	},
-	// multSelect({commit, getters}, index){
-	// 	if(index)
-	// 	console.log(index);
-	// 	commit('multSelect', index)
-	// }
+		});
+	}
 }
 // mutations
 const mutations = {
-	// multSelect(state, index){
-	// 	state.multSelect = index;
-	// },
-	[types.CHANGE_ITEM_ATTR](state, { currentItem, data }) {
-		for (const attr in data) {
-			Vue.set(currentItem.attr, attr, data[attr]);
-		}
-	},
-	[types.CHANGE_ITEM_CONTENT](state, { currentItem, data }) {
-		Vue.set(currentItem, 'content', data);
-	},
-	[types.SELECT_ITEM](state, { index }) {
-		if(typeof index == 'object'){
-			state.multSelectId = index;
-			state.currentItemId = -1;
-		}else if(index != -1){
-			state.currentItemId = index;
-			state.multSelectId = [];
-		}else{
-			state.currentItemId = -1;
-			state.multSelectId = [];
-		}
-	},
-	[types.CHANGE_ITEM_STYLE](state, { item, payload }) {
-		for (const attr in payload) {
-			Vue.set(item.style, attr, payload[attr])
-		}
-	},
-	[types.DEL_ITEM](state, { currentPhone, index }) {
-		state.currentItemId = -1;
-		currentPhone.data.splice(index, 1);
-	},
+	/**
+	 * 新增元素
+	 * @type {Object} currentPhone  	当前页
+	 * @type {Object} item           新元素
+	 */
 	[types.ADD_ITEM](state, { currentPhone, item }) {
 		currentPhone.data = currentPhone.data || [];
 		currentPhone.data.push(item);
 		Vue.set(currentPhone, 'data', currentPhone.data);
 		state.currentItemId = currentPhone.data.length - 1;
 	},
-	[types.CHANGE_ITEM_EVENT](state, { currentItem, data }) {
-		Vue.set(currentItem, 'event', data);
+	/**
+	 * 删除元素, 可同时删除多个
+	 * @type {Object} currentPhone 当前页
+	 * @type {Number} index 		  元素索引
+	 */
+	[types.DEL_ITEM](state, { currentPhone, index }) {
+		state.currentItemId = -1;
+		currentPhone.data.splice(index, 1);
 	},
-	[types.CANCEL_SELECT](state){
+	/**
+	 * 选择元素, 可以选择多个
+	 * @type {Number} {Object} 元素索引， 或者索引数组
+	 */
+	[types.SELECT_ITEM](state, { index }) {
+		if (typeof index == 'object') {
+			state.multSelectId = index;
+			state.currentItemId = -1;
+		} else if (index != -1) {
+			state.currentItemId = index;
+			state.multSelectId = [];
+		} else {
+			state.currentItemId = -1;
+			state.multSelectId = [];
+		}
+	},
+	/**
+	 * 取消选择
+	 */
+	[types.CANCEL_SELECT](state) {
 		state.currentItemId = -1;
 		state.multSelectId = [];
+	},
+	/**
+	 * 更新元素属性, 只能更新单个元素
+	 * @param item 指定元素
+	 * @param key  修改哪个属性
+	 * @param val  修改的值
+	 */
+	[types.UPDATE_ITEM](state, { item, key, val }) {
+		if (typeof val == 'string') {
+			Vue.set(item, key, val);
+		} else {
+			for (const attr in val) {
+				Vue.set(item[key], attr, val[attr]);
+			}
+		}
 	}
 }
 export default {

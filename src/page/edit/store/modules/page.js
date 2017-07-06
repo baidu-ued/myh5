@@ -1,12 +1,21 @@
 import Vue from 'vue'
-import * as types from '../mutation-types'
-// initial state
+const types = {
+	ADD_PAGE: 'ADD_PAGE',
+	DEL_PAGE: 'DEL_PAGE',
+	SORT_PAGE: 'SORT_PAGE',
+	SELECT_PAGE: 'SELECT_PAGE',
+	EMPTY_PAGE: 'EMPTY_PAGE'
+}
+/**
+ * 空白页模版
+ */
 const BASE_BLANK = {
 	main: {
 		background: '#ffffff'
 	},
 	data: []
 }
+// initial state
 const state = {
 	currentPage: 0
 }
@@ -32,8 +41,6 @@ const actions = {
 	 * @param {Number} page 页码
 	 */
 	selectPage({ commit, state }, page) {
-		// alert(1)
-		console.log(page)
 		commit(types.SELECT_PAGE, {
 			page: page
 		})

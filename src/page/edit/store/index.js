@@ -29,32 +29,47 @@ export default new Vuex.Store({
 			data: [$.extend(true, {}, BASE_BLANK)]
 		},
 		tplTypes: tplTypes,
-		colorPicker : {
-			show : false,
-			color : '',
-			attr : ''
+		colorPicker: {
+			show: false,
+			color: '',
+			attr: ''
 		}
 	},
 	getters: {
+		/**
+		 * @return {Object} 元素类型对象
+		 */
 		tplTypes(state) {
 			return state.tplTypes
 		},
-		colorPicker(state){
+		/**
+		 * @return {Object} 颜色选择器属性
+		 */
+		colorPicker(state) {
 			return state.colorPicker;
 		},
 	},
 	actions: {
-
-		colorPickerShow({commit}, {color, attr}){
+		/**
+		 * 启动颜色选择器
+		 * @param {String} color  指定元素指定属性的颜色
+		 * @param {String} attr   指定元素的指定属性
+		 */
+		colorPickerShow({ commit }, { color, attr }) {
+			if (!color || !attr) {
+				console.log('颜色or属性不存在');
+				return;
+			}
 			commit('colorPickerShow', {
-				color : color,
-				attr : attr
+				color: color,
+				attr: attr
 			})
 		},
-		colorPickerHide({commit}, val){
-			commit('colorPickerHide', {
-
-			});
+		/**
+		 * 关闭颜色选择器
+		 */
+		colorPickerHide({ commit }) {
+			commit('colorPickerHide');
 		},
 		/**
 		 * 加载数据
@@ -80,6 +95,7 @@ export default new Vuex.Store({
 		},
 		/**
 		 * 保存数据
+		 * @type {[type]}
 		 */
 		savePhoneData: function({ commit, state }) {
 			$.ajax({
@@ -99,12 +115,12 @@ export default new Vuex.Store({
 		[types.LOAD_DATA](state, { data }) {
 			state.phone = data;
 		},
-		colorPickerShow(state, { color, attr }){
+		colorPickerShow(state, { color, attr }) {
 			state.colorPicker.show = true;
 			state.colorPicker.color = color;
 			state.colorPicker.attr = attr;
 		},
-		colorPickerHide(state){
+		colorPickerHide(state) {
 			state.colorPicker.show = false;
 		}
 	},
