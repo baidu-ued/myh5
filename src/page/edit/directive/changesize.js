@@ -55,7 +55,7 @@ Vue.directive('my-changesize', {
 				var obj = $(el).parents('.phone-item');
 				$(document).off('mousemove');
 				$(document).off('mouseup');
-				store.dispatch('changeStyle', {
+				store.dispatch('updateStyle', {
 					'left': x + 'px',
 					'top': y + 'px',
 					'width': width + 'px',

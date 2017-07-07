@@ -5,9 +5,12 @@ import page from './modules/page.js'
 import m_phone from './modules/phone.js'
 import panel from './modules/panel.js'
 import setting from './modules/setting.js'
-import * as types from './mutation-types.js'
 import * as tplTypes from '../tpl/types.js'
+import { loadData } from '../api/index.js'
 Vue.use(Vuex);
+const types = {
+	LOAD_DATA: 'LOAD_DATA'
+};
 const BASE_BLANK = {
 	main: {
 		background: '#ffffff',
@@ -74,24 +77,16 @@ export default new Vuex.Store({
 		/**
 		 * 加载数据
 		 */
-		loadData({ commit, state }) {
-			$.ajax({
-				url: '/api/edit/get',
-				type: 'get',
-				data: {
-					work_id: work_id
-				},
-				success: (rs) => {
-					console.log(rs)
-					let data = rs.data.data;
-					if (!data) {
-						data = $.extend(true, {}, state.phone)
-					}
-					commit(types.LOAD_DATA, {
-						data: data
-					})
-				}
+		loadData: async({ commit, state }) => {
+			let data = await loadData({
+				work_id: work_id
 			});
+			if (!data) {
+				data = $.extend(true, {}, state.phone)
+			}
+			commit(types.LOAD_DATA, {
+				data: data
+			})
 		},
 		/**
 		 * 保存数据
@@ -115,11 +110,21 @@ export default new Vuex.Store({
 		[types.LOAD_DATA](state, { data }) {
 			state.phone = data;
 		},
+		/**
+		 * 颜色选择器 显示
+		 * @param  {String} color 初始颜色
+		 * @param  {String} attr  要操作的属性
+		 */
 		colorPickerShow(state, { color, attr }) {
 			state.colorPicker.show = true;
 			state.colorPicker.color = color;
 			state.colorPicker.attr = attr;
 		},
+		/**
+		 * 颜色选择器 隐藏
+		 * @param  {String} color 初始颜色
+		 * @param  {String} attr  要操作的属性
+		 */
 		colorPickerHide(state) {
 			state.colorPicker.show = false;
 		}

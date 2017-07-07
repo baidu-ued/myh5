@@ -36,7 +36,7 @@ Vue.directive('my-drag', {
 					// 	'left': x + 'px',
 					// 	'top': y + 'px'
 					// })
-					// store.dispatch('changeStyle', {
+					// store.dispatch('updateStyle', {
 					// 	item : store.getters.currentPhone.data[item],
 					// 	payload : {
 					// 			'left': x + 'px',
@@ -55,7 +55,7 @@ Vue.directive('my-drag', {
 				$(document).off('mousemove');
 				$(document).off('mouseup');
 				// if(isMove){
-				// 	store.dispatch('changeStyle', {
+				// 	store.dispatch('updateStyle', {
 				// 		left: x + 'px',
 				// 		top: y + 'px'
 				// 	})

@@ -1,11 +1,25 @@
 import $ from 'jQuery'
+export const loadData = (data, cb) => {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: '/api/edit/get',
+			type: 'get',
+			data: {
+				work_id: work_id
+			},
+			success: (rs) => {
+				resolve(rs.data.data);
+			}
+		});
+	})
+}
 /**
  * 保存图片
  * @param  {[type]}   data [description]
  * @param  {Function} cb   [description]
  * @return {[type]}        [description]
  */
-export const savePic = function(data, cb) {
+export const savePic = (data, cb) => {
 	$.ajax({
 		url: '/aj/pic/save',
 		type: 'post',
@@ -24,15 +38,14 @@ export const savePic = function(data, cb) {
  * @param  {[type]}   data [description]
  * @param  {Function} cb   回调
  */
-export const getPic = function(data, cb) {
-	console.log(data)
+export const getPic = (data, cb) => {
 	$.ajax({
 		url: '/aj/pic/get',
 		type: 'get',
 		data: data,
 		success: (rs) => {
 			console.log(rs)
-			rs.data.data.forEach((item)=>{
+			rs.data.data.forEach((item) => {
 				item.src = 'http://ors5gu12t.bkt.clouddn.com/' + item.src + '?imageView2/2/w/230/h/230/q/75|imageslim';
 			})
 			cb && cb(rs);
@@ -45,7 +58,7 @@ export const getPic = function(data, cb) {
  * @param  {Function} cb   [description]
  * @return {[type]}        [description]
  */
-export const delPic = function(data, cb) {
+export const delPic = (data, cb) => {
 	$.ajax({
 		url: '/aj/pic/del',
 		type: 'get',

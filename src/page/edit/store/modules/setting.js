@@ -1,5 +1,11 @@
 import Vue from 'vue'
-import * as types from '../mutation-types'
+const types = {
+	SELECT_ITEM: 'SELECT_ITEM',
+	CANCEL_SELECT: 'CANCEL_SELECT',
+	ADD_ITEM: 'ADD_ITEM',
+	DEL_ITEM: 'DEL_ITEM',
+	UPDATE_ITEM: 'UPDATE_ITEM'
+};
 // initial state
 const state = {
 	settingLayer: false
@@ -25,10 +31,10 @@ const actions = {
 			payload: payload
 		})
 	},
-	changeMain({ commit, state, rootState }, { attr , data }) {
+	changeMain({ commit, state, rootState }, { attr, data }) {
 		commit('xxx', {
 			phone: rootState.phone,
-			attr : 'music',
+			attr: 'music',
 			data: data
 		})
 	},
@@ -44,7 +50,6 @@ const mutations = {
 		}
 	},
 	xxx(state, { phone, data, attr }) {
-
 		Vue.set(phone.main, attr, data)
 	},
 }
