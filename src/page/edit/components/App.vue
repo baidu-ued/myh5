@@ -55,10 +55,10 @@ import {
 from 'vuex'
 export default {
     methods: {
-        ...mapActions(['colorPickerHide','selectItem', 'loadData', 'changeStyle']),
+        ...mapActions(['colorPickerHide','selectItem', 'loadData', 'updateStyle']),
 		updateValue({rgba}){
 			var str = 'rgba(' + rgba['r'] + ',' + rgba['g'] + ',' + rgba['b'] + ',' + rgba['a'] + ')';
-			this.changeStyle({ [this.colorPicker.attr] : str });
+			this.updateStyle({ [this.colorPicker.attr] : str });
 		},
     },
     computed: {

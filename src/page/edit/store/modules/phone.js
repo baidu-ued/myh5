@@ -1,7 +1,13 @@
 import Vue from 'vue'
-import * as types from '../mutation-types'
 import tpl from '../../tpl/tpl.js'
 import panel from './panel'
+const types = {
+	ADD_ITEM: 'ADD_ITEM',
+	DEL_ITEM: 'DEL_ITEM',
+	SELECT_ITEM: 'SELECT_ITEM',
+	CANCEL_SELECT: 'CANCEL_SELECT',
+	UPDATE_ITEM: 'UPDATE_ITEM'
+};
 /**
  * mutations 增， 删， 改
  * 选中， 取消选中
@@ -67,22 +73,16 @@ const actions = {
 	/**
 	 * 改变元素的style
 	 * @param  {[type]} commit  [description]
-	 * @param  {[type]} state   [description]
-	 * @param  {[type]} getters [description]
-	 * @param  {[type]} payload [description]
-	 * @return {[type]}         [description]
 	 */
-	changeStyle({ commit, state, getters }, payload) {
-		console.log(payload);
+	updateStyle({ commit, state, getters }, payload) {
 		commit(types.UPDATE_ITEM, {
 			item: payload.item || getters.currentItem,
 			key: 'style',
 			val: payload
 		})
 	},
-	changeItem() {},
 	/* 增加元素 */
-	addItem({ commit, state, rootState, getters }, payload) {
+	addItem({ commit, state, rootState, getters, dispatch }, payload) {
 		(async() => {
 			const item = await tpl[payload.type](payload);
 			const id = 'myh5_item_' + rootState.phone.main.itemNumId++;
@@ -93,10 +93,7 @@ const actions = {
 				currentPhone: getters.currentPhone,
 				item: item
 			});
-			console.log(item)
-			commit(types.PANEL_HIDE, {
-				type: payload.type
-			})
+			dispatch('panelHide', payload.type);
 		})()
 	},
 	/**
@@ -109,28 +106,33 @@ const actions = {
 			index: index
 		})
 	},
-	changeAni({ commit, state, getters, dispatch }, ani) {
-		dispatch('changeStyle', ani);
-	},
-	reloadAllAni({ commit, state, dispatch, getters }) {},
-	reloadAni({ commit, state, dispatch, getters }) {
-		const name = getters.currentItem.style['animation-name'];
-		dispatch('changeStyle', {
-			'animation-name': 'none'
-		});
-		setTimeout(function() {
-			dispatch('changeStyle', {
-				'animation-name': name
+	/**
+	 * 重新播放动画效果
+	 * 当参数不存在时， 播放当页动画，当id存在时， 播放指定元素动画
+	 * @param  {Number} {Array}
+	 */
+	reloadAni({ commit, state, dispatch, getters }, id) {
+		for(let i = 0; i < getters.currentPhone.data.length; i++){
+			if(typeof id == 'number' && id != i){
+				continue;
+			}
+			let item =getters.currentPhone.data[i];
+			const name = item.style['animation-name'];
+			dispatch('updateStyle', {
+				item : item,
+				'animation-name': 'none'
 			});
-		}, 0)
+			setTimeout(function() {
+				dispatch('updateStyle', {
+					item : item,
+					'animation-name': name
+				});
+			}, 0)
+		}
 	},
 	/**
 	 * 更新元素的event属性
-	 * @param  {[type]} commit  [description]
-	 * @param  {[type]} state   [description]
-	 * @param  {[type]} getters [description]
-	 * @param  {[type]} val     [description]
-	 * @return {[type]}         [description]
+	 * @param  {[type]} val  [description]
 	 */
 	updateItemEvent({ commit, state, getters }, val) {
 		commit(types.UPDATE_ITEM, {
@@ -237,7 +239,7 @@ const mutations = {
 		state.currentItemId = currentPhone.data.length - 1;
 	},
 	/**
-	 * 删除元素, 可同时删除多个
+	 * 删除元素, 只能删除单个元素
 	 * @type {Object} currentPhone 当前页
 	 * @type {Number} index 		  元素索引
 	 */
@@ -262,7 +264,7 @@ const mutations = {
 		}
 	},
 	/**
-	 * 取消选择
+	 * 取消选择元素
 	 */
 	[types.CANCEL_SELECT](state) {
 		state.currentItemId = -1;
