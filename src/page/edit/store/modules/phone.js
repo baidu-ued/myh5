@@ -28,14 +28,14 @@ const getters = {
 	 * 是否单选
 	 * @return {Boolean}       [description]
 	 */
-	isSingleSelect(state){
+	isSingleSelect(state) {
 		return state.currentItemId != -1;
 	},
 	/**
 	 * 是否多选
 	 * @return {Boolean}
 	 */
-	isMultSelect(state){
+	isMultSelect(state) {
 		return state.multSelectId.length != 0;
 	},
 	/**
@@ -82,6 +82,7 @@ const actions = {
 	 * 取消选中元素
 	 */
 	cancelSelect({ commit, state }) {
+		console.log('cancel')
 		commit(types.CANCEL_SELECT)
 	},
 	/**
@@ -114,11 +115,12 @@ const actions = {
 	 * 删除元素
 	 * @param  {Number} index  元素索引
 	 */
-	delItem({ commit, state, getters }, index) {
+	delItem({ commit, state, getters, dispatch }, index) {
 		commit(types.DEL_ITEM, {
 			currentPhone: getters.currentPhone,
 			index: index
 		})
+		dispatch('resetItemZIndex')
 	},
 	/**
 	 * 重新播放动画效果
@@ -126,19 +128,19 @@ const actions = {
 	 * @param  {Number} {Array}
 	 */
 	reloadAni({ commit, state, dispatch, getters }, id) {
-		for(let i = 0; i < getters.currentPhone.data.length; i++){
-			if(typeof id == 'number' && id != i){
+		for (let i = 0; i < getters.currentPhone.data.length; i++) {
+			if (typeof id == 'number' && id != i) {
 				continue;
 			}
-			let item =getters.currentPhone.data[i];
+			let item = getters.currentPhone.data[i];
 			const name = item.style['animation-name'];
 			dispatch('updateStyle', {
-				item : item,
+				item: item,
 				'animation-name': 'none'
 			});
 			setTimeout(function() {
 				dispatch('updateStyle', {
-					item : item,
+					item: item,
 					'animation-name': name
 				});
 			}, 0)
@@ -178,12 +180,38 @@ const actions = {
 		})
 	},
 	/**
+	 * 修正元素层级
+	 * 当删除元素后， 元素层级会有空位， 此时需要修正层级
+	 */
+	resetItemZIndex({ commit, getters }) {
+		const data = getters.currentPhone.data;
+		const x = data.map((item, index) => {
+			return {
+				zIndex: item.style['z-index'],
+				index: index
+			}
+		})
+		x.sort(function(x, y) {
+			return x.zIndex - y.zIndex;
+		})
+		x.forEach((item, index) => {
+			commit(types.UPDATE_ITEM, {
+				item: getters.currentPhone.data[item.index],
+				key: 'style',
+				val: {
+					'z-index': index + 1
+				}
+			});
+		})
+	},
+	/**
 	 * 修改元素层级
 	 * @param  ++ 置顶， +1 上移一位， -1 下移一位， -- 置底
 	 */
 	updateItemZIndex({ commit, getters }, type) {
 		const data = getters.currentPhone.data;
 		const nowIndex = getters.currentItem.style['z-index'];
+		let hasChange = false;
 		let newIndex;
 		if (data.length == 1) {
 			return;
@@ -198,26 +226,25 @@ const actions = {
 						'z-index': item.style['z-index'] - 1
 					}
 				});
-				newIndex = data.length;
 			} else if (type == '+1' && item.style['z-index'] == nowIndex + 1) {
 				commit(types.UPDATE_ITEM, {
 					item: getters.currentPhone.data[i],
 					key: 'style',
 					val: {
-						'z-index': nowIndex - 1
+						'z-index': nowIndex
 					}
 				});
-				newIndex = nowIndex + 1;
+				hasChange = true;
 				break;
 			} else if (type == '-1' && item.style['z-index'] == nowIndex - 1) {
 				commit(types.UPDATE_ITEM, {
 					item: getters.currentPhone.data[i],
 					key: 'style',
 					val: {
-						'z-index': nowIndex + 1
+						'z-index': nowIndex
 					}
 				});
-				newIndex = nowIndex - 1;
+				hasChange = true;
 				break;
 			} else if (type == '--' && item.style['z-index'] < nowIndex) {
 				commit(types.UPDATE_ITEM, {
@@ -227,9 +254,22 @@ const actions = {
 						'z-index': item.style['z-index'] + 1
 					}
 				});
-				newIndex = 1;
 			}
 		};
+		switch (type) {
+			case '++':
+				newIndex = data.length;
+				break;
+			case '+1':
+				newIndex = hasChange ? nowIndex + 1 : nowIndex;
+				break;
+			case '-1':
+				newIndex = hasChange ? nowIndex - 1 : nowIndex;
+				break;
+			case '--':
+				newIndex = 1;
+				break;
+		}
 		commit(types.UPDATE_ITEM, {
 			item: getters.currentItem,
 			key: 'style',

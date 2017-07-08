@@ -109,7 +109,7 @@
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
     </div>
-    <div style="width:50px;font-size:12px;display:flex;flex-direction:column;height:100px;position:absolute;background:red;left:200px;top:30%;">
+    <div @mousedown.stop="" style="width:50px;font-size:12px;display:flex;flex-direction:column;height:100px;position:absolute;background:red;left:200px;top:30%;">
         <span @click="updateItemZIndex('++')">置顶</span>
         <span @click="updateItemZIndex('+1')">向上一级</span>
         <span @click="updateItemZIndex('-1')">向下一级</span>

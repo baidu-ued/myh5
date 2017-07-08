@@ -40,15 +40,19 @@ const actions = {
 	 * 改变活跃页
 	 * @param {Number} page 页码
 	 */
-	selectPage({ commit, state }, page) {
+	selectPage({ commit, state, dispatch, getters }, page) {
+		if(getters.currentPage == page){
+			return;
+		}
+		dispatch('cancelSelect');
 		commit(types.SELECT_PAGE, {
 			page: page
-		})
+		});
 	},
 	/**
 	 * 页码排序
 	 */
-	sortPage({ commit, state, getters, dispatch }, { list, index }) {
+	sortPage({ commit, getters, dispatch }, { list, index }) {
 		commit(types.SORT_PAGE, {
 			phoneData: getters.phoneData,
 			list: list
@@ -58,7 +62,8 @@ const actions = {
 	/**
 	 * 页尾增加一页
 	 */
-	addPage({ commit, state, getters }) {
+	addPage({ commit, getters, dispatch }) {
+		dispatch('cancelSelect');
 		commit(types.ADD_PAGE, {
 			phoneData: getters.phoneData
 		})
@@ -68,6 +73,7 @@ const actions = {
 	 * @param {Number} page 页码
 	 */
 	delPage({ commit, state, dispatch, getters }, page) {
+		dispatch('cancelSelect');
 		if (getters.pageLength > 1) {
 			commit(types.DEL_PAGE, {
 				phoneData: getters.phoneData,
@@ -84,7 +90,8 @@ const actions = {
 	 * 清空指定页
 	 * @param {Number} page 页码
 	 */
-	emptyPage({ commit, state, getters }, page) {
+	emptyPage({ commit, state, getters, dispatch }, page) {
+		dispatch('cancelSelect');
 		commit(types.EMPTY_PAGE, {
 			phoneData: getters.phoneData,
 			page: page
