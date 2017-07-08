@@ -1,5 +1,5 @@
 const dbHandel = require('../db/handel.js')
-const app = require('../../build/dev-server.js')
+let app = require('../app/index.js')
 const util = require('util')
 const { getCountSync, getDataSync } = require('../promisify/index.js')
 const get = (req, res) => {

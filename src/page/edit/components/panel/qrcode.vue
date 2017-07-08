@@ -140,16 +140,13 @@ import {
 from 'vuex'
 import tpl from '../../tpl/tpl.js'
 import {
-    isSelected
+    hasSelectItem
 }
 from '../../util/index.js'
 
 export default {
     computed: {
         ...mapGetters(['currentItem', 'currentItemId', 'tplTypes']),
-            currentPanel() {
-                return this.panel.list[this.panel.index]
-            },
             currentHref() {
                 return this.currentItem && this.currentItem.attr && this.currentItem.attr.href || this.url
             }
@@ -165,7 +162,7 @@ export default {
                 const newItem = await tpl.qrcode({
                     url: this.$refs.input.value
                 });
-                if (isSelected()) {
+                if (hasSelectItem()) {
                     this.updateItemAttr({
                         'href': this.$refs.input.value
                     })

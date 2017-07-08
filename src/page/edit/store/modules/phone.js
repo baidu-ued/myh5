@@ -25,6 +25,20 @@ const getters = {
 		return state.multSelectId;
 	},
 	/**
+	 * 是否单选
+	 * @return {Boolean}       [description]
+	 */
+	isSingleSelect(state){
+		return state.currentItemId != -1;
+	},
+	/**
+	 * 是否多选
+	 * @return {Boolean}
+	 */
+	isMultSelect(state){
+		return state.multSelectId.length != 0;
+	},
+	/**
 	 * @return {Object} 当前页数据
 	 */
 	currentPhone(state, getters, rootState) {

@@ -1,4 +1,4 @@
-const app = require('../../../build/dev-server.js')
+let app = require('../../app/index.js')
 const QRCode = require('qrcode')
 const util = require('../../util/index.js')
 const path = require('path')

@@ -1,5 +1,5 @@
 let dbHandel = require('../db/handel.js')
-let app = require('../../build/dev-server.js')
+let app = require('../app/index.js')
 let get = (req, res) => {
 	let obj = req.query
 	let myh5 = dbHandel.getModel('myh5');

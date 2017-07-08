@@ -1,5 +1,5 @@
 let dbHandel = require('../db/handel.js')
-let app = require('../../build/dev-server.js')
+let app = require('../app/index.js')
 const { promisify } = require('util')
 var getDataSync = promisify((collection, cb) => {
 	collection.findOne({}).exec((err, data) => {

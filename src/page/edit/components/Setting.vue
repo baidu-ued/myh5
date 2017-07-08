@@ -29,7 +29,6 @@
         <input type="checkbox" :checked="phoneSet.allowPage" @change="changeSet({'allowPage' : $event.target.checked})" />
     </div>
 </div>
-
 </template>
 
 <script>

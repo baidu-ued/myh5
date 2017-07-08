@@ -17,7 +17,7 @@ const BASE_BLANK = {
 		music: ''
 	},
 	data: []
-}
+};
 export default new Vuex.Store({
 	state: {
 		phone: {

@@ -296,11 +296,6 @@ import Vue from 'vue'
 import $ from 'jQuery'
 import tpl from '../tpl/tpl.js'
 import * as types from '../tpl/types.js'
-import {
-    isSelected
-}
-from '../util/index.js'
-
 export default {
     computed: {
         ...mapGetters(['currentPhone', 'currentItem', 'currentItemId']),
@@ -320,7 +315,6 @@ export default {
     },
     methods: {
         ...mapActions(['colorPickerShow', 'updateItemEvent', 'changeMain', 'updateStyle', 'reloadAni']),
-            isSelected: isSelected,
             selectPanel: function(index) {
                 this.listIndex = index;
             }

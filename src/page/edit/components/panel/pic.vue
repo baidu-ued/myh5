@@ -380,7 +380,7 @@ import {
 }
 from 'vuex'
 import Pagination from 'vuejs-pagination'
-import * as api from '../../api/index.js'
+import * as api from '../../api/pic.js'
 export default {
     components: {
         Pagination

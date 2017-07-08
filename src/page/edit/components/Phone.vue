@@ -98,7 +98,7 @@
             <div @dblclick="panelShow(tplTypes.QRCODE)" v-if="i.if != false" @keydown.8="delItem(index)" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item"
             :style="i.style" v-for="(i, index) in currentPhone.data">
                 <div class="phone-item-container" :id="i.attr.id" v-html="i.content"></div>
-                <div :class="{ 'control-mask-show' : isSelected(index)}" v-show="isSelected(index)">
+                <div :class="{ 'control-mask-show' : isSelect(index)}" v-show="isSelect(index)">
                     <div v-my-changesize="{type : 'nw'}" class="ui-resizable-handle ui-resizable-nw"></div>
                     <div v-my-changesize="{type : 'ne'}" class="ui-resizable-handle ui-resizable-ne"></div>
                     <div v-my-changesize="{type : 'sw'}" class="ui-resizable-handle ui-resizable-sw"></div>
@@ -130,13 +130,13 @@ import '../directive/drag.js'
 import '../directive/changesize.js'
 import '../directive/select.js'
 import {
-	isSelected
+	isSelect
 }
 from '../util/index.js'
 export default {
     methods: {
         ...mapActions(['updateItemZIndex', 'cancelSelect', 'selectItem', 'delItem', 'panelShow']),
-			isSelected : isSelected
+			isSelect : isSelect
     },
     computed: {
         ...mapGetters(['tplTypes', 'currentPhone', 'currentItemId', 'currentItem'])
