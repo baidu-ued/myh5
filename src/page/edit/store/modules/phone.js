@@ -21,12 +21,27 @@ const state = {
 }
 // getters
 const getters = {
+	/**
+	 * 以数组的形式返回当前选中元素索引
+	 * @return {Array}
+	 */
+	currentItemForList(state, getters) {
+		if (getters.isSingleSelect) {
+			return [getters.currentItemId]
+		} else {
+			return getters.multSelectId
+		}
+	},
+	/**
+	 * 多选元素的索引列表
+	 * @return {Array}
+	 */
 	multSelectId(state) {
 		return state.multSelectId;
 	},
 	/**
 	 * 是否单选
-	 * @return {Boolean}       [description]
+	 * @return {Boolean}
 	 */
 	isSingleSelect(state) {
 		return state.currentItemId != -1;
@@ -39,25 +54,29 @@ const getters = {
 		return state.multSelectId.length != 0;
 	},
 	/**
-	 * @return {Object} 当前页数据
+	 * 当前页数据
+	 * @return {Object}
 	 */
 	currentPhone(state, getters, rootState) {
 		return rootState.phone.data[rootState.page.currentPage];
 	},
 	/**
-	 * @return {Number} 当前元素id
+	 * 当前选中元素的索引
+	 * @return {Number}
 	 */
 	currentItemId(state) {
 		return state.currentItemId;
 	},
 	/**
-	 * @return {Object} 当前元素
+	 * 当前元素
+	 * @return {Object}
 	 */
 	currentItem(state, getters) {
 		return getters.currentPhone.data[state.currentItemId] || {};
 	},
 	/**
-	 * @return {Object} phone数据
+	 * phone数据
+	 * @return {Object}
 	 */
 	phoneData(state, getters, rootState) {
 		return rootState.phone
@@ -87,11 +106,32 @@ const actions = {
 	},
 	/**
 	 * 改变元素的style
-	 * @param  {[type]} commit  [description]
+	 * 修改当前元素
+	 * this.updateStyle({
+	 *     left : '50px',
+	 *     top : '50px'
+	 * })
+	 * 修改指定元素
+	 * this.updateStyle({
+	 *     index : 1,
+	 *     payload : {
+	 *         left : '50px',
+	 *         top : '50px'
+	 *     }
+	 * })
 	 */
-	updateStyle({ commit, state, getters }, payload) {
+	updateStyle({ commit, state, getters }, data) {
+		let item;
+		let payload;
+		if (typeof data.index != 'undefined' && data.payload) {
+			item = getters.currentPhone.data[data.index];
+			payload = data.payload;
+		} else {
+			item = getters.currentItem;
+			payload = data;
+		}
 		commit(types.UPDATE_ITEM, {
-			item: payload.item || getters.currentItem,
+			item: item,
 			key: 'style',
 			val: payload
 		})
@@ -135,12 +175,12 @@ const actions = {
 			let item = getters.currentPhone.data[i];
 			const name = item.style['animation-name'];
 			dispatch('updateStyle', {
-				item: item,
+				index: i,
 				'animation-name': 'none'
 			});
 			setTimeout(function() {
 				dispatch('updateStyle', {
-					item: item,
+					index: i,
 					'animation-name': name
 				});
 			}, 0)
