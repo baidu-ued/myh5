@@ -28,8 +28,10 @@ const getters = {
 	currentItemForList(state, getters) {
 		if (getters.isSingleSelect) {
 			return [getters.currentItemId]
-		} else {
+		} else if (getters.isMultSelect) {
 			return getters.multSelectId
+		} else {
+			return []
 		}
 	},
 	/**
@@ -84,9 +86,14 @@ const getters = {
 }
 // actions
 const actions = {
-	/* 根据id选择元素, 并且如果当前处于多选状态， 就 */
-	selectItem({ commit, state }, index) {
-		if (state.multSelectId.length != 0) {
+	/**
+	 * 选择元素
+	 * @param  {Number} {Array} 索引， 或索引列表
+	 * 当需要选择单个元素时， 如果此时处于多选状态， 并且该元素在多选元素内， return
+	 *
+	 */
+	selectItem({ commit, state, getters }, index) {
+		if (typeof index == 'number' && getters.isMultSelect && state.multSelectId.includes(index)) {
 			return;
 		} else {
 			if (typeof index == 'object' && index.length == 1) {
@@ -101,7 +108,6 @@ const actions = {
 	 * 取消选中元素
 	 */
 	cancelSelect({ commit, state }) {
-		console.log('cancel')
 		commit(types.CANCEL_SELECT)
 	},
 	/**
@@ -130,6 +136,10 @@ const actions = {
 			item = getters.currentItem;
 			payload = data;
 		}
+		if ($.isEmptyObject(item) || $.isEmptyObject(payload)) {
+			console.error('更新style失败');
+			return;
+		}
 		commit(types.UPDATE_ITEM, {
 			item: item,
 			key: 'style',
@@ -144,6 +154,7 @@ const actions = {
 			const zIndex = getters.currentPhone.data.length + 1;
 			item.style['z-index'] = zIndex;
 			item.attr ? item.attr.id = id : item.attr = { id: id };
+			dispatch('cancelSelect')
 			commit(types.ADD_ITEM, {
 				currentPhone: getters.currentPhone,
 				item: item
@@ -153,13 +164,24 @@ const actions = {
 	},
 	/**
 	 * 删除元素
-	 * @param  {Number} index  元素索引
+	 * @param  {Number} {Array} 元素索引或索引列表
 	 */
-	delItem({ commit, state, getters, dispatch }, index) {
-		commit(types.DEL_ITEM, {
-			currentPhone: getters.currentPhone,
-			index: index
+	delItem({ commit, state, getters, dispatch }, list) {
+		console.log(list)
+		if (typeof list == 'number') {
+			list = [list]
+		}
+		//从大到小排序， 从大到小删除
+		list.sort((a, b) => {
+			return b - a;
 		})
+		list.forEach((item) => {
+			commit(types.DEL_ITEM, {
+				currentPhone: getters.currentPhone,
+				index: item
+			})
+		})
+		dispatch('cancelSelect')
 		dispatch('resetItemZIndex')
 	},
 	/**
@@ -243,80 +265,6 @@ const actions = {
 				}
 			});
 		})
-	},
-	/**
-	 * 修改元素层级
-	 * @param  ++ 置顶， +1 上移一位， -1 下移一位， -- 置底
-	 */
-	updateItemZIndex({ commit, getters }, type) {
-		const data = getters.currentPhone.data;
-		const nowIndex = getters.currentItem.style['z-index'];
-		let hasChange = false;
-		let newIndex;
-		if (data.length == 1) {
-			return;
-		}
-		for (let i = 0; i < data.length; i++) {
-			let item = getters.currentPhone.data[i];
-			if (type == '++' && item.style['z-index'] > nowIndex) {
-				commit(types.UPDATE_ITEM, {
-					item: item,
-					key: 'style',
-					val: {
-						'z-index': item.style['z-index'] - 1
-					}
-				});
-			} else if (type == '+1' && item.style['z-index'] == nowIndex + 1) {
-				commit(types.UPDATE_ITEM, {
-					item: getters.currentPhone.data[i],
-					key: 'style',
-					val: {
-						'z-index': nowIndex
-					}
-				});
-				hasChange = true;
-				break;
-			} else if (type == '-1' && item.style['z-index'] == nowIndex - 1) {
-				commit(types.UPDATE_ITEM, {
-					item: getters.currentPhone.data[i],
-					key: 'style',
-					val: {
-						'z-index': nowIndex
-					}
-				});
-				hasChange = true;
-				break;
-			} else if (type == '--' && item.style['z-index'] < nowIndex) {
-				commit(types.UPDATE_ITEM, {
-					item: item,
-					key: 'style',
-					val: {
-						'z-index': item.style['z-index'] + 1
-					}
-				});
-			}
-		};
-		switch (type) {
-			case '++':
-				newIndex = data.length;
-				break;
-			case '+1':
-				newIndex = hasChange ? nowIndex + 1 : nowIndex;
-				break;
-			case '-1':
-				newIndex = hasChange ? nowIndex - 1 : nowIndex;
-				break;
-			case '--':
-				newIndex = 1;
-				break;
-		}
-		commit(types.UPDATE_ITEM, {
-			item: getters.currentItem,
-			key: 'style',
-			val: {
-				'z-index': newIndex
-			}
-		});
 	}
 }
 // mutations
@@ -338,7 +286,6 @@ const mutations = {
 	 * @type {Number} index 		  元素索引
 	 */
 	[types.DEL_ITEM](state, { currentPhone, index }) {
-		state.currentItemId = -1;
 		currentPhone.data.splice(index, 1);
 	},
 	/**

@@ -61,6 +61,7 @@ Vue.directive('my-select', {
 						list.push(index);
 					}
 				})
+
 				store.dispatch('selectItem', list)
 			})
 			$(document).on('mouseup', (ev) => {

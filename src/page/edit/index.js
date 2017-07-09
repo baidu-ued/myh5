@@ -5,6 +5,7 @@ import '../../public/css/reset.css'
 import '../../public/css/animation.css'
 import '../../public/iconfont/iconfont.js'
 import './css/index.css'
+import './keycode/index.js'
 Vue.config.productionTip = false
 new Vue({
 	el: '#app',

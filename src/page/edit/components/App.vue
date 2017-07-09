@@ -59,7 +59,7 @@ export default {
 		updateValue({rgba}){
 			var str = 'rgba(' + rgba['r'] + ',' + rgba['g'] + ',' + rgba['b'] + ',' + rgba['a'] + ')';
 			this.updateStyle({ [this.colorPicker.attr] : str });
-		},
+		}
     },
     computed: {
         ...mapGetters(['colorPicker', 'currentItem', 'panelStatus', 'tplTypes'])
