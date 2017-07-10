@@ -1,5 +1,6 @@
 let dbHandel = require('../db/handel.js')
 let app = require('../app/index.js')
+const { getCountSync } = require('../promisify/index.js')
 let login = (req, res) => {
 	let obj = req.query
 	let user = dbHandel.getModel('user')
@@ -23,12 +24,16 @@ let login = (req, res) => {
 		}
 	})
 }
-let signup = (req, res) => {
+let signup = async(req, res) => {
+
 	let obj = req.query
 	let user = dbHandel.getModel('user')
+	let count = await getCountSync(user, {});
 	new user({
 		username: obj.username,
-		password: obj.password
+		password: obj.password,
+		createTime : new Date(),
+		uid : 10000000000 + count
 	}).save(() => {
 		res.send({
 			status: 1,

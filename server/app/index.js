@@ -65,7 +65,7 @@ app.get('/login', function(req, res, next) {
 	}
 	res.sendFile('/Users/BraisedCakes/Desktop/github/myh5/src/page/login/index.html')
 })
-app.get('/backstage', login, function(req, res, next) {
+app.get('/backstage', function(req, res, next) {
 	res.sendFile('/Users/BraisedCakes/Desktop/github/myh5/src/page/backstage/index.html')
 })
 

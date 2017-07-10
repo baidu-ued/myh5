@@ -11,7 +11,9 @@ module.exports = {
 	},
 	'user': {
 		'password': { type: String, required: true },
-		'username': { type: String, required: true }
+		'username': { type: String, required: true },
+		'uid' : {type: Number, required: true },
+		'createTime' : {type: Object, required: true}
 	},
 	'pics': {
 		'username': { type: String, required: false },

@@ -6,6 +6,7 @@ require('./api/login')
 require('./api/edit')
 require('./api/list')
 require('./api/backstage')
+require('./api/user')
 db.on('error', console.error.bind(console, '连接数据库失败'))
 db.once('open', function() {
 	console.log('连接数据库成功')
