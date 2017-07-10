@@ -5,7 +5,7 @@
 </style>
 
 <template>
-	
+
 <div>
     <div @click="delall">删除所有用户</div>
     <ul>

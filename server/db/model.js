@@ -13,7 +13,8 @@ module.exports = {
 		'password': { type: String, required: true },
 		'username': { type: String, required: true },
 		'uid' : {type: Number, required: true },
-		'createTime' : {type: Object, required: true}
+		'createTime' : {type: Object, required: true},
+		'admin' : {type : Number, required:false}
 	},
 	'pics': {
 		'username': { type: String, required: false },

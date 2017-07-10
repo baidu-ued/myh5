@@ -57,7 +57,7 @@ header {
             <span>文本</span>
         </li>
 
-        <li @click="panelShow(types.PIC)">
+        <li @click="_panelShow(types.PIC)">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-tupian"></use>
             </svg>
@@ -69,23 +69,17 @@ header {
             </svg>
             <span>热区</span>
         </li>
-        <li @click="panelShow(types.QRCODE)">
+        <li @click="_panelShow(types.QRCODE)">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-x-mpg"></use>
             </svg>
             <span>二维码</span>
         </li>
-        <li @click="panelShow(types.MUSIC)">
+        <li @click="_panelShow(types.MUSIC)">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-x-mpg"></use>
             </svg>
             <span>音乐</span>
-        </li>
-        <li @click="panelShow(types.SHAPE)">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-x-mpg"></use>
-            </svg>
-            <span>形状</span>
         </li>
     </ul>
     <ul class="opt-panel">
@@ -139,7 +133,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['addItem', 'panelShow', 'savePhoneData', 'changeSetLayer']),
+        ...mapActions(['cancelSelect', 'addItem', 'panelShow', 'savePhoneData', 'changeSetLayer']),
             out: function() {
                 $.ajax({
                     url: '/api/login/signout',
@@ -148,7 +142,11 @@ export default {
                         console.log(rs);
                     }
                 });
-            }
+            },
+			_panelShow(type){
+				this.cancelSelect();
+				this.panelShow(type);
+			}
     },
     data() {
         return {

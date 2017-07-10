@@ -1,6 +1,6 @@
 let dbHandel = require('../db/handel.js')
 let app = require('../app/index.js')
-const { getCountSync } = require('../promisify/index.js')
+const { getCountSync, getDataSync } = require('../promisify/index.js')
 let login = (req, res) => {
 	let obj = req.query
 	let user = dbHandel.getModel('user')
@@ -24,16 +24,31 @@ let login = (req, res) => {
 		}
 	})
 }
+/**
+ * 注册，  判断用户名是否唯一
+ */
 let signup = async(req, res) => {
-
-	let obj = req.query
+	let query = req.query
 	let user = dbHandel.getModel('user')
+	var data = await getDataSync(user, {
+		find : {
+			username : query.username
+		}
+	})
+	if(data.data.length != 0){
+		res.send({
+			status: 1,
+			msg: '用户名冲突， 请更换用户名'
+		})
+		return;
+	}
 	let count = await getCountSync(user, {});
 	new user({
-		username: obj.username,
-		password: obj.password,
+		username: query.username,
+		password: query.password,
 		createTime : new Date(),
-		uid : 10000000000 + count
+		uid : 10000000000 + count,
+		admin : 0
 	}).save(() => {
 		res.send({
 			status: 1,

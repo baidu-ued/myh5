@@ -91,12 +91,11 @@
 </style>
 
 <template>
-
 <section class="box-wrap" v-my-select @mousedown="cancelSelect">
     <div class="phone-wrap">
         <div class="phone-top"></div>
         <div class="phone" id="phone" :style="{background:currentPhone.main.background}">
-            <div @dblclick="panelShow(tplTypes.QRCODE)" v-if="i.if != false" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :style="i.style" v-for="(i, index) in currentPhone.data">
+            <div @dblclick="panelShow(currentItem.type)" v-if="i.if != false" :tabindex="currentItemId == index ? 0 : ''" @mousedown.stop="selectItem(index)" v-my-drag class="phone-item" :style="i.style" v-for="(i, index) in currentPhone.data">
                 <div class="phone-item-container" :id="i.attr.id" v-html="i.content"></div>
                 <div :class="{ 'control-mask-show' : isSelect(index)}" v-show="isSelect(index)">
                     <div v-my-changesize="{type : 'nw'}" class="ui-resizable-handle ui-resizable-nw"></div>

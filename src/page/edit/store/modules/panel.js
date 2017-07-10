@@ -23,7 +23,11 @@ const actions = {
 	 * 面板显示
 	 * @param  {String} type   需要展示的面板类型(元素什么类型面板就是什么类型)
 	 */
-	panelShow({ commit, state }, type) {
+	panelShow({ commit, state, dispatch, rootGetters }, type) {
+		//如果当前选中元素类型相同
+		if (rootGetters.isSingleSelect && rootGetters.currentItem.type == type) {} else {
+			dispatch('cancelSelect');
+		}
 		commit(types.PANEL_SHOW, {
 			type: type
 		})
