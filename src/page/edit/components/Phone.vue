@@ -107,13 +107,19 @@
         </div>
         <div class="phone-left"></div>
         <div class="phone-bottom"></div>
+		<div class="" style="position:absolute;right:-50px;width:50px;height:200px;top:100px;">
+			<span @click="chexiao">撤销</span>
+			<span @click="huifu">恢复</span>
+			<div v-if="currentItemForList.length == 1" @mousedown.stop="" >
+		        <span @click="updateItemZIndex('++')">置顶</span>
+		        <span @click="updateItemZIndex('+1')">向上一级</span>
+		        <span @click="updateItemZIndex('-1')">向下一级</span>
+		        <span @click="updateItemZIndex('--')">置底</span>
+		    </div>
+
+		</div>
     </div>
-    <div v-if="currentItemForList.length == 1" @mousedown.stop="" style="width:50px;font-size:12px;display:flex;flex-direction:column;height:100px;position:absolute;background:red;left:200px;top:30%;">
-        <span @click="updateItemZIndex('++')">置顶</span>
-        <span @click="updateItemZIndex('+1')">向上一级</span>
-        <span @click="updateItemZIndex('-1')">向下一级</span>
-        <span @click="updateItemZIndex('--')">置底</span>
-    </div>
+
 </section>
 
 </template>
@@ -136,6 +142,12 @@ export default {
     methods: {
         ...mapActions(['updateStyle', 'cancelSelect', 'selectItem', 'delItem', 'panelShow']),
             isSelect: isSelect,
+			chexiao(){
+
+			},
+			huifu(){
+				
+			}
             /**
              * 修改元素层级
              * @param  ++ 置顶， +1 上移一位， -1 下移一位， -- 置底

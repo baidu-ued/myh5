@@ -103,7 +103,7 @@ header {
             <span>保存</span>
         </li>
 
-        <li @click="out">
+        <li @click="signout">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-fabu"></use>
             </svg>
@@ -134,7 +134,7 @@ export default {
     },
     methods: {
         ...mapActions(['cancelSelect', 'addItem', 'panelShow', 'savePhoneData', 'changeSetLayer']),
-            out: function() {
+            signout: function() {
                 $.ajax({
                     url: '/api/login/signout',
                     type: 'get',
